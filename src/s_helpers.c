@@ -117,9 +117,9 @@ size_t  ft_strlcpy(char *dst, const char *src, size_t dstsize)
 
 // returns a part of a string - string, start, length
 
-char    *ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char            *new;
+	char	*new;
 
 	if (!s)
 		return (0);
