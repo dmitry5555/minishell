@@ -17,11 +17,11 @@ char	**get_key_value_pair(char *arg)
 }
 
 //for testing, didnt test for leaks, need to free in main
-int main()
-{
-	char input[] = "key=value";
-    char **result = get_key_value_pair(input);
+// int main()
+// {
+// 	char input[] = "key=value";
+//     char **result = get_key_value_pair(input);
 
-	printf("Key: %s\n", result[0]);
-	printf("Value: %s\n", result[1]);
-}
+// 	printf("Key: %s\n", result[0]);
+// 	printf("Value: %s\n", result[1]);
+// }
