@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/08/24 18:46:35 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/08/24 21:26:00 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,87 +73,82 @@ static char	**ft_sub_create_array(char *str, int wordcount)
     array[j] = NULL;
     return (array);
 }
-	// char **array;
-	// int	start = 0;
-	// int	i = 0;
-	// int	j = 0;
-	// int	flag_sq = 0;
-	// int	flag_dq = 0;
-	// int	flag_rd = 0;
 
-	// array = malloc(sizeof(char *) * (wordcount + 1));
-	// if (!array)
-	// 	return (NULL);
-	// while (str[i])
-	// {
-	// 	if (str[i] == 39 && !flag_dq) // single
-	// 	{
-	// 		if (!flag_sq)
-	// 		{
-	// 			flag_sq = 1;
-	// 			start = i;
-	// 		}
-	// 		else
-	// 		{
-	// 			array[j++] = ft_strndup(&str[start], i - start + 1);
-	// 			flag_sq = 0;
-	// 			start = -1;
-	// 		}
+int ft_arraylen(char **array)
+{
+	int	i;
+	i = 0;
+	while (array && array[i])
+		i++;
+    return (i);
+}
+void	ft_free_array(char **array)
+{
+	int	i;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+void	ft_bzero(void *s, size_t n)
+{
+	char	*c;
+	size_t	i;
 
-	// 	}
+	c = s;
+	i = 0;
+	while (i < n)
+	{
+		c[i] = 0;
+		i++;
+	}
+}
 
-	// 	if (str[i] == 34 && !flag_sq) // double
-	// 	{
-	// 		if (!flag_dq)
-	// 		{
-	// 			flag_dq = 1;
-	// 			start = i;
-	// 		}
-	// 		else
-	// 		{
-	// 			array[j++] = ft_strndup(&str[start], i - start + 1);
-	// 			flag_dq = 0;
-	// 			start = -1;
-	// 		}
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*ptr;
 
-	// 	}
+	if (size == SIZE_MAX || count == SIZE_MAX)
+		return (0);
+	ptr = malloc(count * size);
+	if (!ptr)
+		return (0);
+	ft_bzero(ptr, (count * size));
+	return (ptr);
+}
 
-	// 	if (str[i] && !flag_sq && !flag_dq && str[i] != 34 && str[i] != 39)
-	// 	{
-	// 		// if not space start reading
-	// 		if (!flag_rd && str[i] != '|')
-	// 		{
-	// 			// printf("last word start\\n");
-	// 			flag_rd = 1;
-	// 			start = i;
-	// 		}
-	// 		// reach the end of word - if next one is space or quotes or EOL
-	// 		if (flag_rd && (str[i+1] == '|' || str[i+1] == 34 || str[i+1] == 39 || !str[i+1]))
-	// 		{
-	// 			// printf("last word end\\n");
-	// 			array[j++] = ft_strndup(&str[start], i - start + 1);
-	// 			flag_rd = 0;
-	// 		}
-	// 	}
-    //     if (str[i] == '|' && !flag_dq && !flag_sq)
-    //         array[j++] = strdup("|");
-	// 	i++;
-	// }
-// 	// return (array);
+char	**ft_array_replace_in(char ***array, char **subarray, int n)
+{
+	char	**tmp_array;
+	int     i;
+    int     j;
+    int     k;
 
-// }
-
-// static void	print_array(char **array)
-// {
-// 	int	i;
-// 	i = 0;
-// 	while (array[i])
-// 	{
-// 		printf("array[%d] = %s\n", i, array[i]);
-// 		i++;
-// 	}
-// }
-
+	i = -1;
+	j = -1;
+	k = -1;
+	if (!array || !*array || n < 0 || n >= ft_arraylen(*array))
+		return (NULL);
+	tmp_array = ft_calloc(ft_arraylen(*array) + ft_arraylen(subarray), sizeof(char *));
+    if (!tmp_array)
+        return (NULL);
+	while ((*array)[++i])
+	{
+		tmp_array[++k] = ft_strdup((*array)[i]);
+		if (i == n)
+		{
+			while (subarray && subarray[++j])
+				tmp_array[++k] = ft_strdup(subarray[j]);
+		}
+	}
+    //tmp_array[k] = NULL;
+	ft_free_array(*array);
+	*array = tmp_array;
+	return (*array);
+}
 // int main(void)
 // {
 //     char    **subarray;
@@ -164,4 +159,27 @@ static char	**ft_sub_create_array(char *str, int wordcount)
 //     printf("wordcount = %d\n", wordcount);
 //     subarray = ft_sub_create_array(str, wordcount);
 //     print_array(subarray);
+// }
+
+// int main(void)
+// {
+//     char **array;
+//     char **subarray;
+
+//     array = malloc(sizeof(char *) * (3 + 1));
+//     array[0] = strdup("hello");
+//     array[1] = strdup("a");
+//     array[2] = strdup("string");
+//     array[3] = NULL;
+
+//     subarray = malloc(sizeof(char *) * (2 + 1));
+//     subarray[0] = strdup("this");
+//     subarray[1] = strdup("is");
+//     subarray[2] = NULL;
+
+//     print_array(array);
+//     print_array(subarray);
+//     array = ft_array_replace_in(&array, subarray, 0);
+//     printf("array length = %d\n", ft_arraylen(array));
+//     print_array(array);
 // }
