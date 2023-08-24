@@ -172,6 +172,28 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
+char	*ft_strdup(const char *s1)
+{
+	char	*str;
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
+	while (s1[len] != '\0')
+		len++;
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (0);
+	while (i < len)
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
 char	*ft_strndup(const char *s, size_t n)
 {
 	char			*res;
