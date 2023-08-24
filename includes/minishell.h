@@ -38,7 +38,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 // Lists
-t_list	*ft_lstnew(void const *content);
+//t_list	*ft_lstnew(void const *content);
 void	ft_add_new_node(t_list **env, const char *str1, const char *str2);
 int		ft_lstsize(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
@@ -47,7 +47,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstlast(t_list *lst);
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *));
+//t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *));
 
 // lexer
 int		ft_count_words(char *str);
