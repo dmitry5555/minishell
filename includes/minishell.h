@@ -51,6 +51,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *));
 // lexer
 int		ft_count_words(char *str);
 char	**ft_create_array(char *str, int wordcount);
+void	print_array(char **array);
 // exec
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	handle_esc(char *str);
