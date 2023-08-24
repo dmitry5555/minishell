@@ -17,18 +17,18 @@ void	ft_add_new_node(t_list **env, const char *str1, const char *str2)
 	*env = new;
 }
 
-t_list	*ft_lstnew(void const *content)
-{
-	t_list	*new;
+// t_list	*ft_lstnew(void const *content)
+// {
+// 	t_list	*new;
 
-	new = (t_list *)malloc(sizeof(t_list));
-	if (!new)
-		return (0);
-	if (new != 0)
-		new->content = (void *)content;
-		new->next = 0;
-	return (new);
-}
+// 	new = (t_list *)malloc(sizeof(t_list));
+// 	if (!new)
+// 		return (0);
+// 	if (new != 0)
+// 		new->content = (void *)content;
+// 		new->next = 0;
+// 	return (new);
+// }
 
 // Counts the number of nodes in a list.
 
@@ -147,25 +147,25 @@ t_list	*ft_lstlast(t_list *lst)
 // the function ’f’.  The ’del’ function is used to
 // delete the content of a node if needed.
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *))
-{
-	t_list	*temp;
-	t_list	*new_list;
+// t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *))
+// {
+// 	t_list	*temp;
+// 	t_list	*new_list;
 
-	if (!lst||!f||!del)
-		return (0);
-	new_list = 0;
-	while (lst)
-	{
-		temp = ft_lstnew((*f)(lst->content));
-		if (!temp)
-		{
-			ft_lstclear(&temp, del);
-			return (0);
-		}
-		ft_lstadd_back(&new_list, temp);
-		lst = lst->next;
-	}
-	return (new_list);
-}
+// 	if (!lst||!f||!del)
+// 		return (0);
+// 	new_list = 0;
+// 	while (lst)
+// 	{
+// 		temp = ft_lstnew((*f)(lst->content));
+// 		if (!temp)
+// 		{
+// 			ft_lstclear(&temp, del);
+// 			return (0);
+// 		}
+// 		ft_lstadd_back(&new_list, temp);
+// 		lst = lst->next;
+// 	}
+// 	return (new_list);
+// }
 
