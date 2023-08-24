@@ -34,6 +34,7 @@ size_t	ft_strlen(const char *a);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strndup(const char *s, size_t n);
+char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 // Lists
@@ -52,6 +53,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *));
 int		ft_count_words(char *str);
 char	**ft_create_array(char *str, int wordcount);
 void	print_array(char **array);
+
 // exec
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	handle_esc(char *str);

@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/08/24 18:34:15 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/08/24 18:46:35 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,8 @@ static char	**ft_sub_create_array(char *str, int wordcount)
 //     int     wordcount;
 //     char    *str = "|exit|Makefile";
 
-//     wordcount = ft_count_words(str);
+//     wordcount = ft_sub_count_words(str);
 //     printf("wordcount = %d\n", wordcount);
-//     subarray = ft_create_array(str, wordcount);
-//     //print_array(subarray);
+//     subarray = ft_sub_create_array(str, wordcount);
+//     print_array(subarray);
 // }
