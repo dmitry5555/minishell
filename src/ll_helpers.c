@@ -6,16 +6,38 @@
 // ’next’ is initialized to NULL
 
 
-void	ft_add_new_node(t_list **env, const char *str1, const char *str2)
+void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
 {
 	t_list	*new;
 
 	new = malloc(sizeof(t_list));
-	new->name = ft_strndup(str1, sizeof(str1));
-	new->content = ft_strndup(str2, sizeof(str2));
+	new->name = ft_strndup(str1, ft_strlen(str1));
+	new->content = ft_strndup(str2, ft_strlen(str2));
 	new->next = *env;
 	*env = new;
 }
+
+void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
+{
+	t_list	*new;
+	t_list	*current;
+
+	new = malloc(sizeof(t_list));
+	new->name = ft_strndup(str1, ft_strlen(str1));
+	new->content = ft_strndup(str2, ft_strlen(str2));
+	new->next = NULL;
+
+	if (*env == NULL) {
+		*env = new;
+	} else {
+		current = *env;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = new;
+	}
+}
+
 
 // t_list	*ft_lstnew(void const *content)
 // {

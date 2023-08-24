@@ -39,7 +39,8 @@ char	*ft_strjoin(char const *s1, char const *s2);
 
 // Lists
 //t_list	*ft_lstnew(void const *content);
-void	ft_add_new_node(t_list **env, const char *str1, const char *str2);
+void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2);
+void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2);
 int		ft_lstsize(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstadd_front(t_list **lst, t_list *new);
