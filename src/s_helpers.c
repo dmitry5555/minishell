@@ -1,4 +1,4 @@
-# include "minishell.h"
+# include "../includes/minishell.h"
 
 // check if strings are identical
 // return 0 if ok or difference for last character
