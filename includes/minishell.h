@@ -65,8 +65,7 @@ int		ft_pwd(void);
 // builtin
 char	**get_key_value_pair(char *arg);
 void	print_list_values(const t_list *list);
-t_list	*parse_env();
-int		ft_env();
-
+t_list	*ft_env();
+int 	set_var(t_list **env, char *name, char *content);
 
 #endif

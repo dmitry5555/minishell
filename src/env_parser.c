@@ -31,7 +31,7 @@ void print_list_values(const t_list *list)
 }
 
 // parse ENV to linked list
-t_list *parse_env()
+t_list *ft_env()
 {
 	char	**env_lines;
 	char	**temp;
@@ -44,13 +44,10 @@ t_list *parse_env()
 		// printf("var: %s\n", temp[0]);
 		// printf("val: %s\n", temp[1]);
 		ft_add_new_node_end(&env, temp[0], temp[1]);
-
 		free(temp[0]);
 		free(temp[1]);
 		free(temp);
-
 		env_lines++;
-
 	}
 	return(env);
 	// testing
