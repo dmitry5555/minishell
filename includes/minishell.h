@@ -60,7 +60,13 @@ void	exec_cmd(char **args, int input_fd, int output_fd);
 void	handle_esc(char *str);
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	ft_echo(char **args);
-char	**get_key_value_pair(char *arg);
 int		ft_pwd(void);
+
+// builtin
+char	**get_key_value_pair(char *arg);
+void	print_list_values(const t_list *list);
+t_list	*parse_env();
+int		ft_env();
+
 
 #endif

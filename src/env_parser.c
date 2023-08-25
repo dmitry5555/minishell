@@ -17,11 +17,13 @@ char	**get_key_value_pair(char *arg)
 	return(tmp);
 }
 
+
 void print_list_values(const t_list *list)
 {
 	const t_list *current = list;
 
-	while (current != NULL) {
+	while (current != NULL)
+	{
 		printf("%s\n", current->name);
 		printf("%s\n", current->content);
 		current = current->next;
@@ -53,11 +55,3 @@ t_list *parse_env()
 	return(env);
 	// testing
 }
-
-// int	main()
-// {
-// 	t_list	*curr_env;
-
-// 	curr_env = parse_env();
-// 	print_list_values(curr_env);
-// }
