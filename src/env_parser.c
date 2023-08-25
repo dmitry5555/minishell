@@ -28,6 +28,7 @@ void print_list_values(const t_list *list)
 	}
 }
 
+// parse ENV to linked list
 t_list *parse_env()
 {
 	char	**env_lines;
@@ -50,6 +51,7 @@ t_list *parse_env()
 
 	}
 	return(env);
+	// testing
 }
 
 // int	main()
