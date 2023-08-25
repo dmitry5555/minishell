@@ -31,6 +31,10 @@ int set_var(t_list **env, char *name, char *content)
 	return (0);
 }
 
+int	unset_var(t_list **env, char *name, char *content)
+{
+	
+}
 
 // int main()
 // {
