@@ -3,43 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   subsplit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/08/24 21:26:00 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/08/25 17:52:03 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int ft_sub_count_words(char *str) 
+static int ft_sub_count_words(char *str, char *set) 
 {
-    int wordcount = 0;
-    int i = 0;
-    int flag_rd = 0;
+    int wordcount;
+    int i;
+    int flag_rd;
 
-    while (str[i])
-    {
-        // Start reading a word if not the delimiter '|'
-        if (!flag_rd && str[i] != '|')
-            flag_rd = 1;
-        // Reach the end of a word if the delimiter '|', or end of the string
-        if (flag_rd && (str[i] == '|' || str[i + 1] == '\0'))
-        {
-            wordcount++;
-            flag_rd = 0;
-        }
-        if (str[i] == '|')
-            wordcount++;
-        i++;
-    }
+	i = -1;
+	wordcount = 0;
+	flag_rd = 0;
+	while (str[++i])
+	{
+		// Start reading a word if not the delimiter '|'
+		if (!flag_rd && !ft_strchr(set, str[i]))
+		{
+			flag_rd = 1;
+			wordcount++;
+		}
+		// Reach the end of a word if the delimiter '|', or end of the string
+		else if (flag_rd && (ft_strchr(set, str[i]) || str[i + 1] == '\0'))
+		{
+			wordcount++;
+			flag_rd = 0;
+		}
+		if (ft_strchr(set, str[i]))
+			wordcount++;
+	}
     return wordcount;
 }
 
-static char	**ft_sub_create_array(char *str, int wordcount)
+static char	**ft_sub_create_array(char *str, char *set, int wordcount)
 {
-    int     i = 0;
-    int     j = 0;
+    int     i;
+    int     j;
     int     flag_rd = 0;
     int     start = 0;
     char    **array;
@@ -47,30 +52,31 @@ static char	**ft_sub_create_array(char *str, int wordcount)
     array = malloc(sizeof(char *) * (wordcount + 1));
 	if (!array)
 		return (NULL);
-    while (str[i])
+	i = -1;
+	j = -1;
+    while (str[++i])
     {
         // Start reading a word if not the delimiter '|'
-        if (!flag_rd && str[i] != '|')
+        if (!flag_rd && !ft_strchr(set, str[i]))
         {
             flag_rd = 1;
             start = i;
         }
         // Reach the end of a word if the delimiter '|', or end of the string
-        if (flag_rd && str[i] == '|')
+        if (flag_rd && ft_strchr(set, str[i]))
         {
-            array[j++] = ft_strndup(&str[start], i - start);
+            array[++j] = ft_strndup(&str[start], i - start);
             flag_rd = 0;
         }
         if (flag_rd && str[i + 1] == '\0')
         {
-            array[j++] = ft_strndup(&str[start], i - start + 1);
+            array[++j] = ft_strndup(&str[start], i - start + 1);
             flag_rd = 0;
         }
-        if (str[i] == '|')
-            array[j++] = strdup("|");
-       i++;
+        if (ft_strchr(set, str[i]))
+            array[++j] = ft_strndup(&str[i], 1);
     }
-    array[j] = NULL;
+    array[++j] = NULL;
     return (array);
 }
 
@@ -144,20 +150,21 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 				tmp_array[++k] = ft_strdup(subarray[j]);
 		}
 	}
-    //tmp_array[k] = NULL;
+    tmp_array[++k] = NULL;
 	ft_free_array(*array);
 	*array = tmp_array;
 	return (*array);
 }
+
 // int main(void)
 // {
 //     char    **subarray;
 //     int     wordcount;
-//     char    *str = "|exit|Makefile";
+//     char    *str = "|exit>Makefile >|>dog";
 
-//     wordcount = ft_sub_count_words(str);
+//     wordcount = ft_sub_count_words(str, "<|>");
 //     printf("wordcount = %d\n", wordcount);
-//     subarray = ft_sub_create_array(str, wordcount);
+//     subarray = ft_sub_create_array(str, "<|>", wordcount);
 //     print_array(subarray);
 // }
 
