@@ -6,7 +6,7 @@
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/08/25 17:52:03 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/08/26 13:33:49 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static int ft_sub_count_words(char *str, char *set)
 		}
 		// Reach the end of a word if the delimiter '|', or end of the string
 		else if (flag_rd && (ft_strchr(set, str[i]) || str[i + 1] == '\0'))
-		{
-			wordcount++;
 			flag_rd = 0;
-		}
 		if (ft_strchr(set, str[i]))
 			wordcount++;
 	}
@@ -138,13 +135,14 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 	k = -1;
 	if (!array || !*array || n < 0 || n >= ft_arraylen(*array))
 		return (NULL);
-	tmp_array = ft_calloc(ft_arraylen(*array) + ft_arraylen(subarray), sizeof(char *));
+	tmp_array = ft_calloc(ft_arraylen(*array) + ft_arraylen(subarray) + 1, sizeof(char *));
     if (!tmp_array)
         return (NULL);
 	while ((*array)[++i])
 	{
-		tmp_array[++k] = ft_strdup((*array)[i]);
-		if (i == n)
+		if (i != n)
+			tmp_array[++k] = ft_strdup((*array)[i]);
+		else
 		{
 			while (subarray && subarray[++j])
 				tmp_array[++k] = ft_strdup(subarray[j]);
@@ -156,11 +154,34 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 	return (*array);
 }
 
+char	**ft_subsplit(char **array, char *set, int i)
+{
+	char **subarray;
+
+	while (array && array[++i])
+	{
+		if (array[i][0] != '\'' && array[i][0] != '"')
+		{
+			if (ft_sub_count_words(array[i], "<|>") > 1)
+			{
+				printf("countwords = %d\n", ft_sub_count_words(array[i], "<|>"));
+				subarray = ft_sub_create_array(array[i], "<|>", ft_sub_count_words(array[i], "<|>"));
+				print_array(subarray);
+				array = ft_array_replace_in(&array, subarray, i);
+				print_array(array);
+				//i = -1;
+			}
+		}
+	}
+	ft_free_array(subarray);
+	return array;
+}
+
 // int main(void)
 // {
 //     char    **subarray;
 //     int     wordcount;
-//     char    *str = "|exit>Makefile >|>dog";
+//     char    *str = "|hello|>ldkja>a";
 
 //     wordcount = ft_sub_count_words(str, "<|>");
 //     printf("wordcount = %d\n", wordcount);
@@ -189,4 +210,17 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 //     array = ft_array_replace_in(&array, subarray, 0);
 //     printf("array length = %d\n", ft_arraylen(array));
 //     print_array(array);
+// }
+
+// int	main(void)
+// {
+// 	char **array = malloc(sizeof(char *) * (3 + 1));
+//     array[0] = strdup("'hello|>'");
+//     array[1] = strdup("|a>");
+//     array[2] = strdup("str<ing|>Makefile");
+//     array[3] = NULL;
+
+// 	print_array(array);
+// 	array = ft_subsplit(array, "<|>", -1);
+// 	print_array(array);
 // }
