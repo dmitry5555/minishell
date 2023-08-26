@@ -53,6 +53,23 @@ void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 	}
 }
 
+void	ft_cleanup(t_list **env)
+{
+	ft_free_list(*env);
+	*env = NULL;
+}
+
+void	ft_free_list(t_list *list)
+{
+	while (list) {
+		t_list *temp = list;
+		list = list->next;
+		free(temp->name);
+		free(temp->content);
+		free(temp);
+	}
+}
+
 // t_list	*ft_lstnew(void const *content)
 // {
 // 	t_list	*new;

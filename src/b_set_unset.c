@@ -33,22 +33,6 @@ int	unset_var(t_list **env, char *name, char *content)
 	return (0);
 }
 
-void	ft_free_list(t_list *list)
-{
-	while (list) {
-		t_list *temp = list;
-		list = list->next;
-		free(temp->name);
-		free(temp->content);
-		free(temp);
-	}
-}
-
-void	ft_cleanup(t_list **env)
-{
-	ft_free_list(*env);
-	*env = NULL;
-}
 
 int main()
 {
