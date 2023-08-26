@@ -23,11 +23,10 @@ void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 	t_list	*current;
 
 	new = malloc(sizeof(t_list));
+	if (!new)
+		return ;
 	// current = malloc(sizeof(t_list));
-	new = NULL;
- 	if (new == NULL) {
-		return;
-	}
+
 	new->name = ft_strndup(str1, ft_strlen(str1) + 1);
 	new->content = ft_strndup(str2, ft_strlen(str2) + 1);
 	new->next = NULL;
@@ -42,7 +41,6 @@ void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 		current->next = new;
 	}
 }
-
 
 // t_list	*ft_lstnew(void const *content)
 // {
