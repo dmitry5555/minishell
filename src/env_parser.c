@@ -8,25 +8,12 @@ char	**get_key_value_pair(char *arg)
 	char	**tmp;
 	char	*equal_sign_pos;
 
-	// equal_sign_pos =
 	equal_sign_pos = ft_strchr(arg, '=');
 	tmp = malloc(sizeof(tmp)*(2+1));
 	tmp[0] = ft_substr(arg, 0, equal_sign_pos - arg);
 	tmp[1] = ft_substr(equal_sign_pos, 1, ft_strlen(arg));
 	tmp[2] = NULL;
 	return(tmp);
-}
-
-void print_list_values(const t_list *list)
-{
-	const t_list *current = list;
-
-	while (current != NULL)
-	{
-		printf("%s\n", current->name);
-		printf("%s\n", current->content);
-		current = current->next;
-	}
 }
 
 // parse ENV to linked list
@@ -47,5 +34,4 @@ t_list *ft_env()
 		env_lines++;
 	}
 	return(env);
-	// testing
 }

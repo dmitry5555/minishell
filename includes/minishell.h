@@ -13,7 +13,7 @@
 
 # define MAX_BUFFER_SIZE 100
 
-extern char **environ; // Declaration for environment variables
+extern char **environ;
 
 typedef struct	s_list
 {
@@ -49,7 +49,9 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstlast(t_list *lst);
-//t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *));
+void	ft_free_list(t_list *list);
+void	ft_cleanup(t_list **env);
+
 
 // lexer
 int		ft_count_words(char *str);
@@ -65,7 +67,6 @@ int		ft_pwd(void);
 
 // builtin
 char	**get_key_value_pair(char *arg);
-void	print_list_values(const t_list *list);
 t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content);
 

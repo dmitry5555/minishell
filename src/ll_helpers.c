@@ -1,40 +1,32 @@
 # include "minishell.h"
 
-// Allocates (with malloc(3)) and returns a new node.
-// The member variable ’content’ is initialized with
-// the value of the parameter ’content’.  The variable
-// ’next’ is initialized to NULL
-
-
-
-// void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
-// {
-// 	t_list	*new;
-
-// 	new = malloc(sizeof(t_list));
-// 	new->name = ft_strndup(str1, ft_strlen(str1));
-// 	new->content = ft_strndup(str2, ft_strlen(str2));
-// 	new->next = *env;
-// 	*env = new;
-// }
-
 void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2) {
-    t_list *new = malloc(sizeof(t_list));
-    new->name = ft_strndup(str1, ft_strlen(str1));
-    new->content = ft_strndup(str2, ft_strlen(str2));
-    new->next = NULL; // This will be the last node, so set next to NULL
+	t_list *new;
+	t_list *temp;
 
-    if (*env == NULL) {
-        *env = new; // If the list is empty, new node is the first node
-    } else {
-        t_list *temp = *env;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = new; // Add new node to the end of the list
-    }
+	new = malloc(sizeof(t_list));
+	if (!new)
+		return;
+	// new->name = NULL;
+	// new->content = NULL;
+	new->name = ft_strndup(str1, ft_strlen(str1) + 1);
+	new->content = ft_strndup(str2, ft_strlen(str2) + 1);
+	new->next = NULL;
+
+	if (*env == NULL)
+	{
+		*env = new; // If the list is empty, new node is the first node
+	}
+	else
+	{
+		temp = *env;
+		while (temp->next != NULL) {
+			temp = temp->next;
+		}
+		temp->next = new; // Add new node to the end of the list
+	}
+	// cleanup(new);
 }
-
 
 void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 {
