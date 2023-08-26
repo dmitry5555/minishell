@@ -6,16 +6,35 @@
 // ’next’ is initialized to NULL
 
 
-void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
-{
-	t_list	*new;
 
-	new = malloc(sizeof(t_list));
-	new->name = ft_strndup(str1, ft_strlen(str1));
-	new->content = ft_strndup(str2, ft_strlen(str2));
-	new->next = *env;
-	*env = new;
+// void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
+// {
+// 	t_list	*new;
+
+// 	new = malloc(sizeof(t_list));
+// 	new->name = ft_strndup(str1, ft_strlen(str1));
+// 	new->content = ft_strndup(str2, ft_strlen(str2));
+// 	new->next = *env;
+// 	*env = new;
+// }
+
+void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2) {
+    t_list *new = malloc(sizeof(t_list));
+    new->name = ft_strndup(str1, ft_strlen(str1));
+    new->content = ft_strndup(str2, ft_strlen(str2));
+    new->next = NULL; // This will be the last node, so set next to NULL
+
+    if (*env == NULL) {
+        *env = new; // If the list is empty, new node is the first node
+    } else {
+        t_list *temp = *env;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = new; // Add new node to the end of the list
+    }
 }
+
 
 void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 {

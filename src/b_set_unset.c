@@ -44,13 +44,31 @@ int	unset_var(t_list **env, char *name, char *content)
 	return (0);
 }
 
+void	ft_free_list(t_list *list) {
+    while (list) {
+        t_list *temp = list;
+        list = list->next;
+        free(temp->name);
+        free(temp->content);
+        free(temp);
+    }
+}
+
+
+void cleanup(t_list **env) {
+    ft_free_list(*env);
+    *env = NULL; // Set the list pointer to NULL after freeing all nodes
+}
+
 int main()
 {
 	t_list *env;
 
-	env = ft_env(); // read current ENV
+	// env = NULL;
+	env = ft_env();
 	// add new value
-	set_var(env, "USERSSSS", "valuexXASDASDX");
+	set_var(&env, "U", "v");
 	print_list_values(env);
+	cleanup(&env);
 	// free(env);
 }

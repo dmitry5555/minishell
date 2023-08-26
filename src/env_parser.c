@@ -17,7 +17,6 @@ char	**get_key_value_pair(char *arg)
 	return(tmp);
 }
 
-
 void print_list_values(const t_list *list)
 {
 	const t_list *current = list;
@@ -33,9 +32,9 @@ void print_list_values(const t_list *list)
 // parse ENV to linked list
 t_list *ft_env()
 {
+	t_list	*env;
 	char	**env_lines;
 	char	**temp;
-	t_list	*env;
 
 	env_lines = environ;
 	while (*env_lines)
@@ -44,9 +43,7 @@ t_list *ft_env()
 		// printf("var: %s\n", temp[0]);
 		// printf("val: %s\n", temp[1]);
 		ft_add_new_node_end(&env, temp[0], temp[1]);
-		free(temp[0]);
-		free(temp[1]);
-		free(temp);
+		ft_free_array(temp);
 		env_lines++;
 	}
 	return(env);
