@@ -26,14 +26,14 @@ int set_var(t_list **env, char *name, char *content)
 		curr = curr->next;
 	}
 	if (!flag_upd)
-		ft_add_new_node_start(env, name, content); // reversed
+		ft_add_new_node_end(env, name, content); // reversed
 	// check if var exist and update value
 	return (0);
 }
 
 int	unset_var(t_list **env, char *name, char *content)
 {
-	
+	return (0);
 }
 
 // int main()
