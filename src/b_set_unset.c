@@ -13,6 +13,7 @@ int set_var(t_list **env, char *name, char *content)
 	int		flag_upd;
 	t_list *curr;
 
+
 	flag_upd = 0;
 	curr = (*env);
 	while(curr)
