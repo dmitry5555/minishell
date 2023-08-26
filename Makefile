@@ -1,8 +1,8 @@
 NAME = minishell
 CC = @gcc
 RM = @rm -f
-FLAGS = -lreadline
-#-Wall -Wextra -Werror
+FLAGS = -lreadline -fsanitize=address
+# -Wall -Wextra -Werror
 #-fsanitize=address
 
 YELLOW = \033[33;49;1m
