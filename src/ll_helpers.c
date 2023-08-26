@@ -1,6 +1,7 @@
 # include "minishell.h"
 
-void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2) {
+void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2, int is_env)
+{
 	t_list *new;
 	t_list *temp;
 
@@ -11,6 +12,7 @@ void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2) {
 	// new->content = NULL;
 	new->name = ft_strndup(str1, ft_strlen(str1) + 1);
 	new->content = ft_strndup(str2, ft_strlen(str2) + 1);
+	new->is_env = is_env;
 	new->next = NULL;
 
 	if (*env == NULL)
@@ -28,7 +30,7 @@ void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2) {
 	// cleanup(new);
 }
 
-void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
+void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2, int is_env)
 {
 	t_list	*new;
 	t_list	*current;
@@ -40,6 +42,7 @@ void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 
 	new->name = ft_strndup(str1, ft_strlen(str1) + 1);
 	new->content = ft_strndup(str2, ft_strlen(str2) + 1);
+	new->is_env = is_env;
 	new->next = NULL;
 
 	if (*env == NULL) {
@@ -66,6 +69,7 @@ void	ft_free_list(t_list *list)
 		list = list->next;
 		free(temp->name);
 		free(temp->content);
+		// free(temp->is_env);
 		free(temp);
 	}
 }
