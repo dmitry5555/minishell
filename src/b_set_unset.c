@@ -1,5 +1,11 @@
 # include "minishell.h"
 
+// sets a var, env
+// UNSET - unsets a var (need to check first, last cases)
+// EXPORT (local to env)
+// ENV
+
+
 int set_var(t_list **env, char *name, char *content, int is_env)
 {
 	int		flag_upd;
@@ -26,38 +32,38 @@ int set_var(t_list **env, char *name, char *content, int is_env)
 }
 
 void unset_var(t_list **env, char *name) {
-    t_list *temp;
-    t_list *current = *env;  // Initialize current to the head of the list
+	t_list *temp;
+	t_list *current = *env;  // Initialize current to the head of the list
 
-    // Handle the case where the linked list is empty
-    if (current == NULL) {
-        return;
-    }
+	// Handle the case where the linked list is empty
+	if (current == NULL) {
+		return;
+	}
 
-    // Handle the case where the first node needs to be removed
-    if (!ft_strcmp(current->name, name)) {
-        *env = (*env)->next;
-        free(current->name);
-        free(current->content);
-        free(current);
-        return;
-    }
+	// Handle the case where the first node needs to be removed
+	if (!ft_strcmp(current->name, name)) {
+		*env = (*env)->next;
+		free(current->name);
+		free(current->content);
+		free(current);
+		return;
+	}
 
-    // Traverse the linked list to find the node before the one to be removed
-    while (current->next != NULL && ft_strcmp(current->next->name, name)) {
-        current = current->next;
-    }
+	// Traverse the linked list to find the node before the one to be removed
+	while (current->next != NULL && ft_strcmp(current->next->name, name)) {
+		current = current->next;
+	}
 
-    // If the value was not found in the linked list
-    if (current->next == NULL) {
-        return;
-    }
+	// If the value was not found in the linked list
+	if (current->next == NULL) {
+		return;
+	}
 
-    temp = current->next;
-    current->next = temp->next;
-    free(temp->name);
-    free(temp->content);
-    free(temp);
+	temp = current->next;
+	current->next = temp->next;
+	free(temp->name);
+	free(temp->content);
+	free(temp);
 }
 
 
@@ -89,26 +95,26 @@ void unset_var(t_list **env, char *name) {
 
 
 
-int main()
-{
-	t_list *env;
-	t_list *current;
+// int main()
+// {
+// 	t_list *env;
+// 	t_list *current;
 
-	env = ft_env();
+// 	env = ft_env();
 
-	// IS VISIBLE
-	set_var(&env, "VAR_X", "HEAP SUMMARY", 1);
-	// IS SESSION, EMPTY
-	set_var(&env, "VAR_Z", "", 0);
-	unset_var(&env, "VAR_X");
+// 	// IS VISIBLE
+// 	set_var(&env, "VAR_X", "HEAP SUMMARY", 1);
+// 	// IS SESSION, EMPTY
+// 	set_var(&env, "VAR_Z", "", 0);
+// 	unset_var(&env, "VAR_X");
 
-	current = env;
-	// print loop
-	while (current != NULL) {
-		printf("%s\n", current->name);
-		printf("%s\n", current->content);
-		current = current->next;
-	}
+// 	current = env;
+// 	// print loop
+// 	while (current != NULL) {
+// 		printf("%s\n", current->name);
+// 		printf("%s\n", current->content);
+// 		current = current->next;
+// 	}
 
-	ft_cleanup(&env);
-}
+// 	ft_cleanup(&env);
+// }
