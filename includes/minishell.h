@@ -71,5 +71,6 @@ char	**get_key_value_pair(char *arg);
 t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
+int		ft_cd();
 
 #endif
