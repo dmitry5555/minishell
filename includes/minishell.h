@@ -23,6 +23,14 @@ typedef struct	s_list
 	int				is_env;
 }	t_list;
 
+typedef struct s_cmd_node
+{
+	char	**cmd;
+	char	*path;
+	int		in;
+	int		out;
+}	t_cmd_node;
+
 // Strings
 void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *str1, const char *str2);
@@ -38,6 +46,13 @@ char	*ft_strndup(const char *s, size_t n);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_free_array(char **array);
+
+// Arrays
+int		ft_array_len(char **array);
+void	print_array(char **array);
+void	ft_array_free(char **array);
+char	**ft_array_replace_in(char ***array, char **subarray, int n);
+char	**ft_array_extend(char **in, char *newstr);
 
 // Lists
 //t_list	*ft_lstnew(void const *content);
