@@ -169,17 +169,6 @@ char **ft_split_cmds(char *s)
 	return (array);
 }
 
-void	print_array(char **array)
-{
-	int	i;
-	i = 0;
-	while (array[i])
-	{
-		printf("array[%d] = %s\n", i, array[i]);
-		i++;
-	}
-}
-
 void	check_args(char *out)
 {
 	char **args;
