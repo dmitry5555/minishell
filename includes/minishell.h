@@ -49,8 +49,9 @@ void	ft_free_array(char **array);
 
 // Arrays
 int		ft_array_len(char **array);
-void	print_array(char **array);
+void	ft_print_array(char **array);
 void	ft_array_free(char **array);
+char	**ft_dup_array(char **array);
 char	**ft_array_replace_in(char ***array, char **subarray, int n);
 char	**ft_array_extend(char **in, char *newstr);
 

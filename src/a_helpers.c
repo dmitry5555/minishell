@@ -6,7 +6,7 @@
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:21:51 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/04 16:44:26 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/06 14:39:36 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_array_len(char **array)
     return (i);
 }
 
-void	print_array(char **array)
+void	ft_print_array(char **array)
 {
 	int	i;
 	i = 0;
@@ -82,9 +82,9 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 	i = -1;
 	j = -1;
 	k = -1;
-	if (!array || !*array || n < 0 || n >= ft_arraylen(*array))
+	if (!array || !*array || n < 0 || n >= ft_array_len(*array))
 		return (NULL);
-	tmp_array = ft_calloc(ft_arraylen(*array) + ft_arraylen(subarray) + 1, sizeof(char *));
+	tmp_array = ft_calloc(ft_array_len(*array) + ft_array_len(subarray) + 1, sizeof(char *));
     if (!tmp_array)
         return (NULL);
 	while ((*array)[++i])
@@ -98,9 +98,34 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 		}
 	}
     tmp_array[++k] = NULL;
-	ft_free_array(*array);
+	ft_array_free(*array);
 	*array = tmp_array;
 	return (*array);
+}
+
+char	**ft_dup_array(char **array)
+{
+	char	**out;
+	int		n_rows;
+	int		i;
+
+	i = 0;
+	n_rows = ft_array_len(array);
+	out = malloc(sizeof(char *) * (n_rows + 1));
+	if (!out)
+		return (NULL);
+	while (array[i])
+	{
+		out[i] = ft_strdup(array[i]);
+		if (!out[i])
+		{
+			ft_array_free(out);
+			return (NULL);
+		}
+		i++;
+	}
+	out[i] = NULL;
+	return (out);
 }
 
 char	**ft_array_extend(char **in, char *newstr)
@@ -123,11 +148,11 @@ char	**ft_array_extend(char **in, char *newstr)
 		out[i] = ft_strdup(in[i]);
 		if (!out[i])
 		{
-			ft_free_array(&in);
-			ft_array_free(&out);
+			ft_array_free(in);
+			ft_array_free(out);
 		}
 	}
 	out[i] = ft_strdup(newstr);
-	ft_free_matrix(&in);
+	ft_array_free(in);
 	return (out);
 }
