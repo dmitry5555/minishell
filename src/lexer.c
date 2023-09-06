@@ -180,7 +180,7 @@ void	check_args(char *out)
 	if (out[0] != '\0')
 		add_history(out);
 	args = ft_split_cmds(out);
-	print_array(args);
+	ft_print_array(args);
 	free(out);
 }
 

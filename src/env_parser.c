@@ -29,7 +29,7 @@ t_list *ft_env()
 	{
 		temp = get_key_value_pair(*env_lines);
 		ft_add_new_node_end(&env, temp[0], temp[1], 1);
-		ft_free_array(temp);
+		ft_array_free(temp);
 		env_lines++;
 	}
 	return(env);
