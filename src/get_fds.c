@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getfiles.c                                         :+:      :+:    :+:   */
+/*   get_fds.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:36:45 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/04 16:13:39 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/07 19:29:02 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i)
 	return (node);
 }
 
-// t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i)
-// {
-// 	//heredoc function
-// }
+t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i)
+{
+	//heredoc function
+}
