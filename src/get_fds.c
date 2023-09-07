@@ -112,7 +112,7 @@ t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i)
 	return (node);
 }
 
-t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i)
-{
-	//heredoc function
-}
+// t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i)
+// {
+// 	//heredoc function
+// }

@@ -23,7 +23,7 @@ typedef struct	s_list
 	int				is_env;
 }	t_list;
 
-typedef struct s_cmd_node
+typedef struct	s_cmd_node
 {
 	char	**cmd;
 	char	*path;
@@ -87,6 +87,10 @@ char	**get_key_value_pair(char *arg);
 t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
-int		ft_cd();
+void		ft_cd();
+
+// subsplit
+static char	**ft_sub_create_array(char *str, char *set, int wordcount);
+
 
 #endif

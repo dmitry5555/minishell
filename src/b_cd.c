@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-int	ft_cd(t_list **env, char *name, char *content, int is_env)
+void	ft_cd(t_list **env, char *name, char *content, int is_env)
 {
 	char *input;
 

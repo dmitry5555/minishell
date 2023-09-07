@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-static int ft_sub_count_words(char *str, char *set) 
+static int ft_sub_count_words(char *str, char *set)
 {
     int wordcount;
     int i;

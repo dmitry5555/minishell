@@ -1,5 +1,6 @@
 # include "minishell.h"
 
+
 void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2, int is_env)
 {
 	t_list *new;
