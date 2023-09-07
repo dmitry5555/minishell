@@ -23,6 +23,12 @@ typedef struct	s_list
 	int				is_env;
 }	t_list;
 
+typedef struct s_cmdlist
+{
+	struct s_cmdlist	*next;
+	void				*content;
+}	t_cmdlist;
+
 typedef struct	s_cmd_node
 {
 	char	**cmd;
