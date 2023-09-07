@@ -213,3 +213,37 @@ char	*ft_strndup(const char *s, size_t n)
 	res[i] = '\0';
 	return (res);
 }
+
+char **split_string(char *str, char *delimiter)
+{
+	int wordcount = 0;
+	char *copy = strdup(str);
+	char *token = strtok(copy, delimiter);
+
+	while (token != NULL)
+	{
+		wordcount++;
+		token = strtok(NULL, delimiter);
+	}
+
+	char **array = malloc(sizeof(char *) * (wordcount + 1));
+	if (array == NULL)
+	{
+		fprintf(stderr, "Memory allocation failed.\n");
+		free(copy);
+		return NULL;
+	}
+	
+	int i = 0;
+	token = strtok(str, delimiter);
+	while (token != NULL)
+	{
+		array[i] = strdup(token);
+		i++;
+		token = strtok(NULL, delimiter);
+	}
+	array[i] = NULL;
+
+	free(copy);
+	return array;
+}

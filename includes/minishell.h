@@ -87,10 +87,6 @@ char	**get_key_value_pair(char *arg);
 t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
-void		ft_cd();
-
-// subsplit
-static char	**ft_sub_create_array(char *str, char *set, int wordcount);
-
+void	ft_cd();
 
 #endif
