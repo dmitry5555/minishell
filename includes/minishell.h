@@ -86,7 +86,6 @@ void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 // lexer
 int		ft_count_words(char *str);
 char	**ft_create_array(char *str, int wordcount);
-void	print_array(char **array);
 
 // exec
 void	exec_cmd(char **args, int input_fd, int output_fd);
@@ -94,6 +93,12 @@ void	handle_esc(char *str);
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	ft_echo(char **args);
 int		ft_pwd(void);
+
+// get fd
+t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
+t_cmd_node	*get_outfile_append(t_cmd_node *node, char **args, int *i);
+t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
+t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // builtin
 char	**get_key_value_pair(char *arg);
