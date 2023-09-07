@@ -75,6 +75,13 @@ t_list	*ft_lstlast(t_list *lst);
 void	ft_free_list(t_list *list);
 void	ft_cleanup(t_list **env);
 
+// Command List
+t_cmd_node	*init_cmd_node(void);
+t_cmdlist	*ft_cmdlstnew(void *content);
+void		ft_cmdlstadd_back(t_cmdlist **lst, t_cmdlist *newnode);
+t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);
+void		free_cmd_content(void *content);
+void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 
 // lexer
 int		ft_count_words(char *str);
