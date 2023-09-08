@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/08 13:50:01 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/08 16:46:34 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ char	**ft_subsplit(char **array, char *set, int i)
 	{
 		if (array[i][0] != '\'' && array[i][0] != '"')
 		{
-			if (ft_sub_count_words(array[i], "<|>") > 1)
+			if (ft_sub_count_words(array[i], set) > 1)
 			{
 				//printf("countwords = %d\n", ft_sub_count_words(array[i], "<|>"));
-				subarray = ft_sub_create_array(array[i], "<|>", ft_sub_count_words(array[i], "<|>"));
+				subarray = ft_sub_create_array(array[i], set, ft_sub_count_words(array[i], set));
 				//print_array(subarray);
 				array = ft_array_replace_in(&array, subarray, i);
 				//print_array(array);
