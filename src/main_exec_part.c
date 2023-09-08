@@ -94,6 +94,7 @@ int main()
 		// Free the memory allocated for the command list
 	}
 
+
 	// ft_free_list(current);
 	ft_cmdlstclear(&cmdlist, free_cmd_content);
 
