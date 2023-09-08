@@ -6,7 +6,7 @@
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/07 19:10:30 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 11:55:08 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ t_cmd_node	*fill_content(t_cmd_node *node, char **args, char **trim_args, int *i
         else if (args[*i][0] == '<')
             node = get_infile(node, trim_args, i);
         else if (args[*i][0] != '|')
+		{
+			printf("add node->cmd[%i]\n", *i);
             node->cmd = ft_array_extend(node->cmd, trim_args[*i]);
+			printf("finished add node->cmd[%i]\n", *i);
+		}
         else
         {
             //error
@@ -80,13 +84,11 @@ static char	**get_trimmed(char **args)
 	return (tmp_array);
 }
 
-
-
 static t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp)
 {
 	ft_cmdlstclear(&cmds, free_cmd_content);
-	ft_array_free(tmp);
-	ft_array_free(args);
+	ft_array_free(&tmp);
+	ft_array_free(&args);
 	return (NULL);
 }
 
@@ -101,53 +103,61 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 	trimmed_args = get_trimmed(args);
 	while (args[++i])
 	{
+		printf("args[%d] = %s\n", i, args[i]);
 		current_cmd = ft_cmdlstlast(cmds);
 		if (i == 0 || (args[i][0] == '|' && args[i + 1] && args[i + 1][0]))
 		{
 			if (args[i][0] == '|')
 				i += 1;
+			printf("add new node\n");
 			ft_cmdlstadd_back(&cmds, ft_cmdlstnew(init_cmd_node()));
 			current_cmd = ft_cmdlstlast(cmds);
 		}
+		printf("FILLING NODE\n");
 		temp_args = args;
 		current_cmd->content = fill_content(current_cmd->content, temp_args, trimmed_args, &i);
-		if (i < 0)
-			return (fill_cmdlst_error(cmds, args, temp_args));
+		// if (i < 0)
+		// 	return (fill_cmdlst_error(cmds, args, temp_args));
 		if (!args[i])
 			break ;
 	}
-	ft_array_free(trimmed_args);
-	ft_array_free(args);
+	ft_array_free(&trimmed_args);
+	ft_array_free(&args);
 	return (cmds);
 }
 
 // int main()
 // {
-//     char *array[] = {
-//         "echo",
-//         "Hello,",
-//         "world!",
-//         ">", "output.txt",
-//         "|",
-//         "grep", "world",
-//         NULL
-//     };
-
+//     char **array = malloc(sizeof(char *) * 4);
+//     array[0] = strdup("echo");
+//     array[1] = strdup(">");
+//     array[2] = strdup("6");
+//     array[3] = NULL;
+	
 //     // Create a command list from the array
 // 	t_cmdlist *cmdlist;
-	
-// 	cmdlist = ft_cmdlstnew(init_cmd_node());
+// 	// t_cmd_node *node;
 
-//     // Check if the command list was created successfully
+// 	// node = init_cmd_node();
+// 	// node->cmd = array;
+// 	// cmdlist = ft_cmdlstnew(node);
+
+// 	cmdlist = NULL;
+// 	cmdlist = create_cmd_list(array, -1);
+// 	//ft_print_array(array);
+// 	//array = ft_array_extend(array, "newstring");
+// 	//ft_print_array(array);
+
+//     //Check if the command list was created successfully
 //     if (cmdlist != NULL) 
 // 	{
 //         // Traverse the command list and print the commands
 //         t_cmdlist *current = cmdlist;
 //         while (current != NULL) {
 //             t_cmd_node *node = (t_cmd_node *)current->content;
-//             printf("Command: ");
+//             //printf("Command: ");
 //             for (int i = 0; node->cmd[i] != NULL; i++) {
-//                 printf("%s ", node->cmd[i]);
+//                 printf("cmd[%d] = %s ", i, node->cmd[i]);
 //             }
 //             printf("\n");
 //             printf("Input File: %d\n", node->in);
@@ -158,7 +168,7 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 //         }
 
 //         // Free the memory allocated for the command list
-//         ft_cmdlstclear(&cmdlist, free_cmd_content);
+//         //ft_cmdlstclear(&cmdlist, free_cmd_content);
 //     } 
 // 	else 
 // 	{

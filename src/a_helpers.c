@@ -6,7 +6,7 @@
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:21:51 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/06 14:39:36 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 11:45:46 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	*ft_calloc(size_t count, size_t size)
 int	ft_array_len(char **array)
 {
 	int	i;
+	
 	i = 0;
 	while (array && array[i])
 		i++;
@@ -60,16 +61,20 @@ void	ft_print_array(char **array)
 	}
 }
 
-void	ft_array_free(char **array)
+void ft_array_free(char ***array)
 {
-	int	i;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
+    int i = 0;
+
+    if (array && *array)
+    {
+        while ((*array)[i])
+        {
+            free((*array)[i]);
+            i++;
+        }
+        free(*array);
+        *array = NULL;
+    }
 }
 
 char	**ft_array_replace_in(char ***array, char **subarray, int n)
@@ -98,7 +103,7 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 		}
 	}
     tmp_array[++k] = NULL;
-	ft_array_free(*array);
+	ft_array_free(array);
 	*array = tmp_array;
 	return (*array);
 }
@@ -119,7 +124,7 @@ char	**ft_dup_array(char **array)
 		out[i] = ft_strdup(array[i]);
 		if (!out[i])
 		{
-			ft_array_free(out);
+			ft_array_free(&out);
 			return (NULL);
 		}
 		i++;
@@ -134,13 +139,13 @@ char	**ft_array_extend(char **in, char *newstr)
 	int		len;
 	int		i;
 
+	//ft_print_array(in);
 	i = -1;
 	out = NULL;
 	if (!newstr)
 		return (in);
 	len = ft_array_len(in);
 	out = malloc(sizeof(char *) * (len + 2));
-	out[len + 1] = NULL;
 	if (!out)
 		return (in);
 	while (++i < len)
@@ -148,11 +153,14 @@ char	**ft_array_extend(char **in, char *newstr)
 		out[i] = ft_strdup(in[i]);
 		if (!out[i])
 		{
-			ft_array_free(in);
-			ft_array_free(out);
+			ft_array_free(&in);
+			ft_array_free(&out);
+			return (NULL);
 		}
 	}
 	out[i] = ft_strdup(newstr);
-	ft_array_free(in);
+	out[len + 1] = NULL;
+	ft_array_free(&in);
+	//ft_print_array(out);
 	return (out);
 }
