@@ -52,15 +52,13 @@ char *ft_find_right_path(char *cmd)
 	total = sizeof(arr) / sizeof(arr[0]);
 
 	// split PATH string to arr using ft_sub_create_array
-
 	// check each PATH - array element with access
-
 
 	while(total--)
 	{
 		tmp1 = ft_strjoin(arr[total],"/");
 		tmp2 = ft_strjoin(tmp1, cmd);
-		free(tmp1);
+		// free(tmp1);
 
 		if (access(tmp2, X_OK) == 0)
 		{
@@ -68,7 +66,7 @@ char *ft_find_right_path(char *cmd)
 			// free(tmp2);
 			// ft_array_free(arr);
 			//printf("%s is accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
-			return(tmp2);
+			// return(tmp2);
 		}
 		else
 		{
@@ -77,7 +75,7 @@ char *ft_find_right_path(char *cmd)
 		//	printf("%s is not accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
 		}
 		// total--;
-		// free(tmp1);
+		free(tmp1);
 		free(tmp2);
 	}
 

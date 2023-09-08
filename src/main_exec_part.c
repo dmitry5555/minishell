@@ -21,10 +21,10 @@
 // 	// Create a command list from the array
 // 	t_cmdlist *cmdlist;
 
-// 	cmdlist = NULL;
+// 	// cmdlist = NULL;
 // 	cmdlist = create_cmd_list(array, -1);
 
-// 	//Check if the command list was created successfully
+// 	// Check if the command list was created successfully
 // 	// if (cmdlist != NULL)
 // 	// {
 // 	// 	// Traverse the command list and print the commands
@@ -65,7 +65,7 @@
 // 		while (current)
 // 		{
 // 			t_cmd_node *node = (t_cmd_node *)current->content;
-// 			// char *tmp1;
+// 			char *tmp1;
 
 // 			i = 0;
 // 			while (node->cmd[i])
@@ -77,12 +77,13 @@
 
 // 				if (ft_find_right_path(node->cmd[i]))
 // 				{
-// 					//printf("right path for [%s] is: %s \n", node->cmd[i], ft_find_right_path(node->cmd[i]));
-// 					node->path = ft_find_right_path(node->cmd[i]);
+// 					// printf("right path for [%s] is: %s \n", node->cmd[i], ft_find_right_path(node->cmd[i]));
+// 					// node->path = ft_find_right_path(node->cmd[i]);
 
 // 					// free(tmp1);
-// 					printf("right path for [%s] is: %s \n", node->cmd[i], node->path);
-// 					exec_cmd(node->cmd, 0, 1);
+
+// 					// printf("right path for [%s] is: %s \n", node->cmd[i], node->path);
+// 					// exec_cmd(node->cmd, 0, 1);
 // 				}
 
 // 				i++;
@@ -92,6 +93,8 @@
 
 // 		// Free the memory allocated for the command list
 // 	}
+
+
 // 	// ft_free_list(current);
 // 	ft_cmdlstclear(&cmdlist, free_cmd_content);
 

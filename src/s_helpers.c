@@ -233,7 +233,7 @@ char **split_string(char *str, char *delimiter)
 		free(copy);
 		return NULL;
 	}
-	
+
 	int i = 0;
 	token = strtok(str, delimiter);
 	while (token != NULL)
