@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   a_helpers.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:21:51 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/08 11:45:46 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 20:21:18 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,17 @@ void	ft_print_array(char **array)
 
 void ft_array_free(char ***array)
 {
+	char **arr = *array;
     int i = 0;
 
-    if (array && *array)
+    if (arr)
     {
-        while ((*array)[i])
+        while (arr[i])
         {
-            free((*array)[i]);
+            free(arr[i]);
             i++;
         }
-        free(*array);
+        free(arr);
         *array = NULL;
     }
 }
