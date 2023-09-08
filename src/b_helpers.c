@@ -1,11 +1,11 @@
 # include "minishell.h"
 
 
-void ft_is_builtin()
+int ft_is_builtin(char *str)
 {
 	int	size;
 
-	char *test = "echo";
+	// char *test = "echo";
 	const char* b_in[] =
 	{
 		"echo",
@@ -20,19 +20,24 @@ void ft_is_builtin()
 	size = sizeof(b_in) / sizeof(b_in[0]);
 	while(size--)
 	{
-		if (!ft_strcmp(b_in[size], test))
-			printf("%s is builtin \n",test);
-
+		if (!ft_strcmp(b_in[size], str))
+		{
+			// printf("%s is builtin \n",str);
+			return(1);
+		}
 	}
+	return(0);
 }
 
 // void ft_find_right_path(t_list **t_cmd_node)
-void ft_find_right_path()
+char *ft_find_right_path(char *cmd)
 {
 	int	i;
 	int total;
+	char *tmp1;
+	char *tmp2;
 
-	char *cmd = "ls";
+	// char *cmd = "ls";
 
 	const char* arr[] =
 	{
@@ -53,13 +58,29 @@ void ft_find_right_path()
 
 	while(total--)
 	{
-		if (access(ft_strjoin(ft_strjoin(arr[total],"/"), cmd), X_OK) == 0)
-			printf("%s is accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
-		else
-			printf("%s is not accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
-		// total--;
+		tmp1 = ft_strjoin(arr[total],"/");
+		tmp2 = ft_strjoin(tmp1, cmd);
+		free(tmp1);
 
+		if (access(tmp2, X_OK) == 0)
+		{
+			// free(tmp1);
+			// free(tmp2);
+			// ft_array_free(arr);
+			//printf("%s is accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
+			return(tmp2);
+		}
+		else
+		{
+			// free(tmp1);
+			// free(tmp2);
+		//	printf("%s is not accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
+		}
+		// total--;
+		// free(tmp1);
+		free(tmp2);
 	}
+
 	// if (access("/usr/local/munki/ls", X_OK) == 0)
 	// 	printf("good path");
 	// const char* executable = "/usr/local/munki";
@@ -70,6 +91,8 @@ void ft_find_right_path()
 	// } else {
 	//     printf("%s is not accessible\n", executable);
 	// }
+
+	return(0);
 }
 
 // int main()

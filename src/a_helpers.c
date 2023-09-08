@@ -43,11 +43,11 @@ void	*ft_calloc(size_t count, size_t size)
 int	ft_array_len(char **array)
 {
 	int	i;
-	
+
 	i = 0;
 	while (array && array[i])
 		i++;
-    return (i);
+	return (i);
 }
 
 void	ft_print_array(char **array)
@@ -64,26 +64,26 @@ void	ft_print_array(char **array)
 void ft_array_free(char ***array)
 {
 	char **arr = *array;
-    int i = 0;
+	int i = 0;
 
-    if (arr)
-    {
-        while (arr[i])
-        {
-            free(arr[i]);
-            i++;
-        }
-        free(arr);
-        *array = NULL;
-    }
+	if (arr)
+	{
+		while (arr[i])
+		{
+			free(arr[i]);
+			i++;
+		}
+		free(arr);
+		*array = NULL;
+	}
 }
 
 char	**ft_array_replace_in(char ***array, char **subarray, int n)
 {
 	char	**tmp_array;
 	int     i;
-    int     j;
-    int     k;
+	int     j;
+	int     k;
 
 	i = -1;
 	j = -1;
@@ -91,8 +91,8 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 	if (!array || !*array || n < 0 || n >= ft_array_len(*array))
 		return (NULL);
 	tmp_array = ft_calloc(ft_array_len(*array) + ft_array_len(subarray) + 1, sizeof(char *));
-    if (!tmp_array)
-        return (NULL);
+	if (!tmp_array)
+		return (NULL);
 	while ((*array)[++i])
 	{
 		if (i != n)
@@ -103,7 +103,7 @@ char	**ft_array_replace_in(char ***array, char **subarray, int n)
 				tmp_array[++k] = ft_strdup(subarray[j]);
 		}
 	}
-    tmp_array[++k] = NULL;
+	tmp_array[++k] = NULL;
 	ft_array_free(array);
 	*array = tmp_array;
 	return (*array);

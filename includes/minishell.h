@@ -83,8 +83,10 @@ void		free_cmd_content(void *content);
 void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 
 // lexer
-int		ft_count_words(char *str);
-char	**ft_create_array(char *str, int wordcount);
+static int	ft_count_words(char *str);
+static char	**ft_create_array(char *str, int wordcount);
+char **ft_split_cmds(char *s);
+char	**ft_subsplit(char **array, char *set, int i);
 
 // Create command list
 t_cmdlist	*create_cmd_list(char **args, int i);
@@ -108,5 +110,8 @@ t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
 void	ft_cd(t_list **env, char *name, char *content, int is_env);
+int 	ft_is_builtin();
+char 	*ft_find_right_path(char *cmd);
+
 
 #endif
