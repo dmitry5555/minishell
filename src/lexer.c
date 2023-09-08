@@ -4,7 +4,7 @@
 // 1. split and remove whitespace
 // *count words*
 
-int	ft_count_words(char *str)
+static int	ft_count_words(char *str)
 {
 	int	wordcount = 0;
 	int	start = 0;
@@ -79,7 +79,7 @@ int	ft_count_words(char *str)
 }
 
 
-char	**ft_create_array(char *str, int wordcount)
+static char	**ft_create_array(char *str, int wordcount)
 {
 	char **array;
 	int	start = 0;
@@ -169,20 +169,20 @@ char **ft_split_cmds(char *s)
 	return (array);
 }
 
-void	check_args(char *out)
-{
-	char **args;
-	if (!out)
-	{
-		printf("exit\n");
-		return ;
-	}
-	if (out[0] != '\0')
-		add_history(out);
-	args = ft_split_cmds(out);
-	ft_print_array(args);
-	free(out);
-}
+// void	check_args(char *input)
+// {
+// 	char **args;
+// 	if (!input)
+// 	{
+// 		printf("exit\n");
+// 		return ;
+// 	}
+// 	if (input[0] != '\0')
+// 		add_history(input);
+// 	args = ft_split_cmds(input);
+// 	ft_print_array(args);
+// 	free(input);
+// }
 
 // 2. create tokens
 
