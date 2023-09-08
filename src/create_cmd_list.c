@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/08 12:08:18 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 17:00:50 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ t_cmd_node	*fill_content(t_cmd_node *node, char **args, char **trim_args, int *i
             node = get_infile(node, trim_args, i);
         else if (args[*i][0] != '|')
 		{
-			printf("add node->cmd[%i]\n", *i);
+			//printf("add node->cmd[%i]\n", *i);
             node->cmd = ft_array_extend(node->cmd, trim_args[*i]);
-			printf("finished add node->cmd[%i]\n", *i);
+			//printf("finished add node->cmd[%i]\n", *i);
 		}
         else
         {
@@ -103,21 +103,24 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 	trimmed_args = get_trimmed(args);
 	while (args[++i])
 	{
-		printf("args[%d] = %s\n", i, args[i]);
+		//printf("args[%d] = %s\n", i, args[i]);
 		current_cmd = ft_cmdlstlast(cmds);
 		if (i == 0 || (args[i][0] == '|' && args[i + 1] && args[i + 1][0]))
 		{
 			if (args[i][0] == '|')
-				i += 1;
-			printf("add new node\n");
+				i++;
+			//printf("add new node\n");
 			ft_cmdlstadd_back(&cmds, ft_cmdlstnew(init_cmd_node()));
 			current_cmd = ft_cmdlstlast(cmds);
 		}
-		printf("FILLING NODE\n");
+		//printf("FILLING NODE\n");
 		temp_args = args;
 		current_cmd->content = fill_content(current_cmd->content, temp_args, trimmed_args, &i);
-		// if (i < 0)
-		// 	return (fill_cmdlst_error(cmds, args, temp_args));
+		 if (i < 0)
+		 {
+		 	//printf("ERROR!\n");
+		 	return (fill_cmdlst_error(cmds, args, temp_args));
+		 }
 		if (!args[i])
 			break ;
 	}
@@ -128,11 +131,13 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 
 // int main()
 // {
-//     char **array = malloc(sizeof(char *) * 4);
+//     char **array = malloc(sizeof(char *) * 6);
 //     array[0] = strdup("echo");
-//     array[1] = strdup("|");
-//     array[2] = strdup("grep");
-//     array[3] = NULL;
+// 	array[1] = strdup("string1");
+//     array[2] = strdup("|");
+//     array[3] = strdup("grep");
+// 	array[4] = strdup("string2");
+//     array[5] = NULL;
 
 //     // Create a command list from the array
 // 	t_cmdlist *cmdlist;
