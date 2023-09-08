@@ -55,3 +55,47 @@ void	exec_cmd(char **args, int input_fd, int output_fd)
 
 // }
 
+
+// int main()
+// {
+//     char **array = malloc(sizeof(char *) * 4);
+//     array[0] = strdup("echo");
+//     array[1] = strdup("|");
+//     array[2] = strdup("grep");
+//     array[3] = NULL;
+
+//     // Create a command list from the array
+// 	t_cmdlist *cmdlist;
+
+// 	cmdlist = NULL;
+// 	cmdlist = create_cmd_list(array, -1);
+
+//     //Check if the command list was created successfully
+//     if (cmdlist != NULL)
+// 	{
+//         // Traverse the command list and print the commands
+//         t_cmdlist *current = cmdlist;
+//         while (current != NULL) {
+//             t_cmd_node *node = (t_cmd_node *)current->content;
+//             //printf("Command: ");
+//             for (int i = 0; node->cmd[i] != NULL; i++) {
+//                 printf("cmd[%d] = %s ", i, node->cmd[i]);
+//             }
+//             printf("\n");
+//             printf("Input File: %d\n", node->in);
+//             printf("Output File: %d\n", node->out);
+//             printf("---------\n");
+
+//             current = current->next;
+//         }
+
+//         // Free the memory allocated for the command list
+//         ft_cmdlstclear(&cmdlist, free_cmd_content);
+//     }
+// 	else
+// 	{
+//         printf("Failed to create the command list.\n");
+//     }
+
+//     return 0;
+// }

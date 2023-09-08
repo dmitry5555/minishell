@@ -86,6 +86,9 @@ void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 int		ft_count_words(char *str);
 char	**ft_create_array(char *str, int wordcount);
 
+// Create command list
+t_cmdlist	*create_cmd_list(char **args, int i);
+
 // exec
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	handle_esc(char *str);
