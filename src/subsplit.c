@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/08 16:46:34 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/08 20:22:25 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,11 @@ char	**ft_subsplit(char **array, char *set, int i)
 				//print_array(subarray);
 				array = ft_array_replace_in(&array, subarray, i);
 				//print_array(array);
+				ft_array_free(&subarray);
 			}
 		}
 	}
-	ft_array_free(&subarray);
+	//ft_array_free(&subarray);
 	return (array);
 }
 
@@ -142,7 +143,8 @@ char	**ft_subsplit(char **array, char *set, int i)
 //     array[2] = strdup("str<ing|>Makefile");
 //     array[3] = NULL;
 
-// 	print_array(array);
+// 	ft_print_array(array);
 // 	array = ft_subsplit(array, "<|>", -1);
-// 	print_array(array);
+// 	ft_print_array(array);
+// 	ft_array_free(&array);
 // }
