@@ -6,7 +6,7 @@
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 15:14:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/07 18:23:42 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 12:02:35 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	free_cmd_content(void *content)
 	t_cmd_node	*node;
 
 	node = content;
-	ft_array_free(node->cmd);
+	ft_array_free(&node->cmd);
 	free(node->path);
 	if (node->in != STDIN_FILENO)
 		close(node->in);

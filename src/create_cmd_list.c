@@ -6,7 +6,7 @@
 /*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/08 11:55:08 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 12:08:18 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 // {
 //     char **array = malloc(sizeof(char *) * 4);
 //     array[0] = strdup("echo");
-//     array[1] = strdup(">");
-//     array[2] = strdup("6");
+//     array[1] = strdup("|");
+//     array[2] = strdup("grep");
 //     array[3] = NULL;
 	
 //     // Create a command list from the array
@@ -168,7 +168,7 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 //         }
 
 //         // Free the memory allocated for the command list
-//         //ft_cmdlstclear(&cmdlist, free_cmd_content);
+//         ft_cmdlstclear(&cmdlist, free_cmd_content);
 //     } 
 // 	else 
 // 	{
