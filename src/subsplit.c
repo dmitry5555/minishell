@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subsplit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/04 16:43:55 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/09/08 13:50:01 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	**ft_subsplit(char **array, char *set, int i)
 			}
 		}
 	}
-	ft_array_free(subarray);
+	ft_array_free(&subarray);
 	return (array);
 }
 
