@@ -31,69 +31,103 @@ int ft_is_builtin(char *str)
 
 // void ft_find_right_path(t_list **t_cmd_node)
 
-char *ft_find_right_path(char *cmd)
+// loop throuh working paths ftom ENV and test if cmd can run
+// if ok writes new path to node->path
+
+void ft_find_right_paths(t_cmdlist *cmd_list)
 {
-	int	i;
-	int total;
-	char *tmp1;
-	char *tmp2;
+    t_cmdlist *current = cmd_list;
 
-	// char *cmd = "ls";
+    while (current)
+    {
+        t_cmd_node *node = (t_cmd_node *)current->content;
 
-	const char* arr[] =
-	{
-		"/usr/local/bin",
-		"/usr/bin",
-		"/bin",
-		"/usr/sbin",
-		"/sbin",
-		"/usr/local/munki"
-	};
+        int flag = 0;
+        char *cmd = node->cmd[0];
 
-	total = sizeof(arr) / sizeof(arr[0]);
+        const char* arr[] =
+        {
+            "/usr/local/bin",
+            "/usr/bin",
+            "/bin",
+            "/usr/sbin",
+            "/sbin",
+            "/usr/local/munki"
+        };
 
-	// split PATH string to arr using ft_sub_create_array
-	// check each PATH - array element with access
+        int total = sizeof(arr) / sizeof(arr[0]);
 
-	while(total--)
-	{
-		tmp1 = ft_strjoin(arr[total],"/");
-		tmp2 = ft_strjoin(tmp1, cmd);
-		// free(tmp1);
+        while (total--)
+        {
+            char *tmp1 = ft_strjoin(arr[total], "/");
+            char *tmp2 = ft_strjoin(tmp1, cmd);
 
-		if (access(tmp2, X_OK) == 0)
-		{
-			// free(tmp1);
-			// free(tmp2);
-			// ft_array_free(arr);
-			printf("FT_FIND_RIGHT_PATH @ b_helpers.c: \n	path %s is accessible %s \n\n", arr[total], tmp2);
-			//printf("%s is accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
-			// return(tmp2);
-		}
-		else
-		{
-			// free(tmp1);
-			// free(tmp2);
-		//	printf("%s is not accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
-		}
-		// total--;
-		free(tmp1);
-		free(tmp2);
-	}
+            if (access(tmp2, X_OK) == 0)
+            {
+                // Free the old path string
+                free(node->path);
 
-	// if (access("/usr/local/munki/ls", X_OK) == 0)
-	// 	printf("good path");
-	// const char* executable = "/usr/local/munki";
+                // Allocate memory for the new path and copy it
+                node->path = strdup(tmp2);
 
-	// Check if the executable can be accessed
-	// if (access(executable, X_OK) == 0) {
-	//     printf("%s is accessible\n", executable);
-	// } else {
-	//     printf("%s is not accessible\n", executable);
-	// }
+                printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
+                printf("Testing path - [%s]\n", tmp2);
+                printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
+                flag = 1;
+            }
 
-	return(0);
+            free(tmp1);
+            free(tmp2);
+
+            if (flag)
+                break;
+        }
+
+        current = current->next;
+    }
 }
+
+
+
+// int ft_find_right_path(char *cmd, char *path)
+// {
+// 	int	flag;
+// 	int total;
+// 	char *tmp1;
+// 	char *tmp2;
+
+// 	// char *cmd = "ls";
+
+// 	const char* arr[] =
+// 	{
+// 		"/usr/local/bin",
+// 		"/usr/bin",
+// 		"/bin",
+// 		"/usr/sbin",
+// 		"/sbin",
+// 		"/usr/local/munki"
+// 	};
+
+// 	total = sizeof(arr) / sizeof(arr[0]);
+
+// 	flag = 0;
+// 	while(total--)
+// 	{
+// 		tmp1 = ft_strjoin(arr[total],"/");
+// 		tmp2 = ft_strjoin(tmp1, cmd);
+// 		if (access(tmp2, X_OK) == 0)
+// 		{
+// 			path = tmp2;
+// 			printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c \n	testing path - [%s] \n\n", path);
+// 			printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c \n	path [%s] is accessible. new path for this node is [%s] \n\n", arr[total], tmp2);
+// 			flag = 1;
+// 		}
+// 		free(tmp1);
+// 		free(tmp2);
+// 	}
+// 	return(flag);
+// }
+
 
 // int main()
 // {

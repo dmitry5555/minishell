@@ -1,22 +1,5 @@
 # include "minishell.h"
 
-char *get_content_by_name(t_list *head, const char *name)
-{
-	t_list *current = head;
-	while (current != NULL)
-	{
-		if (strcmp(current->name, name) == 0)
-		{
-			return current->content;
-		}
-		current = current->next;
-	}
-
-	// Node with the specified name not found
-	return NULL;
-}
-
-
 
 // int main()
 // {
@@ -32,7 +15,7 @@ char *get_content_by_name(t_list *head, const char *name)
 // 	// we have ARR with every path
 // 	arr_paths = split_string(env_paths, ":");
 
-
+// 	// array of commands for cmd_list, will be in s_cmdlist
 // 	char **arr_cmd = malloc(sizeof(char *) * 7);
 // 	arr_cmd[0] = strdup("ls");
 // 	arr_cmd[1] = strdup("-la");
@@ -41,14 +24,13 @@ char *get_content_by_name(t_list *head, const char *name)
 // 	arr_cmd[4] = strdup("grep");
 // 	arr_cmd[5] = strdup("cd");
 // 	arr_cmd[6] = NULL;
-
 // 	cmd_list = create_cmd_list(arr_cmd, -1);
 
 // 	if (cmd_list)
 // 	{
 // 		// Traverse the command list and print the commands
 // 		t_cmdlist *current;
-// 		int i = 0;
+// 		int i;
 // 		current = cmd_list;
 
 // 		while (current)
@@ -62,18 +44,16 @@ char *get_content_by_name(t_list *head, const char *name)
 // 				// tmp1 = ft_strdup( ft_find_right_path(node->cmd[i]));
 
 // 				if (ft_is_builtin(node->cmd[i]))
-// 					printf("MAIN @ test.c \n	[%s]is builtin, can run \n\n", node->cmd[i]);
-
-// 				if (ft_find_right_path(node->cmd[i]))
 // 				{
-// 					printf("right path for [%s] is: %s \n", node->cmd[i], ft_find_right_path(node->cmd[i]));
-// 					node->path = ft_find_right_path(node->cmd[i]);
-
-// 					// free(tmp1);
-
-// 					printf("right path for [%s] is: %s \n", node->cmd[i], node->path);
-// 					// exec_cmd(node->cmd, 0, 1);
+// 					printf("🟢 MAIN @ test.c \n	[%s]is builtin, can run \n\n", node->cmd[i]);
+// 					exec_cmd(node->cmd, 0, 1);
 // 				}
+// 				else if (ft_find_right_path(node->cmd[i], node->path))
+// 				{
+// 					printf("❌ MAIN @ test.c \n	exit in return 1 \n\n");
+// 					// return(0);
+// 				}
+// 				exec_cmd(node->cmd, 0, 1);
 
 // 				i++;
 // 			}

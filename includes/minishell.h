@@ -75,6 +75,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstlast(t_list *lst);
 void	ft_free_list(t_list *list);
 void	ft_cleanup(t_list **env);
+char	*get_content_by_name(t_list *head, const char *name);
 
 // Command List
 t_cmd_node	*init_cmd_node(void);
@@ -113,7 +114,7 @@ int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
 void	ft_cd(t_list **env, char *name, char *content, int is_env);
 int 	ft_is_builtin();
-char 	*ft_find_right_path(char *cmd);
+void 	ft_find_right_paths(t_cmdlist *cmd_list);
 
 
 #endif

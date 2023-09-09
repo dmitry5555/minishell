@@ -227,3 +227,19 @@ t_list	*ft_lstlast(t_list *lst)
 // 	return (new_list);
 // }
 
+
+char *get_content_by_name(t_list *head, const char *name)
+{
+	t_list *current = head;
+	while (current != NULL)
+	{
+		if (strcmp(current->name, name) == 0)
+		{
+			return current->content;
+		}
+		current = current->next;
+	}
+
+	// Node with the specified name not found
+	return NULL;
+}
