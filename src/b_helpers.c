@@ -30,6 +30,7 @@ int ft_is_builtin(char *str)
 }
 
 // void ft_find_right_path(t_list **t_cmd_node)
+
 char *ft_find_right_path(char *cmd)
 {
 	int	i;
@@ -65,6 +66,7 @@ char *ft_find_right_path(char *cmd)
 			// free(tmp1);
 			// free(tmp2);
 			// ft_array_free(arr);
+			printf("FT_FIND_RIGHT_PATH @ b_helpers.c: \n	path %s is accessible %s \n\n", arr[total], tmp2);
 			//printf("%s is accessible \n", ft_strjoin(ft_strjoin(arr[total],"/"), cmd));
 			// return(tmp2);
 		}
