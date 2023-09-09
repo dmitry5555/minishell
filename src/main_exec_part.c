@@ -24,95 +24,99 @@ void print_cmd_list(t_cmdlist *cmd_list) {
 
 
 
-int main()
-{
-	t_list		*env;
-	t_cmdlist 	*cmd_list;
-	char		*env_paths;
-	char		**arr_paths;
+// int main()
+// {
+// 	t_list		*env;
+// 	t_cmdlist 	*cmd_list;
+// 	char		*env_paths;
+// 	char		**arr_paths;
 
-	// read currenv ENV, find 'PATH' content
-	env = ft_env();
-	env_paths = get_content_by_name(env, "PATH");
+// 	// read currenv ENV, find 'PATH' content
+// 	env = ft_env();
+// 	env_paths = get_content_by_name(env, "PATH");
 
-	// we have ARR with every path
-	arr_paths = split_string(env_paths, ":");
+// 	// we have ARR with every path
+// 	arr_paths = split_string(env_paths, ":");
 
-	// array of commands for cmd_list, will be in s_cmdlist
-	char **arr_cmd = malloc(sizeof(char *) * 7);
+// 	// array of commands for cmd_list, will be in s_cmdlist
+// 	char **arr_cmd = malloc(sizeof(char *) * 7);
 
-	arr_cmd[0] = strdup("ls");
-	arr_cmd[1] = strdup("cd");
-	arr_cmd[2] = strdup("tree");
-	arr_cmd[3] = strdup("cat");
-	arr_cmd[4] = strdup("grep");
-	arr_cmd[5] = strdup("ls");
-	arr_cmd[6] = NULL;
+// 	arr_cmd[0] = strdup("ls");
+// 	arr_cmd[1] = strdup("cd");
+// 	arr_cmd[2] = strdup("tree");
+// 	arr_cmd[3] = strdup("cat");
+// 	arr_cmd[4] = strdup("grep");
+// 	arr_cmd[5] = strdup("ls");
+// 	arr_cmd[6] = NULL;
 
-	cmd_list = create_cmd_list(arr_cmd, -1);
+// 	cmd_list = create_cmd_list(arr_cmd, -1);
 
-	print_cmd_list(cmd_list);
+// 	print_cmd_list(cmd_list);
 
-	// ft_find_right_paths(cmd_list);
+// 	// ft_find_right_paths(cmd_list);
 
-	// if (cmd_list)
-	// {
-	// 	t_cmdlist *current;
-	// 	int i;
-	// 	current = cmd_list;
+// 	// if (cmd_list)
+// 	// {
+// 	// 	t_cmdlist *current;
+// 	// 	int i;
+// 	// 	current = cmd_list;
 
-	// 	while (current)
-	// 	{
-	// 		t_cmd_node *node = (t_cmd_node *)current->content;
-	// 		// char *tmp1;
+// 	// 	while (current)
+// 	// 	{
+// 	// 		t_cmd_node *node = (t_cmd_node *)current->content;
+// 	// 		// char *tmp1;
 
-	// 		// i = 0;
-	// 		// while (node->cmd[i])
-	// 		// {
-	// 			// tmp1 = ft_strdup( ft_find_right_path(node->cmd[i]));
-	// 			if (ft_is_builtin(node->cmd[0]))
-	// 			{
-	// 				printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
-	// 				exec_cmd(node->cmd, 0, 1);
-	// 			}
-	// 			else if (node->path)
-	// 			{
-	// 				printf("🟢 MAIN @ test.c \n	starting cmd [%s] \n\n", node->path);
-	// 				exec_cmd(node->cmd, 0, 1);
-	// 			}
-	// 			else
-	// 			{
-	// 				printf("🟢 MAIN @ test.c \n	not correct cmd [%s] \n\n", node->cmd[i]);
-	// 			}
-	// 		// 	i++;
-	// 		// }
+// 	// 		// i = 0;
+// 	// 		// while (node->cmd[i])
+// 	// 		// {
+// 	// 			// tmp1 = ft_strdup( ft_find_right_path(node->cmd[i]));
+// 	// 			if (ft_is_builtin(node->cmd[0]))
+// 	// 			{
+// 	// 				printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
+// 	// 				exec_cmd(node->cmd, 0, 1);
+// 	// 			}
+// 	// 			else if (node->path)
+// 	// 			{
+// 	// 				printf("🟢 MAIN @ test.c \n	starting cmd [%s] \n\n", node->path);
+// 	// 				exec_cmd(node->cmd, 0, 1);
+// 	// 			}
+// 	// 			else
+// 	// 			{
+// 	// 				printf("🟢 MAIN @ test.c \n	not correct cmd [%s] \n\n", node->cmd[i]);
+// 	// 			}
+// 	// 		// 	i++;
+// 	// 		// }
 
-	// 			// if (ft_is_builtin(node->cmd[i]))
-	// 			// {
-	// 			// 	printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
-	// 			// 	exec_cmd(node->cmd, 0, 1);
-	// 			// }
-	// 			// // if have path = cmd is correct
-	// 			// else if ()
-	// 			// {
-	// 			// 	printf("🟢 MAIN @ test.c \n	startin cmd from ft_find_right_path [%s] \n\n", node->cmd[i]);
-	// 			// 	// return(0);
-	// 			// }
+// 	// 			// if (ft_is_builtin(node->cmd[i]))
+// 	// 			// {
+// 	// 			// 	printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
+// 	// 			// 	exec_cmd(node->cmd, 0, 1);
+// 	// 			// }
+// 	// 			// // if have path = cmd is correct
+// 	// 			// else if ()
+// 	// 			// {
+// 	// 			// 	printf("🟢 MAIN @ test.c \n	startin cmd from ft_find_right_path [%s] \n\n", node->cmd[i]);
+// 	// 			// 	// return(0);
+// 	// 			// }
 
-	// 			current = current->next;
-	// 	}
-	// }
+// 	// 			current = current->next;
+// 	// 	}
+// 	// }
 
-		// Free the memory allocated for the command list
+// 		// Free the memory allocated for the command list
 
-	ft_free_list(env);
-	ft_free_arr(arr_paths);
-	// ft_array_free(arr_cmd);
-	ft_cmdlstclear(&cmd_list, free_cmd_content);
+// 	ft_free_list(env);
+// 	ft_free_arr(arr_paths);
+// 	// ft_array_free(arr_cmd);
+// 	ft_cmdlstclear(&cmd_list, free_cmd_content);
 
 
-}
+// }
 
+
+
+
+// OLD MAIN
 
 // int main()
 // {
