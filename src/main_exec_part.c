@@ -1,25 +1,25 @@
 
 # include "minishell.h"
 
-void print_cmd_list(t_cmdlist *cmd_list) {
-    t_cmdlist *current = cmd_list;
-    int index = 0;
+// void print_cmd_list(t_cmdlist *cmd_list) {
+//     t_cmdlist *current = cmd_list;
+//     int index = 0;
 
-    while (current) {
-        t_cmd_node *node = (t_cmd_node *)current->content;
+//     while (current) {
+//         t_cmd_node *node = (t_cmd_node *)current->content;
 
-        printf("Command %d:\n", index);
-        printf("Path: %s\n", node->path);
+//         printf("Command %d:\n", index);
+//         printf("Path: %s\n", node->path);
 
-        printf("Arguments:\n");
-        for (int i = 0; node->cmd[i] != NULL; i++) {
-            printf("  %d: %s\n", i, node->cmd[i]);
-        }
+//         printf("Arguments:\n");
+//         for (int i = 0; node->cmd[i] != NULL; i++) {
+//             printf("  %d: %s\n", i, node->cmd[i]);
+//         }
 
-        current = current->next;
-        index++;
-    }
-}
+//         current = current->next;
+//         index++;
+//     }
+// }
 
 
 
@@ -27,88 +27,117 @@ void print_cmd_list(t_cmdlist *cmd_list) {
 // int main()
 // {
 // 	t_list		*env;
-// 	t_cmdlist 	*cmd_list;
+// 	t_cmdlist 	*cmdlist;
 // 	char		*env_paths;
 // 	char		**arr_paths;
 
 // 	// read currenv ENV, find 'PATH' content
 // 	env = ft_env();
+// 	// find node "PATH"
 // 	env_paths = get_content_by_name(env, "PATH");
 
 // 	// we have ARR with every path
 // 	arr_paths = split_string(env_paths, ":");
 
 // 	// array of commands for cmd_list, will be in s_cmdlist
-// 	char **arr_cmd = malloc(sizeof(char *) * 7);
+// 	char **arr_cmd = malloc(sizeof(char *) * 8);
 
 // 	arr_cmd[0] = strdup("ls");
-// 	arr_cmd[1] = strdup("cd");
+// 	arr_cmd[1] = strdup("|");
 // 	arr_cmd[2] = strdup("tree");
-// 	arr_cmd[3] = strdup("cat");
-// 	arr_cmd[4] = strdup("grep");
-// 	arr_cmd[5] = strdup("ls");
-// 	arr_cmd[6] = NULL;
+// 	arr_cmd[3] = strdup("|");
+// 	arr_cmd[4] = strdup("echo");
+// 	arr_cmd[5] = strdup("-n");
+// 	arr_cmd[6] = strdup("this is a str");
+// 	arr_cmd[7] = NULL;
 
-// 	cmd_list = create_cmd_list(arr_cmd, -1);
+// 	cmdlist = create_cmd_list(arr_cmd, -1);
 
-// 	print_cmd_list(cmd_list);
+// 	// print_cmd_list(cmd_list);
 
-// 	// ft_find_right_paths(cmd_list);
-
-// 	// if (cmd_list)
+//     // if (cmdlist != NULL)
 // 	// {
-// 	// 	t_cmdlist *current;
-// 	// 	int i;
-// 	// 	current = cmd_list;
+//     //     // Traverse the command list and print the commands
+//     //     t_cmdlist *current = cmdlist;
+//     //     while (current != NULL) {
+//     //         t_cmd_node *node = (t_cmd_node *)current->content;
+//     //         //printf("Command: ");
+//     //         for (int i = 0; node->cmd[i] != NULL; i++) {
+//     //             printf("cmd[%d] = %s ", i, node->cmd[i]);
+//     //         }
+//     //         printf("\n");
+//     //         printf("Input File: %d\n", node->in);
+//     //         printf("Output File: %d\n", node->out);
+//     //         printf("---------\n");
 
-// 	// 	while (current)
-// 	// 	{
-// 	// 		t_cmd_node *node = (t_cmd_node *)current->content;
-// 	// 		// char *tmp1;
+//     //         current = current->next;
+//     //     }
 
-// 	// 		// i = 0;
-// 	// 		// while (node->cmd[i])
-// 	// 		// {
-// 	// 			// tmp1 = ft_strdup( ft_find_right_path(node->cmd[i]));
-// 	// 			if (ft_is_builtin(node->cmd[0]))
-// 	// 			{
-// 	// 				printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
-// 	// 				exec_cmd(node->cmd, 0, 1);
-// 	// 			}
-// 	// 			else if (node->path)
-// 	// 			{
-// 	// 				printf("🟢 MAIN @ test.c \n	starting cmd [%s] \n\n", node->path);
-// 	// 				exec_cmd(node->cmd, 0, 1);
-// 	// 			}
-// 	// 			else
-// 	// 			{
-// 	// 				printf("🟢 MAIN @ test.c \n	not correct cmd [%s] \n\n", node->cmd[i]);
-// 	// 			}
-// 	// 		// 	i++;
-// 	// 		// }
+//     //     // Free the memory allocated for the command list
+//     //     ft_cmdlstclear(&cmdlist, free_cmd_content);
+//     // }
+// 	// else
+// 	// {
+//     //     printf("Failed to create the command list.\n");
+//     // }
 
-// 	// 			// if (ft_is_builtin(node->cmd[i]))
-// 	// 			// {
-// 	// 			// 	printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
-// 	// 			// 	exec_cmd(node->cmd, 0, 1);
-// 	// 			// }
-// 	// 			// // if have path = cmd is correct
-// 	// 			// else if ()
-// 	// 			// {
-// 	// 			// 	printf("🟢 MAIN @ test.c \n	startin cmd from ft_find_right_path [%s] \n\n", node->cmd[i]);
-// 	// 			// 	// return(0);
-// 	// 			// }
 
-// 	// 			current = current->next;
-// 	// 	}
-// 	// }
+// 	ft_find_right_paths(cmdlist);
+
+// 	if (cmdlist)
+// 	{
+// 		t_cmdlist *current;
+// 		int i;
+// 		current = cmdlist;
+
+// 		while (current)
+// 		{
+// 			t_cmd_node *node = (t_cmd_node *)current->content;
+// 			// char *tmp1;
+
+// 			// i = 0;
+// 			// while (node->cmd[i])
+// 			// {
+// 				// tmp1 = ft_strdup( ft_find_right_path(node->cmd[i]));
+// 				if (ft_is_builtin(node->cmd[0]))
+// 				{
+// 					printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[0]);
+// 					exec_cmd(node->cmd, 0, 1);
+// 				}
+// 				else if (node->path)
+// 				{
+// 					printf("🟢 MAIN @ test.c \n	starting cmd [%s] \n\n", node->path);
+// 					exec_cmd(node->cmd, 0, 1);
+// 				}
+// 				else
+// 				{
+// 					printf("🔴 MAIN @ test.c \n	not correct cmd [%s] \n\n", node->cmd[0]);
+// 				}
+// 			// 	i++;
+// 			// }
+
+// 				// if (ft_is_builtin(node->cmd[i]))
+// 				// {
+// 				// 	printf("🟢 MAIN @ test.c \n	starting builtin [%s] \n\n", node->cmd[i]);
+// 				// 	exec_cmd(node->cmd, 0, 1);
+// 				// }
+// 				// // if have path = cmd is correct
+// 				// else if ()
+// 				// {
+// 				// 	printf("🟢 MAIN @ test.c \n	startin cmd from ft_find_right_path [%s] \n\n", node->cmd[i]);
+// 				// 	// return(0);
+// 				// }
+
+// 				current = current->next;
+// 		}
+// 	}
 
 // 		// Free the memory allocated for the command list
 
 // 	ft_free_list(env);
 // 	ft_free_arr(arr_paths);
 // 	// ft_array_free(arr_cmd);
-// 	ft_cmdlstclear(&cmd_list, free_cmd_content);
+// 	ft_cmdlstclear(&cmdlist, free_cmd_content);
 
 
 // }
