@@ -36,55 +36,55 @@ int ft_is_builtin(char *str)
 
 void ft_find_right_paths(t_cmdlist *cmd_list)
 {
-    t_cmdlist *current = cmd_list;
+	t_cmdlist *current = cmd_list;
 
-    while (current)
-    {
-        t_cmd_node *node = (t_cmd_node *)current->content;
+	while (current)
+	{
+		t_cmd_node *node = (t_cmd_node *)current->content;
 
-        int flag = 0;
-        char *cmd = node->cmd[0];
+		int flag = 0;
+		char *cmd = node->cmd[0];
 
-        const char* arr[] =
-        {
-            "/usr/local/bin",
-            "/usr/bin",
-            "/bin",
-            "/usr/sbin",
-            "/sbin",
-            "/usr/local/munki"
-        };
+		const char* arr[] =
+		{
+			"/usr/local/bin",
+			"/usr/bin",
+			"/bin",
+			"/usr/sbin",
+			"/sbin",
+			"/usr/local/munki"
+		};
 
-        int total = sizeof(arr) / sizeof(arr[0]);
+		int total = sizeof(arr) / sizeof(arr[0]);
 
-        while (total--)
-        {
-            char *tmp1 = ft_strjoin(arr[total], "/");
-            char *tmp2 = ft_strjoin(tmp1, cmd);
+		while (total--)
+		{
+			char *tmp1 = ft_strjoin(arr[total], "/");
+			char *tmp2 = ft_strjoin(tmp1, cmd);
 
-            if (access(tmp2, X_OK) == 0)
-            {
-                // Free the old path string
-                free(node->path);
+			if (access(tmp2, X_OK) == 0)
+			{
+				// Free the old path string
+				free(node->path);
 
-                // Allocate memory for the new path and copy it
-                node->path = strdup(tmp2);
+				// Allocate memory for the new path and copy it
+				node->path = strdup(tmp2);
 
-                printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
-                printf("Testing path - [%s]\n", tmp2);
-                printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
-                flag = 1;
-            }
+				printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
+				printf("Testing path - [%s]\n", tmp2);
+				printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
+				flag = 1;
+			}
 
-            free(tmp1);
-            free(tmp2);
+			free(tmp1);
+			free(tmp2);
 
-            if (flag)
-                break;
-        }
+			if (flag)
+				break;
+		}
 
-        current = current->next;
-    }
+		current = current->next;
+	}
 }
 
 

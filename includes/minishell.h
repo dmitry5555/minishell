@@ -100,6 +100,7 @@ void	handle_esc(char *str);
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	ft_echo(char **args);
 int		ft_pwd(void);
+int		ft_test_pipes(t_cmdlist *cmd_list);
 
 // get fd
 t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
