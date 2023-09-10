@@ -2,6 +2,8 @@
 
 # include "minishell.h"
 
+
+// // run cmd or file => write to test2
 // int main() {
 // 	int pipefd[2];
 
@@ -44,8 +46,6 @@
 // 			perror("execve");
 
 // 			return EXIT_FAILURE;
-
-// 			// exit(EXIT_FAILURE);
 // 		}
 // 		else
 // 		{
@@ -78,6 +78,7 @@
 // }
 
 
+// //  read from file FD1 out to STDOUT
 // int main(int ac, char **av) {
 // 	int pipefd[2];
 // 	int fd1, fd2;
@@ -133,17 +134,18 @@
 // }
 
 
-
+// //  write from STDOUT_FILENO to fd2
 // int main(int ac, char **av) {
 // 	int pipefd[2];
-// 	// int fd1, fd2;
+// 	int fd1, fd2;
 // 	int pid;
 // 	// ssize_t bytes_read;
-// 	char *const ls_args[] = {"ls", "-l", "-a", NULL}; // Command and arguments for ls
+// 	// char *const ls_args[] = {"ls", "-l", "-a", NULL}; // Command and arguments for ls
+// 	char *const cmd_args[] = {"echo", "-n", "51111346", NULL}; // Command and arguments for ls
+// 	char *const full_path = "/bin/echo"; // Command and arguments for ls
 // 	char *const env[] = {NULL};
 
 // 	// char buffer[MAX_BUFFER_SIZE];
-
 // 	// fd1 = open("test1", O_RDONLY);
 // 	fd2 = open("test2", O_WRONLY | O_CREAT | O_TRUNC, 0666);
 
@@ -151,24 +153,25 @@
 // 	pid = fork();
 
 // 	if (pid == 0)
-// 	{    // child process
+// 	{	// child process
 // 		close(pipefd[0]); // Close unused read end of the pipe
 
-// 		// dup2(pipefd[1], STDOUT_FILENO);
+// 		dup2(fd2, STDOUT_FILENO);
 // 		// while ((bytes_read = read(fd1, buffer, sizeof(buffer))) > 0)
 // 		//     write(STDOUT_FILENO, buffer, bytes_read); // Write to the pipe
-// 		execve("/bin/ls", ls_args, env);
+// 		execve(full_path, cmd_args, env);
 // 		perror("execve");
+
 // 		close(pipefd[1]);
 // 		// close(fd1);
 // 		return EXIT_SUCCESS; // Return success to indicate child completion
 // 	}
-// 	else
-// 	{ // parent
-// 		close(pipefd[1]);
-// 		dup2(fd2, STDOUT_FILENO);
-// 		wait(NULL);
-// 	}
+// 	// else
+// 	// {
+// 	// 	close(pipefd[1]);
+// 	// 	dup2(fd2, STDOUT_FILENO);
+// 	// 	wait(NULL);
+// 	// }
 
 // 	close(pipefd[1]);
 // 	close(pipefd[0]);
