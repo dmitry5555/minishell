@@ -52,6 +52,7 @@ char	*ft_strndup(const char *s, size_t n);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 char 	**split_string(char *str, char *delimiter);
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 
 // Arrays
 void	ft_free_arr(char **arr);
