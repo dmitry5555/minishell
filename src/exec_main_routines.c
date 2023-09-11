@@ -227,7 +227,9 @@ int ft_test_pipes(t_cmdlist *cmd_list)
 					close(pipefd[0]); // Close unused read end of the pipe
 					// fd2 = open((int)node->out, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 					// fd2 = open(fd2, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+					printf("⚪️ ft_test_pipes \n	child process [%s] with fdin [%d] fdout [%d] \n\n", node->cmd[0], node->in, node->out);
 					dup2(fd2, STDOUT_FILENO);
+
 					// read from file
 					// while ((bytes_read = read(fd1, buffer, sizeof(buffer))) > 0)
 					// 	write(STDOUT_FILENO, buffer, bytes_read); // Write to the pipe

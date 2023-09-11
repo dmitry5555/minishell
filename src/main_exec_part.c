@@ -16,15 +16,16 @@
 // 		// we have ARR with every path
 // 	arr_paths = split_string(env_paths, ":");
 // 		// array of commands for cmd_list, will be in s_cmdlist
-// 	char **arr_cmd = malloc(sizeof(char *) * 6);
-// 	arr_cmd[0] = strdup("echo");
-// 	arr_cmd[1] = strdup("-n");
-// 	arr_cmd[2] = strdup("testing 123456789");
-// 	arr_cmd[3] = strdup(">");
-// 	arr_cmd[4] = strdup("file1");
-// 	// arr_cmd[5] = strdup("-n");
+// 	char **arr_cmd = malloc(sizeof(char *) * 5);
+// 	arr_cmd[0] = strdup("test1");
+// 	arr_cmd[1] = strdup("<");
+// 	arr_cmd[2] = strdup("123");
+// 	arr_cmd[3] = strdup("test1");
+// 	// arr_cmd[4] = strdup("123456789");
+// 	// arr_cmd[5] = strdup(">");
+// 	// arr_cmd[6] = strdup("file1");
 // 	// arr_cmd[6] = strdup("this is a str");
-// 	arr_cmd[5] = NULL;
+// 	arr_cmd[4] = NULL;
 
 // 	cmdlist = create_cmd_list(arr_cmd, -1);
 
@@ -54,7 +55,7 @@
 // 	ft_find_right_paths(cmdlist);
 // 	ft_test_pipes(cmdlist);
 
-// 	// run cmds
+// 	// //run cmds
 // 	// if (cmdlist)
 // 	// {
 // 	// 	t_cmdlist *current;

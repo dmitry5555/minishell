@@ -5,14 +5,14 @@ void	exec_cmd(char **args, int input_fd, int output_fd)
 	int pid;
 
 	pid = fork();
-	if (pid == 0)
+	if (pid == 0) // child process
 	{
-		if (input_fd != STDIN_FILENO)
+		if (input_fd != STDIN_FILENO) // if input was changed from default STDIN
 		{
 			dup2(input_fd, STDIN_FILENO);
 			close(input_fd);
 		}
-		if (output_fd !=STDOUT_FILENO)
+		if (output_fd !=STDOUT_FILENO) // if output was changed from default STDOUT
 		{
 			dup2(output_fd, STDOUT_FILENO);
 			close(output_fd);
@@ -21,7 +21,7 @@ void	exec_cmd(char **args, int input_fd, int output_fd)
 		perror("execvp");
 		exit(1);
 	}
-	else if (pid < 0)
+	else if (pid < 0) // parent process
 	{
 		perror("fork");
 		exit(1);
