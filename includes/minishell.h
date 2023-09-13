@@ -91,8 +91,8 @@ void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 // lexer
 static int	ft_count_words(char *str);
 static char	**ft_create_array(char *str, int wordcount);
-char **ft_split_cmds(char *s);
-char	**ft_subsplit(char **array, char *set, int i);
+char		**ft_split_cmds(char *s);
+char		**ft_subsplit(char **array, char *set, int i);
 
 // expansion
 char    *expand_home(char *str, t_list *envlist);
