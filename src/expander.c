@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/11 22:18:35 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/13 15:27:09 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,9 @@ char    *get_varname(char *str, int bgn, int *end)
     int tmp_end;
     
     tmp_end = bgn;
-    while (str[tmp_end] && str[tmp_end] != ' ' && str[bgn] && ft_isalnum(str[bgn]) || str[bgn] == '_')
+	if (str[tmp_end + 1] == '$' && !str[tmp_end + 1] || str[tmp_end + 1] == ' ')
+		return (ft_strdup("$$"));
+    while (str[tmp_end] && str[tmp_end] != ' ' && ft_isalnum(str[tmp_end]) || str[tmp_end] == '_')
         tmp_end++;
     *end = tmp_end;
     return (ft_strndup(&str[bgn], tmp_end - bgn));
@@ -229,11 +231,13 @@ char    *expand_vars(char *str, t_list *envlist)
     var_end = 0;
     while (str[++i])
     {
-        if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
+        if (str[i] == '$')
         {
             i++;
             varname = get_varname(str, i, &var_end);
             printf("varname = %s\n", varname);
+			if (strcmp(varname, "$$") == 0)
+				varvalue = "$";
             varvalue = get_content_by_name(envlist, varname);
             printf("varvalue = %s\n", varvalue);
             free(varname);
@@ -246,7 +250,7 @@ char    *expand_vars(char *str, t_list *envlist)
                     result = tmp_result;
                     printf("tmp result: %s\n", tmp_result);
                 }
-                i = var_end;
+                i = var_end - 1;
             }
             else
                 i++;
@@ -258,6 +262,7 @@ char    *expand_vars(char *str, t_list *envlist)
             result = ft_strjoin(result, tmp_char);
             free(tmp_char);
         }
+		printf("result = %s\n\n", result);
     }
     return (result);
 }
@@ -283,10 +288,12 @@ char    *expand_vars(char *str, t_list *envlist)
 // int main(void)
 // {
 
-//     char    *str = "hello $VARIABLE end of the string";
+//     char    *str = "hello $$ $USER end of the string";
 //     t_list  *envlist = ft_env();
 //     // char    *str = "$var1 string";
 //     // char    *str = "$var1 string";
 
-//     expand_vars(str, envlist);
+//     printf("str = %s\n", str);
+// 	str = expand_vars(str, envlist);
+// 	printf("str = %s\n", str);
 // }
