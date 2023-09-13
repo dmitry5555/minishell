@@ -143,9 +143,9 @@ static char	**ft_create_array(char *str, int wordcount)
 				flag_rd = 0;
 			}
 		}
-
 		i++;
 	}
+	array[j++] = NULL;
 	return (array);
 
 }
@@ -161,15 +161,15 @@ char **ft_split_cmds(char *s)
 	printf("wordcount: %d\n", nwords);
 	if (nwords == -1)
 		return (NULL);
-	array = malloc(sizeof(char *) * (nwords + 1));
-	if (!array)
-		return (NULL);
+	// array = malloc(sizeof(char *) * (nwords + 1));
+	// if (!array)
+	// 	return (NULL);
 	array = ft_create_array(s, nwords);
-	array[nwords] = NULL;
+	// array[nwords] = NULL;
 	return (array);
 }
 
-// void	check_args(char *input)
+// void	check_args1(char *input)
 // {
 // 	char **args;
 // 	if (!input)
@@ -182,6 +182,7 @@ char **ft_split_cmds(char *s)
 // 	args = ft_split_cmds(input);
 // 	ft_print_array(args);
 // 	free(input);
+// 	ft_array_free(&args);
 // }
 
 // 2. create tokens
@@ -205,11 +206,18 @@ char **ft_split_cmds(char *s)
 // 	while (1)
 // 	{
 // 		out = readline(prompt);
-// 		check_args(out);
+// 		check_args1(out);
 
 // 		// wordcount = ft_count_words(out);
 // 		// printf("wordcount = %d\\n", wordcount);
 // 		// array = ft_create_array(out, wordcount);
 // 		// print_array(array);
 // 	}
+// }
+
+// int	main(void)
+// {
+// 	char *str = "hello $USER";
+
+// 	check_args1(str);
 // }
