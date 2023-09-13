@@ -94,6 +94,10 @@ static char	**ft_create_array(char *str, int wordcount);
 char **ft_split_cmds(char *s);
 char	**ft_subsplit(char **array, char *set, int i);
 
+// expansion
+char    *expand_home(char *str, t_list *envlist);
+void    expand_all(char **args, t_list *envlist);
+
 // Create command list
 t_cmdlist	*create_cmd_list(char **args, int i);
 
