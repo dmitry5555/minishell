@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/13 18:06:45 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/13 21:49:02 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,17 @@ char    *expand_vars(char *str, t_list *envlist)
     var_end = 0;
     while (str[++i])
     {
-        printf("str[i] = %c\n", str[i]);
+        //printf("str[i] = %c\n", str[i]);
         if (str[i] == '$' && str[i + 1])
         {
             i++;
             varname = get_varname(str, i, &var_end);
-            printf("varname = [%s]\n", varname);
+            //printf("varname = [%s]\n", varname);
 			if (strcmp(varname, "$") == 0)
 				varvalue = "$";
             else
                 varvalue = get_value(varname, envlist);
-            printf("varvalue = [%s]\n", varvalue);
+            //printf("varvalue = [%s]\n", varvalue);
             if (varvalue != NULL)
             {
                 tmp_result = ft_strjoin(result, varvalue);
@@ -125,15 +125,34 @@ char    *expand_vars(char *str, t_list *envlist)
     return (result);
 }
 
-// void    expand_all(char **args, t_list envlist)
-// {
-//     while (args)
-//     {
-//         if (args[i][0] != '\'' && args[i][ft_strlen(args[i] - 1) != '\''])
-//             expand_vars(args[i]);
-        
-//     }
-// }
+void    expand_all(char **args, t_list *envlist)
+{
+    char    *temp;
+    char    *temp2;
+    int     i;
+
+    i = -1;
+    while (args && args[++i])
+    {
+        if (args[i][0] != '\'' && args[i][ft_strlen(args[i]) - 1] != '\'')
+        {
+            temp = expand_vars(args[i], envlist);
+            if (temp)
+            {
+                free(args[i]);
+                args[i] = temp;
+            }
+
+        }
+        if ((args[i][0] != '\'' && args[i][ft_strlen(args[i]) - 1] != '\'')
+            || (args[i][0] != '"' && args[i][ft_strlen(args[i]) - 1] != '"'))
+        {
+            temp2 = expand_home(args[i], envlist);
+            free(args[i]);
+            args[i] = temp2;
+        }
+    }
+}
 
 // int main(void)
 // {
@@ -165,5 +184,25 @@ char    *expand_vars(char *str, t_list *envlist)
 // 	str = expand_vars(str, envlist);
 // 	printf("str = [%s]\n", str);
 //     free(str);
+//     ft_cleanup(&envlist);
+// }
+
+// int main(void)
+// {
+//     char **array = malloc(sizeof(char *) * 6);
+//     array[0] = ft_strdup("~");
+//     array[1] = ft_strdup("\"hello $USER\"");
+//     array[2] = ft_strdup("\'hello $USER\'");
+//     array[3] = ft_strdup("$PATH");
+//     array[4] = ft_strdup("\"this is a long string with quotes.\"");
+//     array[5] = NULL;
+
+//     t_list *envlist = ft_env();
+
+//     ft_print_array(array);
+//     expand_all(array, envlist);
+//     ft_print_array(array);
+
+//     ft_array_free(&array);
 //     ft_cleanup(&envlist);
 // }

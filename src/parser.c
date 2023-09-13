@@ -6,27 +6,20 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/08 20:31:42 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/13 21:59:15 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char **final_split(char **args)
+static char **final_split(char **args, t_list *envlist)
 {
-    int     i;
-
-    i = -1;
-    while (args && args[++i])
-    {
-        //expand variables
-        //expand path
-    }
+    expand_all(args, envlist);
     args = ft_subsplit(args, "<|>", -1);
     return (args);
 }
 
-void	check_args(char *out)
+void	check_args(char *out, t_list *envlist)
 {
 	char **args;
     t_cmdlist *cmd_list;
@@ -43,7 +36,7 @@ void	check_args(char *out)
     ft_print_array(args);
 	free(out);
     if (args)
-        cmd_list = create_cmd_list(final_split(args), -1);
+        cmd_list = create_cmd_list(final_split(args, envlist), -1);
     if (cmd_list != NULL)
 	{
         // Traverse the command list and print the commands
@@ -69,13 +62,14 @@ void	check_args(char *out)
 // // 2. create tokens
 
 // // prompt loop function
-// int	main(int argc, char *argv[], char *envp[])
+// int	main(int argc, char *argv[])
 // {
 // 	// 1. get username
 // 	// 2. get home directory
 // 	// 3. display prompt string and wait for input
 // 	char	*prompt;
 // 	char	*out;
+//     t_list  *envlist = ft_env();
 // 	// char	**array;
 // 	// int		wordcount;
 // 	// char	space = ' ';
@@ -87,7 +81,7 @@ void	check_args(char *out)
 // 	while (1)
 // 	{
 // 		out = readline(prompt);
-// 		check_args(out);
+// 		check_args(out, envlist);
 
 // 		// wordcount = ft_count_words(out);
 // 		// printf("wordcount = %d\\n", wordcount);
