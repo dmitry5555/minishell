@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/08 17:00:50 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/15 18:35:35 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 
 	cmds = NULL;
 	trimmed_args = get_trimmed(args);
-	while (args[++i])
+	while (args && args[++i])
 	{
 		//printf("args[%d] = %s\n", i, args[i]);
 		current_cmd = ft_cmdlstlast(cmds);
