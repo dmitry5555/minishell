@@ -12,6 +12,12 @@
 # include <readline/history.h>
 
 # define MAX_BUFFER_SIZE 100
+# define ERR_QUOTE 1
+# define ERR_DIR 2
+# define ERR_CMD 6
+# define ERR_DUP 7
+# define ERR_FORK 8
+# define ERR_PIPE 9
 
 extern char **environ;
 
@@ -36,6 +42,9 @@ typedef struct	s_cmd_node
 	int		in;
 	int		out;
 }	t_cmd_node;
+
+// Error
+void    *ft_error(int error_type, char *error_str, int error_code);
 
 // Strings
 void	ft_putstr_fd(char *str, int fd);
