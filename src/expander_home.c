@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/14 21:09:35 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/15 18:40:39 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char    *expand_home(char *str, t_list *envlist)
     i = -1;
     while (str[++i])
     {
-        printf("str[i] = %c\n", str[i]);
+        //printf("str[i] = %c\n", str[i]);
         if (i == 0 && (str[i] == '~' || (is_user_home(&str[i], envlist))))
         {
             varvalue = get_content_by_name(envlist, "HOME");
