@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/13 21:59:15 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/15 20:14:32 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	check_args(char *out, t_list *envlist)
 	char **args;
     t_cmdlist *cmd_list;
 
+    cmd_list = NULL;
 	if (!out)
 	{
 		printf("exit\n");
@@ -32,8 +33,13 @@ void	check_args(char *out, t_list *envlist)
 	if (out[0] != '\0')
 		add_history(out);
 	args = ft_split_cmds(out);
-	printf("AFTER FT_SPLIT_CMDS:\n");
-    ft_print_array(args);
+    if (!args)
+        ft_error(ERR_QUOTE, NULL, 2);
+    if (args)
+    {
+        printf("AFTER FT_SPLIT_CMDS:\n");
+        ft_print_array(args);
+    }
 	free(out);
     if (args)
         cmd_list = create_cmd_list(final_split(args, envlist), -1);
@@ -55,7 +61,7 @@ void	check_args(char *out, t_list *envlist)
             current = current->next;
         }
     }
-    ft_cmdlstclear(&cmd_list, free_cmd_content);
+    // ft_cmdlstclear(&cmd_list, free_cmd_content);
 
 }
 
