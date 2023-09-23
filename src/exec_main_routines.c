@@ -183,82 +183,82 @@
 // 	return EXIT_SUCCESS;
 // }
 
-int ft_test_pipes(t_cmdlist *cmd_list)
-{
+// int ft_test_pipes(t_cmdlist *cmd_list)
+// {
 
-	int pipefd[2];
-	int fd1, fd2; // in AND out
-	int pid;
-	ssize_t bytes_read;
-	char **cmd_args;
-	// char *const ls_args[] = {"ls", "-l", "-a", NULL}; // Command and arguments for ls
-	// char *const cmd_args[] = {"echo", "-n", "51111346", NULL}; // Command and arguments for ls
-	// current->cmd
+// 	int pipefd[2];
+// 	int fd1, fd2; // in AND out
+// 	int pid;
+// 	ssize_t bytes_read;
+// 	char **cmd_args;
+// 	// char *const ls_args[] = {"ls", "-l", "-a", NULL}; // Command and arguments for ls
+// 	// char *const cmd_args[] = {"echo", "-n", "51111346", NULL}; // Command and arguments for ls
+// 	// current->cmd
 
-	// char *const full_path = "/bin/echo"; // Command and arguments for ls
-	char *full_path; // Command and arguments for ls
-	// current->path
-	char *const env[] = {NULL};
+// 	// char *const full_path = "/bin/echo"; // Command and arguments for ls
+// 	char *full_path; // Command and arguments for ls
+// 	// current->path
+// 	char *const env[] = {NULL};
 
-	char buffer[MAX_BUFFER_SIZE];
-	// fd1 = open("test1", O_RDONLY);
-	// fd2 = open("test2", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+// 	char buffer[MAX_BUFFER_SIZE];
+// 	// fd1 = open("test1", O_RDONLY);
+// 	// fd2 = open("test2", O_WRONLY | O_CREAT | O_TRUNC, 0666);
 
 
-	if (cmd_list)
-	{
-		t_cmdlist *current;
-		current = cmd_list;
+// 	if (cmd_list)
+// 	{
+// 		t_cmdlist *current;
+// 		current = cmd_list;
 
-		while (current)
-		{
-			t_cmd_node *node = (t_cmd_node *)current->content;
+// 		while (current)
+// 		{
+// 			t_cmd_node *node = (t_cmd_node *)current->content;
 
-				fd1 = node->in;
-				fd2 =  node->out;
-				full_path = node->path;
-				cmd_args = node->cmd;
+// 				fd1 = node->in;
+// 				fd2 =  node->out;
+// 				full_path = node->path;
+// 				cmd_args = node->cmd;
 
-				pipe(pipefd);
-				pid = fork();
+// 				pipe(pipefd);
+// 				pid = fork();
 
-				if (pid == 0)
-				{	// child process
-					close(pipefd[0]); // Close unused read end of the pipe
-					// fd2 = open((int)node->out, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-					// fd2 = open(fd2, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-					printf("⚪️ ft_test_pipes \n	child process [%s] with fdin [%d] fdout [%d] \n\n", node->cmd[0], node->in, node->out);
-					dup2(fd2, STDOUT_FILENO);
+// 				if (pid == 0)
+// 				{	// child process
+// 					close(pipefd[0]); // Close unused read end of the pipe
+// 					// fd2 = open((int)node->out, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+// 					// fd2 = open(fd2, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+// 					printf("⚪️ ft_test_pipes \n	child process [%s] with fdin [%d] fdout [%d] \n\n", node->cmd[0], node->in, node->out);
+// 					dup2(fd2, STDOUT_FILENO);
 
-					// read from file
-					// while ((bytes_read = read(fd1, buffer, sizeof(buffer))) > 0)
-					// 	write(STDOUT_FILENO, buffer, bytes_read); // Write to the pipe
-					// read from cmd
-					execve(full_path, cmd_args, env);
-					perror("execve");
+// 					// read from file
+// 					// while ((bytes_read = read(fd1, buffer, sizeof(buffer))) > 0)
+// 					// 	write(STDOUT_FILENO, buffer, bytes_read); // Write to the pipe
+// 					// read from cmd
+// 					execve(full_path, cmd_args, env);
+// 					perror("execve");
 
-					close(pipefd[1]);
-					// close(fd1);
-					return EXIT_SUCCESS; // Return success to indicate child completion
-				}
-				else
-				{
-					close(pipefd[1]);
+// 					close(pipefd[1]);
+// 					// close(fd1);
+// 					return EXIT_SUCCESS; // Return success to indicate child completion
+// 				}
+// 				else
+// 				{
+// 					close(pipefd[1]);
 
-					// dup2(fd2, STDOUT_FILENO);
-					wait(NULL);
-				}
+// 					// dup2(fd2, STDOUT_FILENO);
+// 					wait(NULL);
+// 				}
 
-				close(pipefd[1]);
-				close(pipefd[0]);
-				// close(fd1);
-				close(fd2);
+// 				close(pipefd[1]);
+// 				close(pipefd[0]);
+// 				// close(fd1);
+// 				close(fd2);
 
-				return EXIT_SUCCESS;
+// 				return EXIT_SUCCESS;
 
-			current = current->next;
-		}
-	}
+// 			current = current->next;
+// 		}
+// 	}
 
-	return 0;
-}
+// 	return 0;
+// }

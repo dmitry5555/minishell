@@ -113,7 +113,6 @@ t_cmdlist	*create_cmd_list(char **args, int i);
 // exec
 void	exec_cmd(char **args, int input_fd, int output_fd);
 void	handle_esc(char *str);
-void	exec_cmd(char **args, int input_fd, int output_fd);
 void	ft_echo(char **args);
 int		ft_pwd(void);
 int		ft_test_pipes(t_cmdlist *cmd_list);
@@ -130,7 +129,7 @@ t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
 void	ft_cd(t_list **env, char *name, char *content, int is_env);
-int 	ft_is_builtin();
+int ft_is_builtin(char *str);
 void 	ft_find_right_paths(t_cmdlist *cmd_list);
 
 
