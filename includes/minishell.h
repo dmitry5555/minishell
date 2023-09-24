@@ -111,7 +111,6 @@ void    expand_all(char **args, t_list *envlist);
 t_cmdlist	*create_cmd_list(char **args, int i);
 
 // exec
-void	exec_cmd(char **args, int input_fd, int output_fd);
 void	handle_esc(char *str);
 void	ft_echo(char **args);
 int		ft_pwd(void);
