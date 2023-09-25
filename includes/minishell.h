@@ -12,9 +12,12 @@
 # include <readline/history.h>
 
 # define MAX_BUFFER_SIZE 100
+# define READ_END 0
+# define WRITE_END 1
 # define ERR_QUOTE 1
 # define ERR_DIR 2
 # define ERR_CMD 6
+# define ERR_PERM 10
 # define ERR_DUP 7
 # define ERR_FORK 8
 # define ERR_PIPE 9
@@ -49,6 +52,7 @@ void    *ft_error(int error_type, char *error_str, int error_code);
 // Strings
 void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *str1, const char *str2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		nb_args(char **args);
 void	ft_putchar_fd(char ch, int fd);
 void	ft_putstr_fd(char *str, int fd);
