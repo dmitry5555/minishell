@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:07:05 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/15 20:16:10 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/25 18:55:13 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 // # define ERR_QUOTE 1
 // # define ERR_DIR 2
+// # define ERR_PERM 3
 // # define ERR_CMD 6
 // # define ERR_DUP 7
 // # define ERR_FORK 8
@@ -28,9 +29,11 @@ void    *ft_error(int error_type, char *error_str, int error_code)
         ft_putstr_fd("minishell: no such file or directory: ", 2);
     if (error_type == ERR_CMD)
         ft_putstr_fd("minishell: command not found: ", 2);
+    if (error_type == ERR_PERM)
+        ft_putstr_fd("minishell: permission denied: ", 2);
     if (error_type == ERR_FORK)
         ft_putstr_fd("minishell: fork error", 2);
-     if (error_type == ERR_PIPE)
+    if (error_type == ERR_PIPE)
         ft_putstr_fd("minishell: pipe error", 2);
     // if (error_type == ERR_)
     ft_putendl_fd(error_str, 2);
