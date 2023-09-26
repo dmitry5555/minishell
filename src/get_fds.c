@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_fds.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:36:45 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/25 20:18:47 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/26 19:19:43 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i)
 {
 	char	*del;
 	char	*doc[2];
-	
+
 	del = NULL;
 	doc[0] = NULL;
 	doc[1] = NULL;

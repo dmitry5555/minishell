@@ -32,6 +32,21 @@ void	*child_builtin(t_cmdlist *cmd, int fd[2])
 	return("");
 }
 
+// void	free_content(void *content)
+// {
+// 	t_cmd_node	*node;
+
+// 	node = content;
+
+// 	// ft_free_matrix(&node->full_cmd);
+// 	free(node->path);
+// 	if (node->in != STDIN_FILENO)
+// 		close(node->in);
+// 	if (node->out != STDOUT_FILENO)
+// 		close(node->out);
+// 	free(node);
+// }
+
 
 void	*child_process(t_cmdlist *cmd, int fd[2])
 {
@@ -42,11 +57,11 @@ void	*child_process(t_cmdlist *cmd, int fd[2])
 	close(fd[0]);
 	child_builtin(cmd, fd);
 
-	// free(node->cmd);
-	if (node->in != STDIN_FILENO)
-		close(node->in);
-	if (node->out != STDOUT_FILENO)
-		close(node->out);
+	// free_cmd_content(node);
+	// if (node->in != STDIN_FILENO)
+	// 	close(node->in);
+	// if (node->out != STDOUT_FILENO)
+	// 	close(node->out);
 	return("");
 }
 
@@ -62,8 +77,7 @@ void	exec_fork(t_cmdlist *cmd, int fd[2])
 		close(fd[1]);
 		printf("forking error \n");
 	}
-	// child process
-	else if (!pid)
+	else if (!pid) // child process
 		child_process(cmd, fd);
 }
 
@@ -76,8 +90,6 @@ void	*check_to_fork(t_cmdlist *cmd_list, int fd[2])
 		return NULL;
 	if (node->path)
 		exec_fork(cmd_list, fd);
-	// close(fd[1]);
-	printf("check_to_fork\n");
 	return("");
 }
 
@@ -123,12 +135,12 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 int main()
 {
 
-	char **array = malloc(sizeof(char *) * 4);
+	char **array = malloc(sizeof(char *) * 5);
 	array[0] = strdup("ls");
-	array[1] = strdup("|");
-	array[2] = strdup("cat");
-	// array[3] = strdup("1");
-	array[3] = NULL;
+	array[1] = strdup("-lf");
+	array[2] = strdup("|");
+	array[3] = strdup("cat");
+	array[4] = NULL;
 
 	// Create a command list from the array
 	t_cmdlist *cmd_list;
