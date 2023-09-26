@@ -1,13 +1,10 @@
 # include "minishell.h"
 
-
-void	child_process(t_cmdlist *cmd, int fd[2])
+void child_redir(t_cmdlist *cmd, int fd[2])
 {
 	t_cmd_node *node;
 
 	node = cmd->content;
-
-	// child redir
 	if (node->in != STDIN_FILENO)
 	{
 		dup2(node->in, STDIN_FILENO);
@@ -15,20 +12,36 @@ void	child_process(t_cmdlist *cmd, int fd[2])
 	}
 	if (node->out != STDOUT_FILENO)
 	{
-		dup2(node->out, STDOUT_FILENO);
-		close(node->out);
+		dup2(node->out, STDOUT_FILENO); // now node->out is STDOUT
+		close(node->out); // we close (free) node->out
 	}
-	// else if (cmd->next && dup2(fd[1], STDOUT_FILENO) == -1)
-	//	return error
-	close(fd[1]);
+}
+void	*child_builtin(t_cmdlist *cmd, int fd[2])
+{
+	t_cmd_node *node;
+	node = cmd->content;
+	printf("cmd+path: %s \n", node->path);
+	printf("in: %d \n", node->in);
+	printf("out: %d \n", node->out);
+	execve(node->path, node->cmd, NULL);
+	return("");
+}
 
-	// close read end
+
+void	*child_process(t_cmdlist *cmd, int fd[2])
+{
+	t_cmd_node *node;
+	node = cmd->content;
+
+	child_redir(cmd, fd);
 	close(fd[0]);
+	child_builtin(cmd, fd);
 
-	// child_builtin
-	execve(node->cmd[0], node->cmd, NULL);
-
-
+	// free(node->cmd);
+	if (node->in != STDIN_FILENO)
+		close(node->in);
+	if (node->out != STDOUT_FILENO)
+		close(node->out);
 }
 
 
@@ -43,6 +56,7 @@ void	exec_fork(t_cmdlist *cmd, int fd[2])
 		close(fd[1]);
 		printf("forking error \n");
 	}
+	// child process
 	else if (!pid)
 		child_process(cmd, fd);
 }
