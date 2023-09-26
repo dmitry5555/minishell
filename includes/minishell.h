@@ -132,7 +132,7 @@ t_list	*ft_env();
 int 	set_var(t_list **env, char *name, char *content, int is_env);
 void	unset_var(t_list **env, char *name);
 void	ft_cd(t_list **env, char *name, char *content, int is_env);
-int ft_is_builtin(char *str);
+int 	ft_is_builtin(char *str);
 void 	ft_find_right_paths(t_cmdlist *cmd_list);
 
 

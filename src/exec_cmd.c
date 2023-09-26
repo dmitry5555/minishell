@@ -1,25 +1,38 @@
 # include "minishell.h"
 
 
-void	child_process(t_cmd_node *cmd, int fd[2])
+void	child_process(t_cmdlist *cmd, int fd[2])
 {
-	if (cmd->in != STDIN_FILENO)
+	t_cmd_node *node;
+
+	node = cmd->content;
+
+	// child redir
+	if (node->in != STDIN_FILENO)
 	{
-		dup2(cmd->in, STDIN_FILENO);
-		close(cmd->in);
+		dup2(node->in, STDIN_FILENO);
+		close(node->in);
 	}
-	if (cmd->out != STDOUT_FILENO)
+	if (node->out != STDOUT_FILENO)
 	{
-		dup2(cmd->out, STDOUT_FILENO);
-		close(cmd->out);
+		dup2(node->out, STDOUT_FILENO);
+		close(node->out);
 	}
+	// else if (cmd->next && dup2(fd[1], STDOUT_FILENO) == -1)
+	//	return error
 	close(fd[1]);
-	execvp(cmd->cmd[0], cmd->cmd);
-	perror("execvp");
+
+	// close read end
+	close(fd[0]);
+
+	// child_builtin
+	execve(node->cmd[0], node->cmd, NULL);
+
+
 }
 
 
-void	exec_fork(t_cmd_node *cmd, int fd[2])
+void	exec_fork(t_cmdlist *cmd, int fd[2])
 {
 	pid_t pid;
 
@@ -30,79 +43,102 @@ void	exec_fork(t_cmd_node *cmd, int fd[2])
 		close(fd[1]);
 		printf("forking error \n");
 	}
-	else if (pid == 0)
+	else if (!pid)
 		child_process(cmd, fd);
 }
-void	*check_to_fork(t_cmd_node *cmd, int fd[2])
+void	*check_to_fork(t_cmdlist *cmd_list, int fd[2])
 {
-	if (cmd->path)
-		exec_fork(cmd, fd);
+	t_cmd_node *node;
+
+	printf("check_to_fork\n");
+	node = cmd_list->content;
+	if (node->in == -1 || node->out == -1)
+		return NULL;
+	if (node->path)
+		exec_fork(cmd_list, fd);
+	// close(fd[1]);
+	return("");
 }
 
-void	exec_cmd(t_cmd_node *cmd)
+void	exec_cmd(t_cmdlist *cmd_list)
 {
 	int fd[2];
 
-	pipe(fd);
-	exec_fork(cmd, fd);
+	if (pipe(fd) == -1)
+		printf("");
+
+	check_to_fork(cmd_list, fd);
+
+	// if(cmd->)
+}
+
+void	print_cmd_list(t_cmdlist *cmd_list)
+{
+	t_cmd_node *node;
+
+	if (cmd_list != NULL)
+		{
+			// Traverse the command list and print the commands
+
+			while (cmd_list) {
+				node = (t_cmd_node *)cmd_list->content;
+				//printf("Command: ");
+				for (int i = 0; node->cmd[i] != NULL; i++) {
+					printf("cmd[%d] = %s ", i, node->cmd[i]);
+				}
+				printf("\n");
+				printf("Input File: %d\n", node->in);
+				printf("Output File: %d\n", node->out);
+				printf("---------\n");
+
+				cmd_list = cmd_list->next;
+			}
+
+			// Free the memory allocated for the command list
+			ft_cmdlstclear(&cmd_list, free_cmd_content);
+		}
 }
 
 int main()
 {
 
-	char **array = malloc(sizeof(char *) * 5);
-	array[0] = strdup("cat");
-	array[1] = strdup("1");
-	array[2] = strdup(">");
-	array[3] = strdup("2");
-	array[4] = NULL;
+	char **array = malloc(sizeof(char *) * 4);
+	array[0] = strdup("ls");
+	array[1] = strdup("|");
+	array[2] = strdup("cat");
+	// array[3] = strdup("1");
+	array[3] = NULL;
 
 	// Create a command list from the array
-	t_cmdlist *cmdlist;
-	t_cmd_node *cmd;
+	t_cmdlist *cmd_list;
+	t_cmd_node *node;
 
-	cmdlist = NULL;
-	cmdlist = create_cmd_list(array, -1);
-	ft_find_right_paths(cmdlist);
-
-	// Check / print  the command
-	// if (cmdlist != NULL)
-	// {
-	//     // Traverse the command list and print the commands
-	//     t_cmdlist *current = cmdlist;
-	//     while (current != NULL) {
-	//         f *node = (t_cmd_node *)current->content;
-	//         //printf("Command: ");
-	//         for (int i = 0; node->cmd[i] != NULL; i++) {
-	//             printf("cmd[%d] = %s ", i, node->cmd[i]);
-	//         }
-	//         printf("\n");
-	//         printf("Input File: %d\n", node->in);
-	//         printf("Output File: %d\n", node->out);
-	//         printf("---------\n");
-
-	//         current = current->next;
-	//     }
-
-	//     // Free the memory allocated for the command list
-	//     ft_cmdlstclear(&cmdlist, free_cmd_content);
-	// }
+	cmd_list = NULL;
+	cmd_list = create_cmd_list(array, -1);
+	ft_find_right_paths(cmd_list);
+	// print_cmd_list(cmd_list);
 
 	// execute list
-	if (cmdlist != NULL)
+	// if (cmd_list != NULL)
 	{
 		// Traverse the command list and print the commands
-		t_cmdlist *current = cmdlist;
-		while (current != NULL) {
-			cmd = current->content;
+		// t_cmdlist *current = cmdlist;
+		while (cmd_list) {
+			node = cmd_list->content;
 
-			exec_cmd(cmd);
+			for (int i = 0; node->cmd[i] != NULL; i++)
+				printf("node[%d] = %s ", i, node->cmd[i]);
+			// printf("\n");
+			printf("Input File: %d\n", node->in);
+			printf("Output File: %d\n", node->out);
+			printf("---------\n");
 
-			current = current->next;
+			exec_cmd(cmd_list);
+			cmd_list = cmd_list->next;
 		}
 
 		// Free the memory allocated for the command list
-		ft_cmdlstclear(&cmdlist, free_cmd_content);
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
 	}
 
 	return 0;
