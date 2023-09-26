@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-void child_redir(t_cmdlist *cmd, int fd[2])
+static void *child_redir(t_cmdlist *cmd, int fd[2])
 {
 	t_cmd_node *node;
 
@@ -15,7 +15,12 @@ void child_redir(t_cmdlist *cmd, int fd[2])
 		dup2(node->out, STDOUT_FILENO); // now node->out is STDOUT
 		close(node->out); // we close (free) node->out
 	}
+	else if (cmd->next && dup2(fd[1], STDOUT_FILENO) == -1)
+		printf("error dup2\n");
+	close(fd[1]);
+	return("");
 }
+
 void	*child_builtin(t_cmdlist *cmd, int fd[2])
 {
 	t_cmd_node *node;
@@ -42,6 +47,7 @@ void	*child_process(t_cmdlist *cmd, int fd[2])
 		close(node->in);
 	if (node->out != STDOUT_FILENO)
 		close(node->out);
+	return("");
 }
 
 
@@ -60,17 +66,18 @@ void	exec_fork(t_cmdlist *cmd, int fd[2])
 	else if (!pid)
 		child_process(cmd, fd);
 }
+
 void	*check_to_fork(t_cmdlist *cmd_list, int fd[2])
 {
 	t_cmd_node *node;
 
-	printf("check_to_fork\n");
 	node = cmd_list->content;
 	if (node->in == -1 || node->out == -1)
 		return NULL;
 	if (node->path)
 		exec_fork(cmd_list, fd);
 	// close(fd[1]);
+	printf("check_to_fork\n");
 	return("");
 }
 
@@ -140,12 +147,12 @@ int main()
 		while (cmd_list) {
 			node = cmd_list->content;
 
-			for (int i = 0; node->cmd[i] != NULL; i++)
-				printf("node[%d] = %s ", i, node->cmd[i]);
-			// printf("\n");
-			printf("Input File: %d\n", node->in);
-			printf("Output File: %d\n", node->out);
-			printf("---------\n");
+			// for (int i = 0; node->cmd[i] != NULL; i++)
+			// 	printf("node[%d] = %s ", i, node->cmd[i]);
+			// // printf("\n");
+			// printf("Input File: %d\n", node->in);
+			// printf("Output File: %d\n", node->out);
+			// printf("---------\n");
 
 			exec_cmd(cmd_list);
 			cmd_list = cmd_list->next;
