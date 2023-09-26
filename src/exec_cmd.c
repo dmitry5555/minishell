@@ -101,8 +101,15 @@ void	exec_cmd(t_cmdlist *cmd_list)
 		printf("");
 
 	check_to_fork(cmd_list, fd);
-
-	// if(cmd->)
+	close(fd[1]);
+	if(cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
+		((t_cmd_node *)cmd_list->next->content)->in = fd[0];
+	else
+		close(fd[0]);
+	if (((t_cmd_node *)cmd_list->content)->in > 2)
+		close(((t_cmd_node *)cmd_list->content)->in);
+	if (((t_cmd_node *)cmd_list->content)->out > 2)
+		close(((t_cmd_node *)cmd_list->content)->out);
 }
 
 void	print_cmd_list(t_cmdlist *cmd_list)
