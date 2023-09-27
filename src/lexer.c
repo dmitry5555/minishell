@@ -3,6 +3,95 @@
 // lexer analysis
 // 1. split and remove whitespace
 // *count words*
+// static int	ft_count_words(const char *s, char *c)
+// {
+// 	int		in_quotes;
+// 	char	quote;
+// 	int		nwords;
+// 	int		i;
+
+// 	in_quotes = 0;
+// 	quote = 0;
+// 	nwords = 0; // initialize nwords to 0
+// 	i = 0;
+// 	while (s[i] != '\0')
+// 	{
+// 		if (!ft_strchr(c, s[i]))
+// 		{
+// 			nwords++;
+// 			while ((!ft_strchr(c, s[i]) || in_quotes) && s[i] != '\0')
+// 			{
+// 				if (!in_quotes && (s[i] == '\"' || s[i] == '\''))
+// 					quote = s[i];
+// 				in_quotes = (in_quotes + (s[i] == quote)) % 2;
+// 				in_quotes *= in_quotes != 0;
+// 				i++;
+// 			}
+// 			if (in_quotes)
+// 				return (-1);
+// 		}
+// 		else
+// 			i++;
+// 	}
+// 	return (nwords);
+// }
+
+// static char	**ft_fill_array(char **array, char const *s, char *set, int start, int *end)
+// {
+//     int		len;
+//     int		in_single_quotes;
+//     int		in_double_quotes;
+//     int		i;
+//     int		j;
+
+//     len = ft_strlen(s);
+//     in_single_quotes = 0;
+//     in_double_quotes = 0;
+//     i = *end; // start from the end index
+//     j = start;
+//     while (i < len && s[i] != '\0')
+//     {
+//         while (ft_strchr(set, s[i]) && s[i] != '\0')
+//             i++;
+//         j = i;
+//         while ((!ft_strchr(set, s[i]) || in_single_quotes || in_double_quotes) && s[i] != '\0')
+//         {
+//             if (s[i] == '\'' && !in_double_quotes)
+//                 in_single_quotes = !in_single_quotes;
+//             else if (s[i] == '\"' && !in_single_quotes)
+//                 in_double_quotes = !in_double_quotes;
+//             i++;
+//         }
+//         if (j >= len)
+//             array[start++] = NULL;
+//         else
+//             array[start++] = ft_substr(s, j, i - j);
+//     }
+//     *end = i; // update the end index
+//     return (array);
+// }
+
+// char	**ft_split_cmds(char const *s, char *set)
+// {
+// 	char	**array;
+// 	int		nwords;
+//     int     end;
+
+// 	if (!s)
+// 		return (NULL);
+// 	nwords = ft_count_words(s, set);
+// 	printf("nwords = %d\n", nwords);
+// 	if (nwords == -1)
+// 		return (NULL);
+// 	array = malloc((nwords + 1) * sizeof(char *));
+// 	if (array == NULL)
+// 		return (NULL);
+//     end = 0;
+// 	array = ft_fill_array(array, s, set, 0, &end);
+//     if (end >= ft_strlen(s))
+//         array[nwords] = NULL; // handle the case where the last substring is empty
+// 	return (array);
+// }
 
 static int	ft_count_words(char *str)
 {
@@ -15,8 +104,6 @@ static int	ft_count_words(char *str)
 
 	while (str[i])
 	{
-		// not skipping many spaces
-
 		if (str[i] == 39 && !flag_dq) // single
 		{
 			if (!flag_sq)
@@ -26,14 +113,10 @@ static int	ft_count_words(char *str)
 			}
 			else
 			{
-				//str_copy(str, start, i)
-				// printf("SQ END ++ \\n");
-
 				wordcount++;
 				flag_sq = 0;
 				start = -1;
 			}
-
 		}
 
 		if (str[i] == 34 && !flag_sq) // double
@@ -52,7 +135,6 @@ static int	ft_count_words(char *str)
 			}
 
 		}
-
 		if (str[i] && !flag_sq && !flag_dq && str[i] != 34 && str[i] != 39)
 		{
 			// if not space start reading
@@ -179,15 +261,12 @@ char **ft_split_cmds(char *s)
 // 	}
 // 	if (input[0] != '\0')
 // 		add_history(input);
-// 	args = ft_split_cmds(input);
+// 	args = ft_split_cmds(input, " ");
 // 	ft_print_array(args);
 // 	free(input);
 // 	ft_array_free(&args);
 // }
 
-// 2. create tokens
-
-// prompt loop function
 // int	main(int argc, char *argv[], char *envp[])
 // {
 // 	// 1. get username
@@ -217,7 +296,11 @@ char **ft_split_cmds(char *s)
 
 // int	main(void)
 // {
-// 	char *str = "hello $USER";
-
-// 	check_args1(str);
+// 	char *str = "hello \"this is a string\"";
+// 	char **args;
+// 	printf("str = %s\n", str);
+// 	args = ft_split_cmds(str, " ");
+// 	ft_print_array(args);
+// 	free(str);
+// 	ft_array_free(&args);
 // }
