@@ -119,6 +119,11 @@ void	handle_esc(char *str);
 void	ft_echo(char **args);
 int		ft_pwd(void);
 int		ft_test_pipes(t_cmdlist *cmd_list);
+void	exec_cmd(t_cmdlist *cmd_list);
+void	*check_to_fork(t_cmdlist *cmd_list, int fd[2]);
+void	exec_fork(t_cmdlist *cmd, int fd[2]);
+void	*child_process(t_cmdlist *cmd, int fd[2]);
+void	*child_builtin(t_cmdlist *cmd, int fd[2]);
 
 // get fd
 t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
