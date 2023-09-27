@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/27 17:12:29 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:28:50 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,26 @@ t_cmdlist	*check_args(char *out, t_list *envlist)
 	free(out);
 	if (args)
 		cmd_list = create_cmd_list(final_split(args, envlist), -1);
-	if (cmd_list != NULL)
-	{
-		// Traverse the command list and print the commands
-		t_cmdlist *current = cmd_list;
-		while (current != NULL) {
-			t_cmd_node *node = (t_cmd_node *)current->content;
-			//printf("Command: ");
-			// for (int i = 0; node->cmd[i] != NULL; i++) {
-			// 	printf("cmd[%d] = %s ", i, node->cmd[i]);
-			// }
-			// printf("\n");
-			// printf("Input File: %d\n", node->in);
-			// printf("Output File: %d\n", node->out);
-			// printf("---------\n");
+	// if (cmd_list != NULL)
+	// {
+	// 	// Traverse the command list and print the commands
+	// 	t_cmdlist *current = cmd_list;
+	// 	while (current != NULL) {
+	// 		t_cmd_node *node = (t_cmd_node *)current->content;
+	// 		//printf("Command: ");
+	// 		// for (int i = 0; node->cmd[i] != NULL; i++) {
+	// 		// 	printf("cmd[%d] = %s ", i, node->cmd[i]);
+	// 		// }
+	// 		// printf("\n");
+	// 		// printf("Input File: %d\n", node->in);
+	// 		// printf("Output File: %d\n", node->out);
+	// 		// printf("---------\n");
 
-			current = current->next;
-		}
-	}
+	// 		current = current->next;
+	// 	}
+	// }
 	return (cmd_list);
-	ft_cmdlstclear(&cmd_list, free_cmd_content);
+	//ft_cmdlstclear(&cmd_list, free_cmd_content);
 
 }
 
@@ -97,6 +97,8 @@ int	main(int argc, char *argv[])
 				cmd_list = cmd_list->next;
 			}
  		}
+		ft_cmdlstclear(&current, free_cmd_content);
 	}
+
 	ft_cmdlstclear(&cmd_list, free_cmd_content);
 }
