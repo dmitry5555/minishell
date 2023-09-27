@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_fds.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:36:45 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/26 19:19:43 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/09/27 22:34:05 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,14 @@ t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i)
 char *get_here_str(char *doc[2], size_t len, char *del, char *warn)
 {
 	char *temp;
+	
 	while (g_status != 130 && (!doc[0] || ft_strncmp(doc[0], del, len) || ft_strlen(del) != len))
 	{
 		temp = doc[1];
 		doc[1] = ft_strjoin(doc[1], doc[0]);
 		free(temp);
-		free(doc[1]);
-		doc[1] = readline("< ");
+		free(doc[0]);
+		doc[0] = readline("> ");
 		if (!doc[0])
 		{
 			printf("%s (wanted `%s\')\n", warn, del);
@@ -129,9 +130,12 @@ char *get_here_str(char *doc[2], size_t len, char *del, char *warn)
 		temp = doc[0];
 		doc[0] = ft_strjoin(doc[0], "\n");
 		free(temp);
-		len = ft_strlen(doc[0] - 1);
+		// printf("doc[0] = %s\n", doc[0]);
+		// printf("doc[1] = %s\n", doc[1]);
+		len = ft_strlen(doc[0]) - 1;
 	}
 	free(doc[0]);
+	//printf("doc[1] = %s\n\n", doc[1]);
 	return (doc[1]);
 }
 
