@@ -70,9 +70,9 @@ void ft_find_right_paths(t_cmdlist *cmd_list)
 				// Allocate memory for the new path and copy it
 				node->path = strdup(tmp2);
 
-				printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
-				printf("Testing path - [%s]\n", tmp2);
-				printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
+				// printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
+				// printf("Testing path - [%s]\n", tmp2);
+				// printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
 				flag = 1;
 			}
 

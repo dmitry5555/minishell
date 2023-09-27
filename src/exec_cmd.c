@@ -27,9 +27,9 @@ void	*child_builtin(t_cmdlist *cmd, int fd[2])
 {
 	t_cmd_node *node;
 	node = cmd->content;
-	printf("cmd+path: %s \n", node->path);
-	printf("in: %d \n", node->in);
-	printf("out: %d \n", node->out);
+	// printf("cmd+path: %s \n", node->path);
+	// printf("in: %d \n", node->in);
+	// printf("out: %d \n", node->out);
 	execve(node->path, node->cmd, NULL);
 	return("");
 }

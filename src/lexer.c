@@ -158,7 +158,7 @@ char **ft_split_cmds(char *s)
 	if (!s)
 		return (NULL);
 	nwords = ft_count_words(s);
-	printf("wordcount: %d\n", nwords);
+	// printf("wordcount: %d\n", nwords);
 	if (nwords == -1)
 		return (NULL);
 	// array = malloc(sizeof(char *) * (nwords + 1));
