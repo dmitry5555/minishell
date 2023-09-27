@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/27 18:28:50 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/27 18:30:38 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,39 +66,39 @@ t_cmdlist	*check_args(char *out, t_list *envlist)
 
 }
 
-int	main(int argc, char *argv[])
-{
-	t_list		*envlist;
-	t_cmd_node	*node;
-	t_cmdlist	*current;
-	t_cmdlist	*cmd_list;
-	(void)argc;
-	(void)argv;
-	char		*prompt;
-	char		*out;
+// int	main(int argc, char *argv[])
+// {
+// 	t_list		*envlist;
+// 	t_cmd_node	*node;
+// 	t_cmdlist	*current;
+// 	t_cmdlist	*cmd_list;
+// 	(void)argc;
+// 	(void)argv;
+// 	char		*prompt;
+// 	char		*out;
 
-	// print_cmd_list(cmd_list);
-	envlist = ft_env();
-	cmd_list = NULL;
-	out = NULL;
-	prompt = "jdaly@minishell$ ";
-	while (1)
-	{
-		out = readline(prompt);
-		cmd_list = check_args(out, envlist);
-		ft_find_right_paths(cmd_list);
-		if (cmd_list)
-		{
-			current = cmd_list;
-			while (cmd_list)
-			{
-				node = cmd_list->content;
-				exec_cmd(cmd_list);
-				cmd_list = cmd_list->next;
-			}
- 		}
-		ft_cmdlstclear(&current, free_cmd_content);
-	}
+// 	// print_cmd_list(cmd_list);
+// 	envlist = ft_env();
+// 	cmd_list = NULL;
+// 	out = NULL;
+// 	prompt = "jdaly@minishell$ ";
+// 	while (1)
+// 	{
+// 		out = readline(prompt);
+// 		cmd_list = check_args(out, envlist);
+// 		ft_find_right_paths(cmd_list);
+// 		if (cmd_list)
+// 		{
+// 			current = cmd_list;
+// 			while (cmd_list)
+// 			{
+// 				node = cmd_list->content;
+// 				exec_cmd(cmd_list);
+// 				cmd_list = cmd_list->next;
+// 			}
+//  		}
+// 		ft_cmdlstclear(&current, free_cmd_content);
+// 	}
 
-	ft_cmdlstclear(&cmd_list, free_cmd_content);
-}
+// 	ft_cmdlstclear(&cmd_list, free_cmd_content);
+// }
