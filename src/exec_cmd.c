@@ -106,10 +106,10 @@ void	exec_cmd(t_cmdlist *cmd_list)
 		((t_cmd_node *)cmd_list->next->content)->in = fd[0];
 	else
 		close(fd[0]);
-	if (((t_cmd_node *)cmd_list->content)->in > 2)
-		close(((t_cmd_node *)cmd_list->content)->in);
-	if (((t_cmd_node *)cmd_list->content)->out > 2)
-		close(((t_cmd_node *)cmd_list->content)->out);
+	// if (((t_cmd_node *)cmd_list->content)->in > 2)
+	// 	close(((t_cmd_node *)cmd_list->content)->in);
+	// if (((t_cmd_node *)cmd_list->content)->out > 2)
+	// 	close(((t_cmd_node *)cmd_list->content)->out);
 }
 
 void	print_cmd_list(t_cmdlist *cmd_list)
@@ -140,70 +140,72 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 }
 
 // main for testing pipes
-// int main()
-// {
-
-// 	char **array = malloc(sizeof(char *) * 5);
-// 	array[0] = strdup("ls");
-// 	array[1] = strdup("-lf");
-// 	array[2] = strdup("|");
-// 	array[3] = strdup("cat");
-// 	array[4] = NULL;
-
-// 	// Create a command list from the array
-// 	t_cmdlist *cmd_list;
-// 	t_cmd_node *node;
-
-// 	cmd_list = NULL;
-// 	cmd_list = create_cmd_list(array, -1);
-// 	ft_find_right_paths(cmd_list);
-// 	// print_cmd_list(cmd_list);
-
-// 	// execute list
-// 	// if (cmd_list != NULL)
-// 	{
-// 		// Traverse the command list and print the commands
-// 		// t_cmdlist *current = cmdlist;
-// 		while (cmd_list) {
-// 			node = cmd_list->content;
-
-// 			// for (int i = 0; node->cmd[i] != NULL; i++)
-// 			// 	printf("node[%d] = %s ", i, node->cmd[i]);
-// 			// // printf("\n");
-// 			// printf("Input File: %d\n", node->in);
-// 			// printf("Output File: %d\n", node->out);
-// 			// printf("---------\n");
-
-// 			exec_cmd(cmd_list);
-// 			cmd_list = cmd_list->next;
-// 		}
-
-// 		// Free the memory allocated for the command list
-// 		ft_cmdlstclear(&cmd_list, free_cmd_content);
-// 	}
-
-// 	return 0;
-// }
-
-void	sig_hand(int sig)
-{
-	if (sig == SIGINT)
-		printf("ign sign\n");
-	if (sig == SIGQUIT)
-		printf("quit sign\n");
-}
-
-// main for testing signals
-int	main(int argc, char **argv)
+int main()
 {
 
-	while (argv && argc)
+	char **array = malloc(sizeof(char *) * 7);
+	array[0] = strdup("ls");
+	array[1] = strdup("-lf");
+	array[2] = strdup("|");
+	array[3] = strdup("cat");
+	array[4] = strdup(">");
+	array[5] = strdup("1");
+	array[6] = NULL;
+
+	// Create a command list from the array
+	t_cmdlist *cmd_list;
+	t_cmd_node *node;
+
+	cmd_list = NULL;
+	cmd_list = create_cmd_list(array, -1);
+	ft_find_right_paths(cmd_list);
+	// print_cmd_list(cmd_list);
+
+	// execute list
+	// if (cmd_list != NULL)
 	{
-		// signal(SIGINT, sig_hand);
-		signal(SIGINT, sig_hand);
-		signal(SIGQUIT, sig_hand);
-		// signal(SIGINT, SIG_DFL);
+		// Traverse the command list and print the commands
+		// t_cmdlist *current = cmdlist;
+		while (cmd_list) {
+			node = cmd_list->content;
+
+			// for (int i = 0; node->cmd[i] != NULL; i++)
+			// 	printf("node[%d] = %s ", i, node->cmd[i]);
+			// // printf("\n");
+			// printf("Input File: %d\n", node->in);
+			// printf("Output File: %d\n", node->out);
+			// printf("---------\n");
+
+			exec_cmd(cmd_list);
+			cmd_list = cmd_list->next;
+		}
+
+		// Free the memory allocated for the command list
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
 	}
 
 	return 0;
 }
+
+// void	sig_hand(int sig)
+// {
+// 	if (sig == SIGINT)
+// 		printf("ign sign\n");
+// 	if (sig == SIGQUIT)
+// 		printf("quit sign\n");
+// }
+
+// // main for testing signals
+// int	main(int argc, char **argv)
+// {
+
+// 	while (argv && argc)
+// 	{
+// 		// signal(SIGINT, sig_hand);
+// 		signal(SIGINT, sig_hand);
+// 		signal(SIGQUIT, sig_hand);
+// 		// signal(SIGINT, SIG_DFL);
+// 	}
+
+// 	return 0;
+// }
