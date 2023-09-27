@@ -27,3 +27,8 @@ src/s_helpers.o
 src/subsplit.o
 src/test.o
 minishell.dSYM/Contents/Info.plist
+src/b_exit.o
+.vscode/settings.json
+.vscode/launch.json
+.vscode/c_cpp_properties.json
+.vscode/settings.json
