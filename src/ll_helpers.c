@@ -233,7 +233,7 @@ char *get_content_by_name(t_list *head, const char *name)
 	t_list *current = head;
 	while (current != NULL)
 	{
-		if (strcmp(current->name, name) == 0)
+		if (!ft_strcmp(current->name, name))
 		{
 			return current->content;
 		}

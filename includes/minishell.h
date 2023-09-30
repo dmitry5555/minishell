@@ -121,6 +121,8 @@ char		**ft_subsplit(char **array, char *set, int i);
 // expansion
 char	*expand_home(char *str, t_list *envlist);
 void	expand_all(char **args, t_list *envlist);
+int 	is_user_home(char *str, t_list *envlist);
+char	*expand_home(char *str, t_list *envlist);
 
 // Create command list
 t_cmdlist	*create_cmd_list(char **args, int i);

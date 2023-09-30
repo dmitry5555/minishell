@@ -28,6 +28,8 @@ t_list *ft_env_parser(t_list *env)
 	{
 		temp = get_key_value_pair(*env_lines);
 		ft_add_new_node_end(&env, temp[0], temp[1], 1);
+		if (!ft_strcmp(temp[0],"OLDPWD"))
+			set_var(&env,"OLDPWD","");
 		ft_array_free(&temp);
 		env_lines++;
 	}

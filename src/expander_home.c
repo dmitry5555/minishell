@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_home.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/15 18:40:39 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/09/30 18:22:20 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char    *expand_home(char *str, t_list *envlist)
         }
 		//printf("result = %s\n\n", result);
     }
+	printf("result = %s\n\n", result);
     return (result);
 }
 
