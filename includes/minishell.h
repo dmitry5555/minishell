@@ -46,8 +46,15 @@ typedef struct	s_cmd_node
 	int		out;
 }	t_cmd_node;
 
+// typedef struct s_prompt
+// {
+// 	char	**envp;
+// 	t_list	*cmds;
+// 	pid_t	pid;
+// }	t_prompt;
+
 // Error
-void    *ft_error(int error_type, char *error_str, int error_code);
+void	*ft_error(int error_type, char *error_str, int error_code);
 
 // Strings
 void	ft_putstr_fd(char *str, int fd);
@@ -68,6 +75,10 @@ char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 char 	**split_string(char *str, char *delimiter);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+int		ft_atoi(const char *a);
+static int	num_len(int n);
+char	*ft_itoa(int n);
+
 
 // Arrays
 void	ft_free_arr(char **arr);
@@ -108,22 +119,20 @@ char		**ft_split_cmds(char *s);
 char		**ft_subsplit(char **array, char *set, int i);
 
 // expansion
-char    *expand_home(char *str, t_list *envlist);
-void    expand_all(char **args, t_list *envlist);
+char	*expand_home(char *str, t_list *envlist);
+void	expand_all(char **args, t_list *envlist);
 
 // Create command list
 t_cmdlist	*create_cmd_list(char **args, int i);
 
 // exec
 void	handle_esc(char *str);
-void	ft_echo(char **args);
-int		ft_pwd(void);
 int		ft_test_pipes(t_cmdlist *cmd_list);
-void	exec_cmd(t_cmdlist *cmd_list);
-void	*check_to_fork(t_cmdlist *cmd_list, int fd[2]);
-void	exec_fork(t_cmdlist *cmd, int fd[2]);
-void	*child_process(t_cmdlist *cmd, int fd[2]);
-void	*child_builtin(t_cmdlist *cmd, int fd[2]);
+void	exec_cmd(t_cmdlist *cmd_list, t_list *env);
+void	*check_to_fork(t_cmdlist *cmd_list, int fd[2], t_list *env);
+void	exec_fork(t_cmdlist *cmd, int fd[2], t_list *env);
+void	*child_process(t_cmdlist *cmd, int fd[2], t_list *env);
+void	*child_builtin(t_cmdlist *cmd, int fd[2], t_list *env);
 
 // get fd
 t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
@@ -132,13 +141,16 @@ t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
 t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // builtin
-char	**get_key_value_pair(char *arg);
-t_list	*ft_env();
-int 	set_var(t_list **env, char *name, char *content, int is_env);
+t_list	*ft_env_parser(t_list *env);
+void	ft_env(t_list *env);
+void	ft_echo(char **args);
+int		ft_pwd(void);
+int 	set_var(t_list **env, char *name, char *content);
 void	unset_var(t_list **env, char *name);
-void	ft_cd(t_list **env, char *name, char *content, int is_env);
+void	ft_cd(t_cmd_node *node, t_list *env);
 int 	ft_is_builtin(char *str);
 void 	ft_find_right_paths(t_cmdlist *cmd_list);
+char	**get_key_value_pair(char *arg);
 
 
 #endif

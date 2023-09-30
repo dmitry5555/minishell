@@ -17,13 +17,12 @@ char	**get_key_value_pair(char *arg)
 }
 
 // parse ENV to linked list
-t_list *ft_env()
+t_list *ft_env_parser(t_list *env)
 {
-	t_list	*env;
 	char	**env_lines;
 	char	**temp;
+	char	*shlvl;
 
-	env = NULL; // fixed the leak
 	env_lines = environ;
 	while (*env_lines)
 	{

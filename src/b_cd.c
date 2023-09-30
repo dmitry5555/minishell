@@ -1,11 +1,28 @@
 # include "minishell.h"
 
-void	ft_cd(t_list **env, char *name, char *content, int is_env)
+void	ft_cd(t_cmd_node *node, t_list *env)
 {
-	char *input;
+	char *new_path;
+	// char *input;
+	// if args == 1  path  = home
 
-	// change current path in ENV
-	set_var(env, name, content, 1);
+	// if args > 1
+	printf("💽\n");
+	if (!node->cmd[1])
+		new_path = get_content_by_name(env, "HOME");
+	else if (node->cmd[1])
+		new_path = ft_strdup(node->cmd[1]);
+	printf("newpath is: [%s] \n", new_path);
+	chdir(new_path);
+
+			// if  arg[1][0] == '~'
+			// 	new = ar gs[1]
+			// 	path = join( home + args1)  // concat portion of argument with home
+
+			// else if 	strcmp(args1 , "-")
+			// 	path = oldpwd
+			// else
+			// 	path = args[1]
 }
 
 // int	main()

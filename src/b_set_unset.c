@@ -6,7 +6,7 @@
 // ENV
 
 
-int set_var(t_list **env, char *name, char *content, int is_env)
+int set_var(t_list **env, char *name, char *content)
 {
 	int		flag_upd;
 	t_list	*curr;
@@ -21,7 +21,7 @@ int set_var(t_list **env, char *name, char *content, int is_env)
 			if (curr->content)
 				free(curr->content);
 			curr->content = ft_strdup(content);
-			curr->is_env = is_env;
+			// curr->is_env = is_env;
 			flag_upd = 1;
 		}
 		curr = curr->next;
@@ -31,7 +31,8 @@ int set_var(t_list **env, char *name, char *content, int is_env)
 	return (0);
 }
 
-void unset_var(t_list **env, char *name) {
+void unset_var(t_list **env, char *name)
+{
 	t_list *temp;
 	t_list *current = *env;  // Initialize current to the head of the list
 

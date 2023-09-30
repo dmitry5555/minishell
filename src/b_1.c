@@ -13,3 +13,12 @@ int ft_pwd(void)
 	else
 		return(0); // return status
 }
+
+void ft_env(t_list *env)
+{
+	while (env)
+	{
+		printf("%s=%s\n", env->name, env->content);
+		env = env->next;
+	}
+}

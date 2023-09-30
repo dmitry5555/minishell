@@ -2,7 +2,7 @@
 
 extern int g_status;
 
-static void *child_redir(t_cmdlist *cmd, int fd[2])
+static void *child_redir(t_cmdlist *cmd, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
 
@@ -23,7 +23,7 @@ static void *child_redir(t_cmdlist *cmd, int fd[2])
 	return("");
 }
 
-void	*child_builtin(t_cmdlist *cmd, int fd[2])
+void	*child_builtin(t_cmdlist *cmd, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
 	node = cmd->content;
@@ -50,14 +50,14 @@ void	*child_builtin(t_cmdlist *cmd, int fd[2])
 // }
 
 
-void	*child_process(t_cmdlist *cmd, int fd[2])
+void	*child_process(t_cmdlist *cmd, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
 	node = cmd->content;
 
-	child_redir(cmd, fd);
+	child_redir(cmd, fd, env);
 	close(fd[0]);
-	child_builtin(cmd, fd);
+	child_builtin(cmd, fd, env);
 
 	// free_cmd_content(node);
 	// if (node->in != STDIN_FILENO)
@@ -68,7 +68,7 @@ void	*child_process(t_cmdlist *cmd, int fd[2])
 }
 
 
-void	exec_fork(t_cmdlist *cmd, int fd[2])
+void	exec_fork(t_cmdlist *cmd, int fd[2], t_list *env)
 {
 	pid_t pid;
 
@@ -80,52 +80,61 @@ void	exec_fork(t_cmdlist *cmd, int fd[2])
 		printf("forking error \n");
 	}
 	else if (!pid) // child process
-		child_process(cmd, fd);
+		child_process(cmd, fd, env);
 }
 
-void	*check_to_fork(t_cmdlist *cmd_list, int fd[2])
+void	*check_to_fork(t_cmdlist *cmd_list, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
 
 	node = cmd_list->content;
 	if (node->in == -1 || node->out == -1)
 		return NULL;
-	if (node->path)
-		exec_fork(cmd_list, fd);
+	// printf("cd\n");
+	// printf("%s\n", node->cmd[0]);
+
+	if (!ft_strcmp("cd", node->cmd[0]))
+		ft_cd(node, env);
+	else if (!ft_strcmp("env", node->cmd[0]))
+		ft_env(env);
+	else if (!ft_strcmp("pwd", node->cmd[0]))
+		ft_pwd();
+	else if (node->path)
+		exec_fork(cmd_list, fd, env);
 	return("");
 }
 
-void	exec_cmd(t_cmdlist *cmd_list)
+void	exec_cmd(t_cmdlist *cmd_list, t_list *env)
 {
 	int fd[2];
 
 	if (pipe(fd) == -1)
 		printf("");
-
-	check_to_fork(cmd_list, fd);
+	check_to_fork(cmd_list, fd, env);
 	close(fd[1]);
 	if(cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
 		((t_cmd_node *)cmd_list->next->content)->in = fd[0];
 	else
 		close(fd[0]);
+	// if smth wrong with pipes
 	// if (((t_cmd_node *)cmd_list->content)->in > 2)
 	// 	close(((t_cmd_node *)cmd_list->content)->in);
 	// if (((t_cmd_node *)cmd_list->content)->out > 2)
 	// 	close(((t_cmd_node *)cmd_list->content)->out);
 }
 
+// print cmd list for testing
 void	print_cmd_list(t_cmdlist *cmd_list)
 {
 	t_cmd_node *node;
 
 	if (cmd_list != NULL)
 		{
-			// Traverse the command list and print the commands
-
 			while (cmd_list) {
 				node = (t_cmd_node *)cmd_list->content;
 				//printf("Command: ");
-				for (int i = 0; node->cmd[i] != NULL; i++) {
+				for (int i = 0; node->cmd[i] != NULL; i++)
+				{
 					printf("cmd[%d] = %s ", i, node->cmd[i]);
 				}
 				printf("\n");
