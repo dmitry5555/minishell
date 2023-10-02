@@ -14,14 +14,14 @@ int ft_pwd(void)
 		return(0); // return status
 }
 
-void ft_env(t_list *env)
-{
-	while (env)
-	{
-		printf("%s=%s\n", env->name, env->content);
-		env = env->next;
-	}
-}
+// void ft_env(t_list *env)
+// {
+// 	while (env)
+// 	{
+// 		printf("%s=%s\n", env->name, env->content);
+// 		env = env->next;
+// 	}
+// }
 
 void	ft_cd(t_cmd_node *node, t_list *env)
 {

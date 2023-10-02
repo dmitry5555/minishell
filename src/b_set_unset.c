@@ -27,7 +27,7 @@ int set_var(t_list **env, char *name, char *content)
 		curr = curr->next;
 	}
 	if (!flag_upd)
-		ft_add_new_node_start(env, name, content, 0); // reversed
+		ft_add_new_node_start(env, name, content); // reversed
 	return (0);
 }
 

@@ -87,20 +87,20 @@ void	*check_to_fork(t_cmdlist *cmd_list, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
 
-	node = cmd_list->content;
-	if (node->in == -1 || node->out == -1)
-		return NULL;
-	// printf("cd\n");
-	// printf("%s\n", node->cmd[0]);
+	// node = cmd_list->content;
+	// if (node->in == -1 || node->out == -1)
+	// 	return NULL;
+	// // printf("cd\n");
+	// // printf("%s\n", node->cmd[0]);
 
-	if (!ft_strcmp("cd", node->cmd[0]))
-		ft_cd(node, env);
-	else if (!ft_strcmp("env", node->cmd[0]))
-		ft_env(env);
-	else if (!ft_strcmp("pwd", node->cmd[0]))
-		ft_pwd();
-	else if (node->path)
-		exec_fork(cmd_list, fd, env);
+	// if (!ft_strcmp("cd", node->cmd[0]))
+	// 	ft_cd(node, env);
+	// else if (!ft_strcmp("env", node->cmd[0]))
+	// 	ft_env(env);
+	// else if (!ft_strcmp("pwd", node->cmd[0]))
+	// 	ft_pwd();
+	// else if (node->path)
+	// 	exec_fork(cmd_list, fd, env);
 	return("");
 }
 

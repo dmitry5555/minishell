@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 15:55:34 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/10/02 16:39:15 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,46 +77,47 @@ void	check_args(char *out, t_list *env)
 	free(out);
 
 	cmd_list = create_cmd_list(final_split(args, env), -1);
-	ft_find_right_paths(cmd_list);
-	while (cmd_list)
-	{
-		node = cmd_list->content;
-		if (!ft_strcmp(node->cmd[0], "./minishell"))
-			change_shlvl(env, 1);
-		exec_cmd(cmd_list, env);
-		cmd_list = cmd_list->next;
-	}
+	// ft_find_right_paths(cmd_list);
+	// while (cmd_list)
+	// {
+	// 	node = cmd_list->content;
+	// 	// if (!ft_strcmp(node->cmd[0], "./minishell"))
+	// 	// 	change_shlvl(env, 1);
+	// 	// exec_cmd(cmd_list, env);
+	// 	cmd_list = cmd_list->next;
+	// }
+	print_cmd_list(cmd_list);
 
 	// return (cmd_list);
 	// ft_cmdlstclear(&cmd_list, free_cmd_content);
 
 }
 
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char **env)
 {
-	t_list		*env;
 	t_cmd_node	*node;
 	t_cmdlist	*current;
 	t_cmdlist	*cmd_list;
-	char		*start;
+	t_list		*env_list;
+	char		*str;
 	char		*out;
 	char		*shlvl;
 	cmd_list = NULL;
 	out = NULL;
 
-	env = ft_env_parser(env);
+	env_list = ft_env(env);
 
 	while (argc && argv)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 
-		if (start)
-			out = readline(start);
+		if (str)
+			out = readline(str);
 		else
 			out = readline("guest@minishell $ ");
-		free(start);
-		check_args(out, env);
+		free(str);
+		check_args(out, env_list);
 	}
 	ft_cmdlstclear(&cmd_list, free_cmd_content);
 }

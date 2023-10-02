@@ -17,19 +17,41 @@ char	**get_key_value_pair(char *arg)
 }
 
 // parse ENV to linked list
-t_list *ft_env_parser(t_list *env)
+// t_list *ft_env_parser(char **env)
+// {
+// 	t_list 	env;
+// 	char	**env_lines;
+// 	char	**temp;
+// 	char	*shlvl;
+
+// 	env_lines ;
+// 	while (*env_lines)
+// 	{
+// 		temp = get_key_value_pair(*env_lines);
+// 		ft_add_new_node_end(&env, temp[0], temp[1], 1);
+// 		if (!ft_strcmp(temp[0],"OLDPWD"))
+// 			set_var(&env,"OLDPWD","");
+// 		ft_array_free(&temp);
+// 		env_lines++;
+// 	}
+// 	return(env);
+// }
+
+t_list *ft_env(char **environ)
 {
+	t_list	*env;
 	char	**env_lines;
 	char	**temp;
-	char	*shlvl;
 
+	env = NULL; // fixed the leak
 	env_lines = environ;
 	while (*env_lines)
 	{
 		temp = get_key_value_pair(*env_lines);
-		ft_add_new_node_end(&env, temp[0], temp[1], 1);
-		if (!ft_strcmp(temp[0],"OLDPWD"))
-			set_var(&env,"OLDPWD","");
+		// printf("var: %s\n", temp[0]);
+		// printf("val: %s\n", temp[1]);
+		ft_add_new_node_end(&env, temp[0], temp[1]);
+		ft_add_new_node_end(&env, temp[0], temp[1]);
 		ft_array_free(&temp);
 		env_lines++;
 	}

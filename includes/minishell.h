@@ -22,14 +22,13 @@
 # define ERR_FORK 8
 # define ERR_PIPE 9
 
-extern char **environ;
 
 typedef struct	s_list
 {
 	struct s_list	*next;
 	char			*name;
 	char			*content;
-	int				is_env;
+	// int				is_env;
 }	t_list;
 
 typedef struct s_cmdlist
@@ -92,8 +91,8 @@ char	**ft_array_extend(char **in, char *newstr);
 
 // Lists
 //t_list	*ft_lstnew(void const *content);
-void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2, int is_env);
-void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2, int is_env);
+void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2);
+void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2);
 int		ft_lstsize(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstadd_front(t_list **lst, t_list *new);
@@ -116,6 +115,7 @@ void		ft_cmdlstadd_back(t_cmdlist **lst, t_cmdlist *newnode);
 t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);
 void		free_cmd_content(void *content);
 void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
+void		print_cmd_list(t_cmdlist *cmd_list);
 
 // expansion
 char	*expand_home(char *str, t_list *envlist);
@@ -142,8 +142,7 @@ t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
 t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // builtin
-t_list	*ft_env_parser(t_list *env);
-void	ft_env(t_list *env);
+t_list *ft_env(char **environ);
 void	ft_echo(char **args);
 int		ft_pwd(void);
 int 	set_var(t_list **env, char *name, char *content);
