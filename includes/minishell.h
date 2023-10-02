@@ -60,7 +60,7 @@ void	*ft_error(int error_type, char *error_str, int error_code);
 void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *str1, const char *str2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int	ft_strchars_i(const char *s, char *set);
+int		ft_strchars_i(const char *s, char *set);
 int		nb_args(char **args);
 void	ft_putchar_fd(char ch, int fd);
 void	ft_putstr_fd(char *str, int fd);
