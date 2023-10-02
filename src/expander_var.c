@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 18:42:13 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 19:12:58 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,20 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 		pos = ft_strlen(str) - 1;
 	aux = ft_substr(str, 0, i - 1);
 	varname = ft_strndup(&str[i], pos);
-	printf("varname = %s\n", varname);
+	//printf("varname = %s\n", varname);
 	val = get_value(varname, envlist);
-	printf("val = '%s'\n", val);
+	//printf("val = '%s'\n", val);
 	if (!val && str[i] == '$')
 		val = ft_strdup("PID");
 	else if (!val && str[i] == '?')
 		val = ft_strdup("g_status");
 	path = ft_strjoin(aux, val);
 	free(val);
-	printf("path = '%s'\n", path);
-	printf("rest = '%s'\n", &str[i + pos]);
+	//printf("path = '%s'\n", path);
+	//printf("rest = '%s'\n", &str[i + pos]);
 	free(aux);
 	aux = ft_strjoin(path, &str[i + pos]);
-	printf("new = %s\n", aux);
+	//printf("new = %s\n", aux);
 	free(path);
 	free(str);
 	return (aux);
