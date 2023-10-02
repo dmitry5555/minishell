@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 15:54:11 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/10/02 18:42:13 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,13 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 	return (aux);
 }
 
-char	*expand_vars(char *str, int i, int in_sq, int in_dq, t_list *envlist)
+char	*expand_vars(char *str, int i, t_list *envlist)
 {
+	int	in_sq;
+	int	in_dq;
+
+	in_sq = 0;
+	in_dq = 0;
 	while (str && str[++i])
 	{
 		in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
@@ -89,8 +94,7 @@ char	*expand_vars(char *str, int i, int in_sq, int in_dq, t_list *envlist)
 		if (!in_sq && str[i] == '$' && str[i + 1] && \
 			((ft_strchars_i(&str[i + 1], "/~%^{}:; ") && !in_dq) || \
 			(ft_strchars_i(&str[i + 1], "/~%^{}:;\"") && in_dq)))
-			return (expand_vars(get_substr_var(str, ++i, envlist), -1, \
-				in_sq, in_sq, envlist));
+			return (expand_vars(get_substr_var(str, ++i, envlist), -1, envlist));
 	}
 	return (str);
 }

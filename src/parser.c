@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 17:13:40 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 18:42:50 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,13 @@ static char **final_split(char **args, t_list *envlist)
 	// return (args);
 	char	**subsplit;
 	int		i;
-	int		in_sq;
-	int		in_dq;
 
 	i = -1;
 	subsplit = NULL;
 	while (args && args[++i])
 	{
-		//args[i] = expand_vars(args[i], -1, in_sq, in_dq, envlist);
-		//args[i] = expand_path();
+		args[i] = expand_vars(args[i], -1, envlist);
+		args[i] = expand_home(args[i], -1, envlist);
 		subsplit = ft_subsplit(args[i], "<|>");
 		//ft_print_array(subsplit);
 		ft_array_replace_in(&args, subsplit, i);
