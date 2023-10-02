@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/15 18:35:35 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 15:40:43 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,60 @@ t_cmd_node	*fill_content(t_cmd_node *node, char **args, char **trim_args, int *i
     return (node);
 }
 
-static char *rm_quotes(char *str)
+static int	num_quotes_to_trim(char const *s1)
 {
-	int 	len;
-	char	*trimmed;
-	int		i;
+	int	qcount;
+	int	i;
+	int	in_dq;
+	int	in_sq;
 
 	i = 0;
-	len = ft_strlen(str);
-	if ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"' && str[len - 1] == '"'))
+	qcount = 0;
+	in_dq = 0;
+	in_sq = 0;
+	while (s1 && s1[i])
 	{
-		trimmed = malloc(sizeof(char) * (len - 2 + 1));
-		if (!trimmed)
-			return NULL;
-		while (++i < len - 1)
-			trimmed[i - 1] = str[i];
-		trimmed[i - 1] = '\0';
-		return (trimmed);
+		in_sq = (in_sq + (!in_dq && s1[i] == '\'')) % 2;
+		in_dq = (in_dq + (!in_sq && s1[i] == '\"')) % 2;
+		if ((s1[i] == '\"' && !in_sq) || (s1[i] == '\'' && !in_dq))
+			qcount++;
+		i++;
 	}
-	else
-		return (str);
+	if (in_sq || in_dq)
+		return (-1);
+	return (qcount);
 }
 
-static char	**get_trimmed(char **args)
+//returns the string with quote characters trimmed
+char	*ft_trim_quotes(char const *s1, int in_sq, int in_dq)
+{
+	int		qcount;
+	int		i;
+	int		j;
+	char	*trimmed;
+
+	j = -1;
+	i = 0;
+	qcount = num_quotes_to_trim(s1);
+	if (!s1 || qcount == -1)
+		return (NULL);
+	trimmed = malloc(sizeof(char) * (ft_strlen(s1) - qcount + 1));
+	if (!trimmed)
+		return (NULL);
+	while (s1[i])
+	{
+		in_sq = (in_sq + (!in_dq && s1[i] == '\'')) % 2;
+		in_dq = (in_dq + (!in_sq && s1[i] == '\"')) % 2;
+		if ((s1[i] != '\"' || in_sq) && (s1[i] != '\'' || in_dq) \
+			&& ++j >= 0)
+			trimmed[j] = s1[i];
+		i++;
+	}
+	trimmed[++j] = '\0';
+	return (trimmed);
+}
+
+char	**get_trimmed_array(char **args)
 {
 	char	**tmp_array;
 	char	*trimmed;
@@ -74,7 +105,7 @@ static char	**get_trimmed(char **args)
 	tmp_array = ft_dup_array(args);
 	while (tmp_array && tmp_array[++j])
 	{
-		trimmed = rm_quotes(tmp_array[j]);
+		trimmed = ft_trim_quotes(tmp_array[j], 0, 0);
 		if (trimmed != tmp_array[j])
 		{
 			free(tmp_array[j]);
@@ -100,7 +131,7 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 	char		**trimmed_args;
 
 	cmds = NULL;
-	trimmed_args = get_trimmed(args);
+	trimmed_args = get_trimmed_array(args);
 	while (args && args[++i])
 	{
 		//printf("args[%d] = %s\n", i, args[i]);

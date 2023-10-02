@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/09/13 21:49:02 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 15:54:11 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,6 @@ int	ft_isalnum(int c)
 		return (1);
 }
 
-char    *get_varname(char *str, int bgn, int *end)
-{
-    int tmp_end;
-    
-    tmp_end = bgn;
-	if ((str[tmp_end] == '$' && !str[tmp_end + 1]) || str[tmp_end + 1] == ' ' || str[tmp_end + 1] == '$')
-    {
-        *end = tmp_end + 1;
-		return (ft_strdup("$$"));
-    }
-    else if ((str[tmp_end] == '?' && !str[tmp_end + 1]) || str[tmp_end + 1] == ' ' || str[tmp_end + 1] == '$')
-    {
-        *end = tmp_end + 1;
-        return (ft_strdup("$?"));
-    }
-    else 
-    {
-        while (str[tmp_end] && str[tmp_end] != ' ' && (ft_isalnum(str[tmp_end]) || str[tmp_end] == '_'))
-            tmp_end++;
-        *end = tmp_end;
-    }
-    return (ft_strndup(&str[bgn], tmp_end - bgn));
-}
-
 char    *get_value(char *varname, t_list *envlist)
 {
     char *varvalue;
@@ -66,92 +42,57 @@ char    *get_value(char *varname, t_list *envlist)
         varvalue = "GLOBAL_VAR"; //replace with global variable
     else
         varvalue = get_content_by_name(envlist, varname);
-    if (!varvalue)
-        varvalue = "";
     free(varname);
-    return (varvalue);
+	if (!varvalue)
+        return (NULL);
+    return (ft_strdup(varvalue));
 }
 
-char    *expand_vars(char *str, t_list *envlist)
+static char	*get_substr_var(char *str, int i, t_list *envlist)
 {
-    int     i;
-    char    *varname;
-    char    *varvalue;
-    char    *tmp_result;
-    char    *tmp_char;
-    char    *result;
-    int     var_end;
+	char	*aux;
+	int		pos;
+	char	*path;
+	char	*val;
+	char	*varname;
 
-    result = ft_strdup("");
-    i = -1;
-    var_end = 0;
-    while (str[++i])
-    {
-        //printf("str[i] = %c\n", str[i]);
-        if (str[i] == '$' && str[i + 1])
-        {
-            i++;
-            varname = get_varname(str, i, &var_end);
-            //printf("varname = [%s]\n", varname);
-			if (strcmp(varname, "$") == 0)
-				varvalue = "$";
-            else
-                varvalue = get_value(varname, envlist);
-            //printf("varvalue = [%s]\n", varvalue);
-            if (varvalue != NULL)
-            {
-                tmp_result = ft_strjoin(result, varvalue);
-                if (tmp_result)
-                {
-                    free(result);
-                    result = tmp_result;
-                    //free(tmp_result);
-                }
-            }
-            i = var_end - 1;
-        }
-        else
-        {
-            tmp_char = strndup(&str[i], 1);
-            //printf("tmp_char = %s\n", tmp_char);
-            tmp_result = ft_strjoin(result, tmp_char);
-            free(result);
-            result = tmp_result;
-            free(tmp_char);
-            //free(tmp_result);
-        }
-		//printf("result = %s\n\n", result);
-    }
-    return (result);
+	pos = ft_strchars_i(&str[i], "|\"\'$?>< ") + (ft_strchr("$?", str[i]) != 0);
+	if (pos == -1)
+		pos = ft_strlen(str) - 1;
+	aux = ft_substr(str, 0, i - 1);
+	varname = ft_strndup(&str[i], pos);
+	printf("varname = %s\n", varname);
+	val = get_value(varname, envlist);
+	printf("val = '%s'\n", val);
+	if (!val && str[i] == '$')
+		val = ft_strdup("PID");
+	else if (!val && str[i] == '?')
+		val = ft_strdup("g_status");
+	path = ft_strjoin(aux, val);
+	free(val);
+	printf("path = '%s'\n", path);
+	printf("rest = '%s'\n", &str[i + pos]);
+	free(aux);
+	aux = ft_strjoin(path, &str[i + pos]);
+	printf("new = %s\n", aux);
+	free(path);
+	free(str);
+	return (aux);
 }
 
-void    expand_all(char **args, t_list *envlist)
+char	*expand_vars(char *str, int i, int in_sq, int in_dq, t_list *envlist)
 {
-    char    *temp;
-    char    *temp2;
-    int     i;
-
-    i = -1;
-    while (args && args[++i])
-    {
-        if (args[i][0] != '\'' && args[i][ft_strlen(args[i]) - 1] != '\'')
-        {
-            temp = expand_vars(args[i], envlist);
-            if (temp)
-            {
-                free(args[i]);
-                args[i] = temp;
-            }
-
-        }
-        if ((args[i][0] != '\'' && args[i][ft_strlen(args[i]) - 1] != '\'')
-            || (args[i][0] != '"' && args[i][ft_strlen(args[i]) - 1] != '"'))
-        {
-            temp2 = expand_home(args[i], envlist);
-            free(args[i]);
-            args[i] = temp2;
-        }
-    }
+	while (str && str[++i])
+	{
+		in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
+		in_dq = (in_dq + (!in_sq && str[i] == '\"')) % 2;
+		if (!in_sq && str[i] == '$' && str[i + 1] && \
+			((ft_strchars_i(&str[i + 1], "/~%^{}:; ") && !in_dq) || \
+			(ft_strchars_i(&str[i + 1], "/~%^{}:;\"") && in_dq)))
+			return (expand_vars(get_substr_var(str, ++i, envlist), -1, \
+				in_sq, in_sq, envlist));
+	}
+	return (str);
 }
 
 // int main(void)

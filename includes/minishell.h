@@ -60,6 +60,7 @@ void	*ft_error(int error_type, char *error_str, int error_code);
 void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *str1, const char *str2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_strchars_i(const char *s, char *set);
 int		nb_args(char **args);
 void	ft_putchar_fd(char ch, int fd);
 void	ft_putstr_fd(char *str, int fd);
@@ -104,6 +105,10 @@ void	ft_free_list(t_list *list);
 void	ft_cleanup(t_list **env);
 char	*get_content_by_name(t_list *head, const char *name);
 
+// lexer
+char		**ft_split_cmds(const char *s, char *set);
+char		**ft_subsplit(char const *s, char *set);
+
 // Command List
 t_cmd_node	*init_cmd_node(void);
 t_cmdlist	*ft_cmdlstnew(void *content);
@@ -112,15 +117,9 @@ t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);
 void		free_cmd_content(void *content);
 void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 
-// lexer
-static int	ft_count_words(char *str);
-static char	**ft_create_array(char *str, int wordcount);
-char		**ft_split_cmds(char *s);
-char		**ft_subsplit(char **array, char *set, int i);
-
 // expansion
 char	*expand_home(char *str, t_list *envlist);
-void	expand_all(char **args, t_list *envlist);
+char	*expand_vars(char *str, int i, int in_sq, int in_dq, t_list *envlist);
 int 	is_user_home(char *str, t_list *envlist);
 char	*expand_home(char *str, t_list *envlist);
 

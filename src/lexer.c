@@ -2,252 +2,84 @@
 
 // lexer analysis
 // 1. split and remove whitespace
-// *count words*
-// static int	ft_count_words(const char *s, char *c)
-// {
-// 	int		in_quotes;
-// 	char	quote;
-// 	int		nwords;
-// 	int		i;
-
-// 	in_quotes = 0;
-// 	quote = 0;
-// 	nwords = 0; // initialize nwords to 0
-// 	i = 0;
-// 	while (s[i] != '\0')
-// 	{
-// 		if (!ft_strchr(c, s[i]))
-// 		{
-// 			nwords++;
-// 			while ((!ft_strchr(c, s[i]) || in_quotes) && s[i] != '\0')
-// 			{
-// 				if (!in_quotes && (s[i] == '\"' || s[i] == '\''))
-// 					quote = s[i];
-// 				in_quotes = (in_quotes + (s[i] == quote)) % 2;
-// 				in_quotes *= in_quotes != 0;
-// 				i++;
-// 			}
-// 			if (in_quotes)
-// 				return (-1);
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	return (nwords);
-// }
-
-// static char	**ft_fill_array(char **array, char const *s, char *set, int start, int *end)
-// {
-//     int		len;
-//     int		in_single_quotes;
-//     int		in_double_quotes;
-//     int		i;
-//     int		j;
-
-//     len = ft_strlen(s);
-//     in_single_quotes = 0;
-//     in_double_quotes = 0;
-//     i = *end; // start from the end index
-//     j = start;
-//     while (i < len && s[i] != '\0')
-//     {
-//         while (ft_strchr(set, s[i]) && s[i] != '\0')
-//             i++;
-//         j = i;
-//         while ((!ft_strchr(set, s[i]) || in_single_quotes || in_double_quotes) && s[i] != '\0')
-//         {
-//             if (s[i] == '\'' && !in_double_quotes)
-//                 in_single_quotes = !in_single_quotes;
-//             else if (s[i] == '\"' && !in_single_quotes)
-//                 in_double_quotes = !in_double_quotes;
-//             i++;
-//         }
-//         if (j >= len)
-//             array[start++] = NULL;
-//         else
-//             array[start++] = ft_substr(s, j, i - j);
-//     }
-//     *end = i; // update the end index
-//     return (array);
-// }
-
-// char	**ft_split_cmds(char const *s, char *set)
-// {
-// 	char	**array;
-// 	int		nwords;
-//     int     end;
-
-// 	if (!s)
-// 		return (NULL);
-// 	nwords = ft_count_words(s, set);
-// 	printf("nwords = %d\n", nwords);
-// 	if (nwords == -1)
-// 		return (NULL);
-// 	array = malloc((nwords + 1) * sizeof(char *));
-// 	if (array == NULL)
-// 		return (NULL);
-//     end = 0;
-// 	array = ft_fill_array(array, s, set, 0, &end);
-//     if (end >= ft_strlen(s))
-//         array[nwords] = NULL; // handle the case where the last substring is empty
-// 	return (array);
-// }
-
-static int	ft_count_words(char *str)
+static int ft_count_words(const char *str, char *set, int i)
 {
-	int	wordcount = 0;
-	int	start = 0;
-	int	i = 0;
-	int	flag_sq = 0;
-	int	flag_dq = 0;
-	int	flag_rd = 0;
+	int		in_quotes;
+	char	quote_type;
+	int		nwords;
 
-	while (str[i])
+	in_quotes = 0;
+	quote_type = 0;
+	nwords = 0;
+	while (str[i] != '\0')
 	{
-		if (str[i] == 39 && !flag_dq) // single
+		if (!ft_strchr(set, str[i])) //check if not delimeter
 		{
-			if (!flag_sq)
+			nwords++;
+			while ((!ft_strchr(set, str[i]) || in_quotes) && str[i] != '\0')
 			{
-				flag_sq = 1;
-				start = i;
+				if (!quote_type && (str[i] == '\"' || str[i] == '\''))
+					quote_type = str[i];
+				in_quotes = (in_quotes + (str[i] == quote_type)) % 2; //increments in_quotes based on matching quotes
+				if (!in_quotes) //if not still in_quotes, quote_type = 0; else, quote_type = char
+                	quote_type *= 0;
+				i++;
 			}
-			else
-			{
-				wordcount++;
-				flag_sq = 0;
-				start = -1;
-			}
+			if (in_quotes)
+				return (-1);
 		}
-
-		if (str[i] == 34 && !flag_sq) // double
-		{
-			if (!flag_dq)
-			{
-				flag_dq = 1;
-				start = i;
-			}
-			else
-			{
-				// printf("DQ END ++ \\n");
-				wordcount++;
-				flag_dq = 0;
-				start = -1;
-			}
-
-		}
-		if (str[i] && !flag_sq && !flag_dq && str[i] != 34 && str[i] != 39)
-		{
-			// if not space start reading
-			if (!flag_rd && str[i] != ' ')
-			{
-				// printf("last word start\\n");
-				flag_rd = 1;
-				start = i;
-			}
-			// reach the end of word - if next one is space or quotes or EOL
-			if (flag_rd && (str[i+1] == ' ' || str[i+1] == 34 || str[i+1] == 39 || !str[i+1]))
-			{
-				// printf("last word end\\n");
-				wordcount++;
-				flag_rd = 0;
-			}
-		}
-
-		i++;
+		else
+			i++;
 	}
-	if (flag_dq || flag_sq)
-		return (-1);
-	return (wordcount);
+	return (nwords);
 }
 
-
-static char	**ft_create_array(char *str, int wordcount)
+static char **ft_fill_array(char **array, const char *str, char *set, int i)
 {
-	char **array;
-	int	start = 0;
-	int	i = 0;
-	int	j = 0;
-	int	flag_sq = 0;
-	int	flag_dq = 0;
-	int	flag_rd = 0;
+    int str_len;
+	int	word_start;
+    int in_sq;
+    int in_dq;
+    int j;
 
-	array = malloc(sizeof(char *) * (wordcount + 1));
-	if (!array)
-		return (NULL);
+	str_len = ft_strlen(str);
+	in_sq = 0;
+	in_dq = 0;
+	j = 0;
 	while (str[i])
-	{
-		if (str[i] == 39 && !flag_dq) // single
-		{
-			if (!flag_sq)
-			{
-				flag_sq = 1;
-				start = i;
-			}
-			else
-			{
-				array[j++] = ft_strndup(&str[start], i - start + 1);
-				flag_sq = 0;
-				start = -1;
-			}
-
-		}
-
-		if (str[i] == 34 && !flag_sq) // double
-		{
-			if (!flag_dq)
-			{
-				flag_dq = 1;
-				start = i;
-			}
-			else
-			{
-				array[j++] = ft_strndup(&str[start], i - start + 1);
-				flag_dq = 0;
-				start = -1;
-			}
-
-		}
-
-		if (str[i] && !flag_sq && !flag_dq && str[i] != 34 && str[i] != 39)
-		{
-			// if not space start reading
-			if (!flag_rd && str[i] != ' ')
-			{
-				// printf("last word start\\n");
-				flag_rd = 1;
-				start = i;
-			}
-			// reach the end of word - if next one is space or quotes or EOL
-			if (flag_rd && (str[i+1] == ' ' || str[i+1] == 34 || str[i+1] == 39 || !str[i+1]))
-			{
-				// printf("last word end\\n");
-				array[j++] = ft_strndup(&str[start], i - start + 1);
-				flag_rd = 0;
-			}
-		}
-		i++;
-	}
-	array[j++] = NULL;
-	return (array);
-
+    {
+        while (ft_strchr(set, str[i]) && str[i] != '\0')
+            i++;
+        word_start = i;
+        while ((!ft_strchr(set, str[i]) || in_sq || in_dq) && str[i])
+        {
+            in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
+            in_dq = (in_dq + (!in_sq && str[i] == '\"')) % 2;
+            i++;
+        }
+        if (word_start >= str_len)
+            array[j++] = "\0";
+        else
+            array[j++] = ft_substr(str, word_start, i - word_start);
+    }
+    return (array);
 }
 
-char **ft_split_cmds(char *s)
+char	**ft_split_cmds(const char *s, char *set)
 {
 	char	**array;
 	int		nwords;
 
 	if (!s)
 		return (NULL);
-	nwords = ft_count_words(s);
-	// printf("wordcount: %d\n", nwords);
+	nwords = ft_count_words(s, set, 0);
 	if (nwords == -1)
 		return (NULL);
-	// array = malloc(sizeof(char *) * (nwords + 1));
-	// if (!array)
-	// 	return (NULL);
-	array = ft_create_array(s, nwords);
-	// array[nwords] = NULL;
+	array = malloc((nwords + 1) * sizeof(char *));
+	if (array == NULL)
+		return (NULL);
+	array = ft_fill_array(array, s, set, 0);
+	array[nwords] = NULL;
 	return (array);
 }
 

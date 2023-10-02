@@ -37,6 +37,22 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
+int	ft_strchars_i(const char *s, char *set)
+{
+	int				i;
+
+	i = 0;
+	if (!s)
+		return (-1);
+	while (s[i] != '\0')
+	{
+		if (ft_strchr(set, s[i]))
+			return (i);
+		i++;
+	}
+	return (-1);
+}	
+
 //  counts number of arguments X in arr[x][y]
 
 int	nb_args(char **args)
