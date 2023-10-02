@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 18:42:50 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 19:27:38 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,15 @@ void	check_args(char *out, t_list *env)
 		ft_error(ERR_QUOTE, NULL, 2);
 	if (args)
 	{
+		cmd_list = create_cmd_list(final_split(args, env), -1);
+		print_cmd_list(cmd_list);
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
 		// printf("AFTER FT_SPLIT_CMDS:\n");
 		// ft_print_array(args);
 	}
 	free(out);
 
-	cmd_list = create_cmd_list(final_split(args, env), -1);
+	
 	// ft_find_right_paths(cmd_list);
 	// while (cmd_list)
 	// {
@@ -86,11 +89,9 @@ void	check_args(char *out, t_list *env)
 	// 	// exec_cmd(cmd_list, env);
 	// 	cmd_list = cmd_list->next;
 	// }
-	print_cmd_list(cmd_list);
+	
 
 	// return (cmd_list);
-	ft_cmdlstclear(&cmd_list, free_cmd_content);
-
 }
 
 int	main(int argc, char *argv[], char **env)
