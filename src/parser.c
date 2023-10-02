@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 16:58:25 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 17:13:40 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ static char **final_split(char **args, t_list *envlist)
 	int		in_dq;
 
 	i = -1;
+	subsplit = NULL;
 	while (args && args[++i])
 	{
-		args[i] = expand_vars(args[i], -1, in_sq, in_dq, envlist);
+		//args[i] = expand_vars(args[i], -1, in_sq, in_dq, envlist);
 		//args[i] = expand_path();
 		subsplit = ft_subsplit(args[i], "<|>");
 		//ft_print_array(subsplit);
@@ -90,7 +91,7 @@ void	check_args(char *out, t_list *env)
 	print_cmd_list(cmd_list);
 
 	// return (cmd_list);
-	// ft_cmdlstclear(&cmd_list, free_cmd_content);
+	ft_cmdlstclear(&cmd_list, free_cmd_content);
 
 }
 
@@ -100,7 +101,7 @@ int	main(int argc, char *argv[], char **env)
 	t_cmdlist	*current;
 	t_cmdlist	*cmd_list;
 	t_list		*env_list;
-	char		*str;
+	// char		*str;
 	char		*out;
 	char		*shlvl;
 	cmd_list = NULL;
@@ -113,11 +114,11 @@ int	main(int argc, char *argv[], char **env)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 
-		if (str)
-			out = readline(str);
-		else
+		// if (str)
+		// 	out = readline(str);
+		// else
 			out = readline("guest@minishell $ ");
-		free(str);
+		// free(str);
 		check_args(out, env_list);
 	}
 	ft_cmdlstclear(&cmd_list, free_cmd_content);
