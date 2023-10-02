@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/10/02 15:40:43 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/10/02 19:06:40 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,27 @@
 t_cmd_node	*fill_content(t_cmd_node *node, char **args, char **trim_args, int *i)
 {
 	if (args[*i])
-    {
-        if (args[*i][0] == '>' && args[*i + 1] && args[*i + 1][0] == '>') //append
-            node = get_outfile_append(node, trim_args, i);
-        else if (args[*i][0] == '>')
-            node = get_outfile(node, trim_args, i);
-        else if (args[*i][0] == '<' && args[*i + 1] && args[*i + 1][0] == '<') //heredoc
-            node = get_infile_heredoc(node, trim_args, i);
-        else if (args[*i][0] == '<')
-            node = get_infile(node, trim_args, i);
-        else if (args[*i][0] != '|')
+	{
+		if (args[*i][0] == '>' && args[*i + 1] && args[*i + 1][0] == '>') //append
+			node = get_outfile_append(node, trim_args, i);
+		else if (args[*i][0] == '>')
+			node = get_outfile(node, trim_args, i);
+		else if (args[*i][0] == '<' && args[*i + 1] && args[*i + 1][0] == '<') //heredoc
+			node = get_infile_heredoc(node, trim_args, i);
+		else if (args[*i][0] == '<')
+			node = get_infile(node, trim_args, i);
+		else if (args[*i][0] != '|')
+			node->cmd = ft_array_extend(node->cmd, trim_args[*i]);
+		else
 		{
-			//printf("add node->cmd[%i]\n", *i);
-            node->cmd = ft_array_extend(node->cmd, trim_args[*i]);
-			//printf("finished add node->cmd[%i]\n", *i);
+			//error
+			*i = -2;
 		}
-        else
-        {
-            //error
-            *i = -2;
-        }
-        return (node);
-    }
-    //error
-    *i = -2;
-    return (node);
+		return (node);
+	}
+	//error
+	*i = -2;
+	return (node);
 }
 
 static int	num_quotes_to_trim(char const *s1)
@@ -134,24 +130,18 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 	trimmed_args = get_trimmed_array(args);
 	while (args && args[++i])
 	{
-		//printf("args[%d] = %s\n", i, args[i]);
 		current_cmd = ft_cmdlstlast(cmds);
 		if (i == 0 || (args[i][0] == '|' && args[i + 1] && args[i + 1][0]))
 		{
 			if (args[i][0] == '|')
 				i++;
-			//printf("add new node\n");
 			ft_cmdlstadd_back(&cmds, ft_cmdlstnew(init_cmd_node()));
 			current_cmd = ft_cmdlstlast(cmds);
 		}
-		//printf("FILLING NODE\n");
 		temp_args = args;
 		current_cmd->content = fill_content(current_cmd->content, temp_args, trimmed_args, &i);
-		 if (i < 0)
-		 {
-		 	//printf("ERROR!\n");
-		 	return (fill_cmdlst_error(cmds, args, temp_args));
-		 }
+		if (i < 0)
+			return (fill_cmdlst_error(cmds, args, temp_args));
 		if (!args[i])
 			break ;
 	}

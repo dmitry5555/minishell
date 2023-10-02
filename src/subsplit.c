@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 17:15:30 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/02 19:00:40 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_sub_count_words(const char *s, char *set, int i)
 {
 	int	in_sq;
 	int	in_dq;
-	int nwords;
+	int	nwords;
 
 	in_sq = 0;
 	in_dq = 0;
@@ -41,23 +41,23 @@ static int	ft_sub_count_words(const char *s, char *set, int i)
 	return (nwords);
 }
 
-static char **ft_sub_fill_array(char **array, const char *str, char *set, int i)
+static char	**ft_sub_fill_array(char **array, const char *str, char *set, int i)
 {
-    int str_len;
+	int	str_len;
 	int	word_start;
-    int in_sq;
-    int in_dq;
-    int j;
+	int	in_sq;
+	int	in_dq;
+	int	j;
 
 	str_len = ft_strlen(str);
 	in_sq = 0;
 	in_dq = 0;
 	j = 0;
 	while (str && str[i] != '\0')
-    {
+	{
 		word_start = i;
-        if (!ft_strchr(set, str[i]))
-        {
+		if (!ft_strchr(set, str[i]))
+		{
 			while ((!ft_strchr(set, str[i]) || in_dq || in_sq) && str[i])
 			{
 				in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
@@ -70,7 +70,7 @@ static char **ft_sub_fill_array(char **array, const char *str, char *set, int i)
 		array[j++] = ft_substr(str, word_start, i - word_start);
 	}
 	array[j] = NULL;
-    return (array);
+	return (array);
 }
 
 char	**ft_subsplit(const char *s, char *set)
@@ -87,7 +87,6 @@ char	**ft_subsplit(const char *s, char *set)
 	if (array == NULL)
 		return (NULL);
 	array = ft_sub_fill_array(array, s, set, 0);
-	// array[nwords] = NULL;
 	return (array);
 }
 
