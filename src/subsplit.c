@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subsplit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 15:53:12 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/10/02 16:54:51 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static char **ft_sub_fill_array(char **array, const char *str, char *set, int i)
 			i++;
 		array[j++] = ft_substr(str, word_start, i - word_start);
 	}
+	array[j] = NULL;
     return (array);
 }
 
@@ -85,7 +86,7 @@ char	**ft_subsplit(const char *s, char *set)
 	if (array == NULL)
 		return (NULL);
 	array = ft_sub_fill_array(array, s, set, 0);
-	array[nwords] = NULL;
+	// array[nwords] = NULL;
 	return (array);
 }
 

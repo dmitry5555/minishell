@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 16:39:15 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:58:25 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static char **final_split(char **args, t_list *envlist)
 		args[i] = expand_vars(args[i], -1, in_sq, in_dq, envlist);
 		//args[i] = expand_path();
 		subsplit = ft_subsplit(args[i], "<|>");
+		//ft_print_array(subsplit);
 		ft_array_replace_in(&args, subsplit, i);
 		i += ft_array_len(subsplit) - 1;
 		ft_array_free(&subsplit);
