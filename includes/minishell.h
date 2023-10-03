@@ -129,10 +129,7 @@ t_cmdlist	*create_cmd_list(char **args, int i);
 void	handle_esc(char *str);
 int		ft_test_pipes(t_cmdlist *cmd_list);
 void	exec_cmd(t_cmdlist *cmd_list, t_list *env);
-void	*check_to_fork(t_cmdlist *cmd_list, int fd[2], t_list *env);
-void	exec_fork(t_cmdlist *cmd, int fd[2], t_list *env);
-void	*child_process(t_cmdlist *cmd, int fd[2], t_list *env);
-void	*child_builtin(t_cmdlist *cmd, int fd[2], t_list *env);
+void	sig_hand(int sig);
 
 // get fd
 t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);

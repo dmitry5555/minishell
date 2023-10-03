@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 19:27:38 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/03 11:34:17 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,59 +51,14 @@ void change_shlvl(t_list *env, int inc)
 	}
 }
 
-void	check_args(char *out, t_list *env)
-{
-	char **args;
-	int		shlvl;
-	t_cmdlist *cmd_list;
-	t_cmd_node *node;
-
-	cmd_list = NULL;
-	if (!out)
-	{
-		printf("exit\n");
-		return ;
-	}
-	if (out[0] != '\0')
-		add_history(out);
-	args = ft_split_cmds(out, " ");
-	if (!args)
-		ft_error(ERR_QUOTE, NULL, 2);
-	if (args)
-	{
-		cmd_list = create_cmd_list(final_split(args, env), -1);
-		print_cmd_list(cmd_list);
-		ft_cmdlstclear(&cmd_list, free_cmd_content);
-		// printf("AFTER FT_SPLIT_CMDS:\n");
-		// ft_print_array(args);
-	}
-	free(out);
-
-	
-	// ft_find_right_paths(cmd_list);
-	// while (cmd_list)
-	// {
-	// 	node = cmd_list->content;
-	// 	// if (!ft_strcmp(node->cmd[0], "./minishell"))
-	// 	// 	change_shlvl(env, 1);
-	// 	// exec_cmd(cmd_list, env);
-	// 	cmd_list = cmd_list->next;
-	// }
-	
-
-	// return (cmd_list);
-}
-
 int	main(int argc, char *argv[], char **env)
 {
 	t_cmd_node	*node;
 	t_cmdlist	*current;
-	t_cmdlist	*cmd_list;
 	t_list		*env_list;
-	// char		*str;
+
 	char		*out;
 	char		*shlvl;
-	cmd_list = NULL;
 	out = NULL;
 
 	env_list = ft_env(env);
@@ -113,12 +68,8 @@ int	main(int argc, char *argv[], char **env)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 
-		// if (str)
-		// 	out = readline(str);
-		// else
-			out = readline("guest@minishell $ ");
-		// free(str);
-		check_args(out, env_list);
+		out = readline("guest@minishell $ ");
+		exec_all(out, env_list);
+
 	}
-	ft_cmdlstclear(&cmd_list, free_cmd_content);
 }
