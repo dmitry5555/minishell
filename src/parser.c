@@ -6,13 +6,13 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/03 11:34:17 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/03 19:16:35 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+# include "minishell.h"
 
-static char **final_split(char **args, t_list *envlist)
+char **final_split(char **args, t_list *envlist)
 {
 	// expand_all(args, envlist);
 	// args = ft_subsplit(args, "<|>", -1);
@@ -48,28 +48,5 @@ void change_shlvl(t_list *env, int inc)
 			// set_var(&env, "SHLVL", "2");
 		}
 		env = env->next;
-	}
-}
-
-int	main(int argc, char *argv[], char **env)
-{
-	t_cmd_node	*node;
-	t_cmdlist	*current;
-	t_list		*env_list;
-
-	char		*out;
-	char		*shlvl;
-	out = NULL;
-
-	env_list = ft_env(env);
-
-	while (argc && argv)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-
-		out = readline("guest@minishell $ ");
-		exec_all(out, env_list);
-
 	}
 }

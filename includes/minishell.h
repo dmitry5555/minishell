@@ -121,6 +121,7 @@ void		print_cmd_list(t_cmdlist *cmd_list);
 char	*expand_vars(char *str, int i, t_list *envlist);
 int 	is_user_home(char *str, t_list *envlist);
 char	*expand_home(char *str, int i, t_list *envlist);
+char 	**final_split(char **args, t_list *envlist);
 
 // Create command list
 t_cmdlist	*create_cmd_list(char **args, int i);

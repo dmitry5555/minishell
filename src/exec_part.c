@@ -57,3 +57,27 @@ void	exec_all(char *out, t_list *env)
 	}
 	free(out);
 }
+
+
+int	main(int argc, char *argv[], char **env)
+{
+	t_cmd_node	*node;
+	t_cmdlist	*current;
+	t_list		*env_list;
+
+	char		*out;
+	char		*shlvl;
+	out = NULL;
+
+	env_list = ft_env(env);
+
+	while (argc && argv)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+
+		out = readline("guest@minishell $ ");
+		exec_all(out, env_list);
+
+	}
+}
