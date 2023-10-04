@@ -1,5 +1,7 @@
 # include "minishell.h"
 
+extern int g_status;
+
 // print cmd list for testing
 void	print_cmd_list(t_cmdlist *cmd_list)
 {
@@ -66,46 +68,72 @@ void	run_cmds(t_cmdlist *cmd_list)
 	perror("error");
 }
 
-
-void run_single(t_cmdlist *cmd_list)
+int run_single(t_cmdlist *cmd_list, int fd[2])
 {
 	t_cmd_node *node1;
-	t_cmd_node *node2;
-	t_cmd_node *node3;
 
 	node1 = (t_cmd_node *)cmd_list->content;
-	node2 = (t_cmd_node *)cmd_list->next->content;
+	// node2 = (t_cmd_node *)cmd_list->next->content;
 	// node3 = (t_cmd_node *)cmd_list->next->next->content;
 
 	// char *arr1[] = {"ls", "ls", "-1"};
 	// char *arr2[] = {"wc", "wc", "-l"};
 	// char *arr3[] = {"grep", "grep", "5"};
-	int fd[2];
-	pid_t pid;
 
-	pipe(fd);
-	pid = fork();
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		
+		pid_t pid;
 
-	if (pid != 0)
-	{
-		dup2(fd[1],1);
-		close(fd[0]);
-		execvp(node1->cmd[0], node1->cmd);
-		// execlp("ls", "ls", "-1", NULL);
-		perror("execvp");
-	}
-	else
-	{
-		dup2(fd[0], 0);
-		close(fd[1]);
-		execvp(node2->cmd[0], node2->cmd);
-		perror("execvp");
-	}
+		pid = fork();
 
+		if (pid == -1) //error
+		{
+			close(fd[READ_END]);
+			close(fd[WRITE_END]);
+			ft_error(ERR_FORK, NULL, 1);
+		}
+		else if (pid == 0) //child
+		{
+			// dup2(fd[WRITE_END], STDOUT_FILENO);
+			// close(fd[WRITE_END]);
+			// close(fd[READ_END]);
+			execvp(node1->cmd[0], node1->cmd);
+			// ft_cmdlstclear(&cmd_list, free_cmd_content);
+			// exit(g_status);
+			// execlp("ls", "ls", "-1", NULL);
+		}
+		else //parent
+		{
+			// dup2(fd[0], 0);
+			
+			// execvp(node2->cmd[0], node2->cmd);
+			// perror("execve");
+		}
+	return (1);
 }
 
-void	exec_all(char *out, t_list *env)
+int	run_multiple(t_cmdlist *cmd_list)
 {
+	int fd[2];
+	// pipe(fd);
+	while (cmd_list)
+	{
+		run_single(cmd_list, fd);
+		// close(fd[WRITE_END]);
+		// if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
+		// 	((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
+		// else
+		// 	close(fd[READ_END]);
+		cmd_list = cmd_list->next;
+	}
+	return (g_status);
+}
+
+int	exec_all(char *out, t_list *env)
+{
+	int	g_status;
+	int	i;
 	char **args;
 	// int		shlvl;
 	t_cmdlist *cmd_list;
@@ -119,23 +147,29 @@ void	exec_all(char *out, t_list *env)
 	// }
 	if (out[0] != '\0')
 		add_history(out);
-
 	args = ft_split_cmds(out, " "); // we get an array with cmds
+	free(out);
 	if (!args)
 		ft_error(ERR_QUOTE, NULL, 2);
 	if (args)
 	{
 		cmd_list = create_cmd_list(final_split(args, env), -1); // expand arr -> LL
+		if (!cmd_list)
+			return (1);
+		i = ft_cmdlstsize(cmd_list);
+		g_status = run_multiple(cmd_list);
+		while (i-- > 0)
+			waitpid(-1, &g_status, 0);
 		// ft_find_right_paths(cmd_list);
 		// print_cmd_list(cmd_list);
 		// run_cmds(cmd_list);
 		// ft_cmdlstclear(&cmd_list, free_cmd_content);
 		// printf("AFTER FT_SPLIT_CMDS:\n");
 		// ft_print_array(args);
+		return (1);
 
 	}
-	run_single(cmd_list);
-	free(out);
+	return (1);
 }
 
 
@@ -184,13 +218,10 @@ int	main(int argc, char *argv[], char **env)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 
-	// 	if (start)
-	// 		out = readline(start);
-	// 	else
-			out = readline("guest@minishell $ ");
-	// 	free(start);
+
+		out = readline("guest@minishell $ ");
 		exec_all(out, env_list);
-	// 	exec_all(out, envZ);
+
 	}
 	// ft_cmdlstclear(&cmd_list, free_cmd_content);
 }
