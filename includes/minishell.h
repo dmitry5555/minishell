@@ -110,6 +110,7 @@ char		**ft_subsplit(char const *s, char *set);
 
 // Command List
 t_cmd_node	*init_cmd_node(void);
+int 		ft_cmdlstsize(t_cmdlist *lst);
 t_cmdlist	*ft_cmdlstnew(void *content);
 void		ft_cmdlstadd_back(t_cmdlist **lst, t_cmdlist *newnode);
 t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);

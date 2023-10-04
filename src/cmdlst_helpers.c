@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmdlst_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 15:14:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/08 12:02:35 by justindaly       ###   ########.fr       */
+/*   Updated: 2023/10/04 21:15:04 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ t_cmd_node	*init_cmd_node(void)
 	node->in = STDIN_FILENO;
 	node->out = STDOUT_FILENO;
 	return (node);
+}
+
+int ft_cmdlstsize(t_cmdlist *lst)
+{
+	int i;
+	t_cmdlist *node;
+
+	i = 0;
+	node = lst;
+	while (node)
+	{
+		i++;
+		node = node->next;
+	}
+	return (i);
 }
 
 t_cmdlist	*ft_cmdlstnew(void *content)
