@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-extern int g_status;
+int g_status;
 
 // print cmd list for testing
 void	print_cmd_list(t_cmdlist *cmd_list)
@@ -84,7 +84,8 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2])
 		signal(SIGQUIT, SIG_IGN);
 		
 		pid_t pid;
-
+		if (node->in == -1 || node->out == -1)
+			return (NULL);
 		pid = fork();
 
 		if (pid == -1) //error
@@ -147,7 +148,6 @@ int	run_multiple(t_cmdlist *cmd_list)
 
 int	exec_all(char *out, t_list *env)
 {
-	int	g_status;
 	int	i;
 	char **args;
 	// int		shlvl;
