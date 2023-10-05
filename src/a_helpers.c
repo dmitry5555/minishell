@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:21:51 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/13 22:27:09 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/05 19:51:52 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,17 @@ void	ft_print_array(char **array)
 
 void ft_array_free(char ***array)
 {
-	char **arr = *array;
-	int i = 0;
+	int i;
 
-	if (arr)
+	i = 0;
+	while (array && array[0] && array[0][i])
 	{
-		while (arr[i])
-		{
-			free(arr[i]);
-			i++;
-		}
-		free(arr);
+		free(array[0][i]);
+		i++;
+	}
+	if (array)
+	{
+		free(array[0]);
 		*array = NULL;
 	}
 }
