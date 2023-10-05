@@ -22,6 +22,7 @@
 # define ERR_FORK 8
 # define ERR_PIPE 9
 
+extern int g_status;
 
 typedef struct	s_list
 {
