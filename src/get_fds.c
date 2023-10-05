@@ -6,13 +6,13 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:36:45 by justindaly        #+#    #+#             */
-/*   Updated: 2023/09/27 22:34:05 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/05 19:42:48 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_status = 0; //add extern
+int	g_status;
 
 int	get_fd(int oldfd, char *path, int flag1, int flag2)
 {
@@ -55,10 +55,10 @@ t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i)
 		if (node->out != -1)
 		{
 			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
-			//g_status = 2;
+			g_status = 2;
 		}
-		//else
-			//g_status = 1;
+		else
+			g_status = 1;
 	}
 	return (node);
 }
@@ -79,10 +79,10 @@ t_cmd_node	*get_outfile_append(t_cmd_node *node, char **args, int *i)
 		if (node->out != -1)
 		{
 			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
-			//g_status = 2;
+			g_status = 2;
 		}
-		//else
-			//g_status = 1;
+		else
+			g_status = 1;
 	}
 	return (node);
 }
