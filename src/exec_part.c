@@ -35,7 +35,7 @@ void single_node(t_cmd_node *node)
 	int fd[2];
 	pid_t pid;
 
-	pipe(fd);
+	
 	pid = fork();
 
 	if (pid!=0) // parent - accepting process
@@ -68,11 +68,11 @@ void	run_cmds(t_cmdlist *cmd_list)
 	perror("error");
 }
 
-int run_single(t_cmdlist *cmd_list, int fd[2])
+void	*run_single(t_cmdlist *cmd_list, int fd[2])
 {
-	t_cmd_node *node1;
+	t_cmd_node *node;
 
-	node1 = (t_cmd_node *)cmd_list->content;
+	node = (t_cmd_node *)cmd_list->content;
 	// node2 = (t_cmd_node *)cmd_list->next->content;
 	// node3 = (t_cmd_node *)cmd_list->next->next->content;
 
@@ -95,10 +95,24 @@ int run_single(t_cmdlist *cmd_list, int fd[2])
 		}
 		else if (pid == 0) //child
 		{
-			// dup2(fd[WRITE_END], STDOUT_FILENO);
-			// close(fd[WRITE_END]);
-			// close(fd[READ_END]);
-			execvp(node1->cmd[0], node1->cmd);
+			if (node->in != STDIN_FILENO)
+			{
+				if (dup2(node->in, STDIN_FILENO) == -1)
+					return (ft_error(ERR_DUP, NULL, 1));
+				close(node->in);
+			}
+			if (node->out != STDOUT_FILENO)
+			{
+				if (dup2(node->out, STDOUT_FILENO) == -1)
+					return (ft_error(ERR_DUP, NULL, 1));
+				close(node->out);
+			}
+			else if (cmd_list->next && dup2(fd[WRITE_END], STDOUT_FILENO) == -1)
+				return (ft_error(ERR_DUP, NULL, 1));
+			close(fd[WRITE_END]);
+			close(fd[READ_END]);
+		
+			execvp(node->cmd[0], node->cmd);
 			// ft_cmdlstclear(&cmd_list, free_cmd_content);
 			// exit(g_status);
 			// execlp("ls", "ls", "-1", NULL);
@@ -110,7 +124,7 @@ int run_single(t_cmdlist *cmd_list, int fd[2])
 			// execvp(node2->cmd[0], node2->cmd);
 			// perror("execve");
 		}
-	return (1);
+	return (cmd_list);
 }
 
 int	run_multiple(t_cmdlist *cmd_list)
@@ -119,12 +133,13 @@ int	run_multiple(t_cmdlist *cmd_list)
 	// pipe(fd);
 	while (cmd_list)
 	{
+		pipe(fd);
 		run_single(cmd_list, fd);
-		// close(fd[WRITE_END]);
-		// if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
-		// 	((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
-		// else
-		// 	close(fd[READ_END]);
+		close(fd[WRITE_END]);
+		if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
+			((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
+		else
+			close(fd[READ_END]);
 		cmd_list = cmd_list->next;
 	}
 	return (g_status);
