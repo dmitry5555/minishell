@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/10/02 19:06:40 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/06 19:55:21 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ t_cmdlist	*create_cmd_list(char **args, int i)
 		temp_args = args;
 		current_cmd->content = fill_content(current_cmd->content, temp_args, trimmed_args, &i);
 		if (i < 0)
-			return (fill_cmdlst_error(cmds, args, temp_args));
+			return (fill_cmdlst_error(cmds, args, trimmed_args));
 		if (!args[i])
 			break ;
 	}
