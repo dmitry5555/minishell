@@ -43,7 +43,7 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 			}
 
 			// Free the memory allocated for the command list
-			ft_cmdlstclear(&cmd_list, free_cmd_content);
+			// ft_cmdlstclear(&cmd_list, free_cmd_content);
 		}
 }
 
@@ -71,7 +71,7 @@ void single_node(t_cmd_node *node)
 
 }
 
-void	*run_single(t_cmdlist *cmd_list, int fd[2])
+void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
 	pid_t pid;
@@ -107,7 +107,7 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2])
 		close(fd[WRITE_END]);
 		close(fd[READ_END]);
 
-		execvp(node->cmd[0], node->cmd);
+		execve(node->path, node->cmd, NULL); //change env to array
 		// ft_cmdlstclear(&cmd_list, free_cmd_content);
 		// exit(g_status);
 		// execlp("ls", "ls", "-1", NULL);
@@ -140,8 +140,8 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 	int fd[2];
 	while (cmd_list)
 	{
-		if(0)
-		{}
+		// if(0)
+		// {}
 		// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
 		// {
 		// 	ft_cd(((t_cmd_node *)cmd_list->content), env);
@@ -158,12 +158,12 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 		// {
 		// 	ft_print_env(env);
 		// }
-		else
+		// else
 		{
 			pipe(fd);
 			// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") == 0)
 			// 	change_shlvl(env, )
-			run_single(cmd_list, fd);
+			run_single(cmd_list, fd, env);
 
 			close(fd[WRITE_END]);
 			if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
@@ -197,15 +197,14 @@ int	exec_all(char *out, t_list *env)
 		cmd_list = create_cmd_list(final_split(args, env), -1); // expand arr -> LL
 		if (!cmd_list)
 			return (1);
+		ft_find_right_paths(cmd_list);
 		i = ft_cmdlstsize(cmd_list);
 		g_status = run_multiple(cmd_list, env);
 		while (i-- > 0)
 			waitpid(-1, &g_status, 0);
-		// ft_find_right_paths(cmd_list);
 		// print_cmd_list(cmd_list);
-
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
 		return (1);
-
 	}
 	return (1);
 }
