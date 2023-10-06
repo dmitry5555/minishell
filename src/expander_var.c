@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 19:12:58 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/06 20:03:57 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
     1. $VARIABLE
     2. $VARIABLE_$VARIABLE --> jdaly
     3. $? --> expand to exit status
-    4. $$ --> expand to pid
+    ////////4. $$ --> expand to pid
 
     5. ~ --> /Users/jdaly
     6. ~jdaly --> /Users/jdaly
@@ -64,10 +64,10 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 	//printf("varname = %s\n", varname);
 	val = get_value(varname, envlist);
 	//printf("val = '%s'\n", val);
-	if (!val && str[i] == '$')
-		val = ft_strdup("PID");
-	else if (!val && str[i] == '?')
-		val = ft_strdup("g_status");
+	// if (!val && str[i] == '$')
+	// 	val = ft_strdup("PID");
+	if (!val && str[i] == '?')
+		val = ft_strdup(ft_itoa(g_status));
 	path = ft_strjoin(aux, val);
 	free(val);
 	//printf("path = '%s'\n", path);
