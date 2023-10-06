@@ -9,18 +9,31 @@ void ft_echo(char **args)
 
 	flag_n = 0;
 
-	i = 0; // where do we start??
-	// printf("%d", nb_args(args)) for testing
+	i = 0;
 	if (nb_args(args) > 1)
 	{
 		// remove all "-n" fro m the start and flag_n
- 		while (args[i] && (ft_strcmp(args[i],"-n") == 0))
+		while(args[i++] && args[i][0] == '-')
 		{
-			// printf("flag n \n");   for testing
-			flag_n = 1;
-			i++;
+			// if (args[i][0] == '-')
+			// {
+				int j = 1;
+				while (args[i][j] == 'n') //&& ((args[i][j + 1]) == ' ' || args[i][j + 1] == 'n'))
+					j++;
+				if (args[i][j] == '\0')
+				{
+					flag_n = 1;
+				}
+				// else
+				// 	i--;
+				// while(args[i] != ' ')
+			// }
+			// i += j;
 		}
+		if (!flag_n)
+			i--;
 		// continue with other args
+		// i = 0;
 		while (args[i])
 		{
 			ft_putstr_fd(args[i], 1);

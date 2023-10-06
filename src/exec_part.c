@@ -2,6 +2,23 @@
 
 int g_status;
 
+
+// change shlvl on new minishell / exit
+void change_shlvl(t_list *env, int inc)
+{
+	char *shlvl;
+
+	while(env)
+	{
+		if (!ft_strcmp(env->name, "SHLVL"))
+		{
+			env->content = ft_itoa(ft_atoi(env->content) + 1);
+			// set_var(&env, "SHLVL", "2");
+		}
+		env = env->next;
+	}
+}
+
 // print cmd list for testing
 void	print_cmd_list(t_cmdlist *cmd_list)
 {
@@ -35,7 +52,7 @@ void single_node(t_cmd_node *node)
 	int fd[2];
 	pid_t pid;
 
-	
+
 	pid = fork();
 
 	if (pid!=0) // parent - accepting process
@@ -54,93 +71,106 @@ void single_node(t_cmd_node *node)
 
 }
 
-void	run_cmds(t_cmdlist *cmd_list)
-{
-	t_cmd_node *node;
-
-	// while(cmd_list)
-	// {
-	node = (t_cmd_node *)cmd_list->content;
-	single_node(node);
-
-	// 	cmd_list = cmd_list->next;
-	// }
-	perror("error");
-}
-
 void	*run_single(t_cmdlist *cmd_list, int fd[2])
 {
 	t_cmd_node *node;
+	pid_t pid;
 
 	node = (t_cmd_node *)cmd_list->content;
-	// node2 = (t_cmd_node *)cmd_list->next->content;
-	// node3 = (t_cmd_node *)cmd_list->next->next->content;
-
-	// char *arr1[] = {"ls", "ls", "-1"};
-	// char *arr2[] = {"wc", "wc", "-l"};
-	// char *arr3[] = {"grep", "grep", "5"};
-
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		
-		pid_t pid;
-		if (node->in == -1 || node->out == -1)
-			return (NULL);
-		pid = fork();
-
-		if (pid == -1) //error
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (node->in == -1 || node->out == -1)
+		return (NULL);
+	pid = fork();
+	if (pid == -1) //error
+	{
+		close(fd[READ_END]);
+		close(fd[WRITE_END]);
+		ft_error(ERR_FORK, NULL, 1);
+	}
+	else if (pid == 0) //child
+	{
+		if (node->in != STDIN_FILENO)
 		{
-			close(fd[READ_END]);
-			close(fd[WRITE_END]);
-			ft_error(ERR_FORK, NULL, 1);
-		}
-		else if (pid == 0) //child
-		{
-			if (node->in != STDIN_FILENO)
-			{
-				if (dup2(node->in, STDIN_FILENO) == -1)
-					return (ft_error(ERR_DUP, NULL, 1));
-				close(node->in);
-			}
-			if (node->out != STDOUT_FILENO)
-			{
-				if (dup2(node->out, STDOUT_FILENO) == -1)
-					return (ft_error(ERR_DUP, NULL, 1));
-				close(node->out);
-			}
-			else if (cmd_list->next && dup2(fd[WRITE_END], STDOUT_FILENO) == -1)
+			if (dup2(node->in, STDIN_FILENO) == -1)
 				return (ft_error(ERR_DUP, NULL, 1));
-			close(fd[WRITE_END]);
-			close(fd[READ_END]);
-		
-			execvp(node->cmd[0], node->cmd);
-			// ft_cmdlstclear(&cmd_list, free_cmd_content);
-			// exit(g_status);
-			// execlp("ls", "ls", "-1", NULL);
+			close(node->in);
 		}
-		else //parent
+		if (node->out != STDOUT_FILENO)
 		{
-			// dup2(fd[0], 0);
-			
-			// execvp(node2->cmd[0], node2->cmd);
-			// perror("execve");
+			if (dup2(node->out, STDOUT_FILENO) == -1)
+				return (ft_error(ERR_DUP, NULL, 1));
+			close(node->out);
 		}
+		else if (cmd_list->next && dup2(fd[WRITE_END], STDOUT_FILENO) == -1)
+			return (ft_error(ERR_DUP, NULL, 1));
+		close(fd[WRITE_END]);
+		close(fd[READ_END]);
+
+		execvp(node->cmd[0], node->cmd);
+		// ft_cmdlstclear(&cmd_list, free_cmd_content);
+		// exit(g_status);
+		// execlp("ls", "ls", "-1", NULL);
+	}
+	else //parent
+	{
+		// dup2(fd[0], 0);
+
+		// execvp(node2->cmd[0], node2->cmd);
+		// perror("execve");
+	}
 	return (cmd_list);
 }
 
-int	run_multiple(t_cmdlist *cmd_list)
+void ft_print_env(t_list *env)
+{
+	if (env != NULL)
+	{
+		while (env)
+		{
+			printf("%s=%s\n", env->name, env->content);
+			env = env->next;
+		}
+	}
+}
+
+
+int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 {
 	int fd[2];
-	// pipe(fd);
 	while (cmd_list)
 	{
-		pipe(fd);
-		run_single(cmd_list, fd);
-		close(fd[WRITE_END]);
-		if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
-			((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
+		if(0)
+		{}
+		// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
+		// {
+		// 	ft_cd(((t_cmd_node *)cmd_list->content), env);
+		// }
+		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
+		// {
+		// 	ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
+		// }
+		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
+		// {
+		// 	ft_pwd();
+		// }
+		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "env") == 0)
+		// {
+		// 	ft_print_env(env);
+		// }
 		else
-			close(fd[READ_END]);
+		{
+			pipe(fd);
+			// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") == 0)
+			// 	change_shlvl(env, )
+			run_single(cmd_list, fd);
+
+			close(fd[WRITE_END]);
+			if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
+				((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
+			else
+				close(fd[READ_END]);
+		}
 		cmd_list = cmd_list->next;
 	}
 	return (g_status);
@@ -155,11 +185,7 @@ int	exec_all(char *out, t_list *env)
 	t_cmd_node *node;
 
 	cmd_list = NULL;
-	// if (!out)
-	// {
-	// 	printf("exit\n");
-	// 	return ;
-	// }
+
 	if (out[0] != '\0')
 		add_history(out);
 	args = ft_split_cmds(out, " "); // we get an array with cmds
@@ -172,71 +198,29 @@ int	exec_all(char *out, t_list *env)
 		if (!cmd_list)
 			return (1);
 		i = ft_cmdlstsize(cmd_list);
-		g_status = run_multiple(cmd_list);
+		g_status = run_multiple(cmd_list, env);
 		while (i-- > 0)
 			waitpid(-1, &g_status, 0);
 		// ft_find_right_paths(cmd_list);
 		// print_cmd_list(cmd_list);
-		// run_cmds(cmd_list);
-		// ft_cmdlstclear(&cmd_list, free_cmd_content);
-		// printf("AFTER FT_SPLIT_CMDS:\n");
-		// ft_print_array(args);
+
 		return (1);
 
 	}
 	return (1);
 }
 
-
-// int	main(int argc, char *argv[], char **env)
-// {
-// 	t_cmd_node	*node;
-// 	t_cmdlist	*current;
-// 	t_list		*env_list;
-
-// 	char		*out = NULL;
-// 	// char		*shlvl;
-
-// 	env_list = ft_env(env);
-// 	// out = readline("guest@minishell $ ");
-
-// 	while (argc && argv)
-// 	// {
-// 	// 	// signal(SIGINT, SIG_DFL);
-// 	// 	// signal(SIGQUIT, SIG_DFL);
-
-// 		out = readline("guest@minishell $ ");
-// 		exec_all(out, env_list);
-// 	}
-
 int	main(int argc, char *argv[], char **env)
 {
 	t_list		*env_list;
-	// t_cmd_node	*node;
-	// t_cmdlist	*current;
-	// t_cmdlist	*cmd_list;
-	// char		*start;
 	char		*out;
-	// char		*shlvl;
-	// cmd_list = NULL;
-
-	// env = NULL;
-	// char *out = "ls -1 | wc -l | grep src";
 	env_list = ft_env(env);
-
-	// char *arr1[] = {"ls", "ls", "-1"};
-	// char *arr2[] = {"wc", "wc", "-l"};
-	// char *arr3[] = {"grep", "grep", "5"};
 
 	while (1)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-
-
 		out = readline("guest@minishell $ ");
 		exec_all(out, env_list);
-
 	}
-	// ft_cmdlstclear(&cmd_list, free_cmd_content);
 }

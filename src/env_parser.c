@@ -50,7 +50,7 @@ t_list *ft_env(char **environ)
 		temp = get_key_value_pair(*env_lines);
 		// printf("var: %s\n", temp[0]);
 		// printf("val: %s\n", temp[1]);
-		ft_add_new_node_end(&env, temp[0], temp[1]);
+		// ft_add_new_node_end(&env, temp[0], temp[1]);
 		ft_add_new_node_end(&env, temp[0], temp[1]);
 		ft_array_free(&temp);
 		env_lines++;

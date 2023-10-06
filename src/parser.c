@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/03 19:16:35 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/06 15:55:40 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,4 @@ char **final_split(char **args, t_list *envlist)
 		ft_array_free(&subsplit);
 	}
 	return (args);
-}
-
-// change shlvl on new minishell / exit
-void change_shlvl(t_list *env, int inc)
-{
-	char *shlvl;
-
-	while(env)
-	{
-		if (!ft_strcmp(env->name, "SHLVL"))
-		{
-			env->content = ft_itoa(ft_atoi(env->content) + 1);
-			// set_var(&env, "SHLVL", "2");
-		}
-		env = env->next;
-	}
 }
