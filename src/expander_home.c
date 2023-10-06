@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 18:38:03 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/06 21:00:57 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,39 +27,79 @@ int is_user_home(char *str, t_list *envlist)
 		return (0);
 }
 
-char    *expand_home(char *str, int i, t_list *envlist)
+char    *expand_home(char *str, t_list *envlist)
 {
-    char    *result;
-    char    *home;
-    char    *before;
-    int     in_sq;
-    int     in_dq;
-
-    in_sq = 0;
-    in_dq = 0;
-    home = get_content_by_name(envlist, "HOME");
-    while (str && str[++i])
+    int     i;
+	char	*varvalue;
+	char	*result;
+	char	*tmp_result;
+	char	*tmp_char;
+    i = -1;
+	result = ft_strdup("");
+    while (str[++i])
     {
-        in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
-		in_dq = (in_dq + (!in_sq && str[i] == '\"')) % 2;
-		if (!in_sq && !in_dq && str[i] == '~' && (i == 0 || \
-			str[i - 1] != '$'))
-		{
-            // if (is_user_home(&str[i], envlist))
-            //     home = 
-			before = ft_substr(str, 0, i);
-			result = ft_strjoin(before, home);
-			free(before);
-			before = ft_substr(str, i + 1, ft_strlen(str));
-			free(str);
-			str = ft_strjoin(result, before);
-			free(before);
-			free(result);
-			return (expand_home(str, i + ft_strlen(home) - 1, envlist));
-		}
-	}
-	return (str);
+        //printf("str[i] = %c\n", str[i]);
+        if ((str[0] == '~' && str[1] == '/') || (is_user_home(&str[i], envlist)) || (str[0] == '~' && str[1] == '\0'))
+        {
+            varvalue = get_content_by_name(envlist, "HOME");
+            printf("varvalue = [%s]\n", varvalue);
+            tmp_result = ft_strjoin(result, varvalue);
+            if (tmp_result)
+            {
+                free(result);
+                result = tmp_result;
+            }
+            if (is_user_home(&str[i], envlist))
+                i += ft_strlen(get_content_by_name(envlist, "USER"));
+        }
+        else
+        {
+            tmp_char = strndup(&str[i], 1);
+            //printf("tmp_char = %s\n", tmp_char);
+            tmp_result = ft_strjoin(result, tmp_char);
+            free(result);
+            result = tmp_result;
+            free(tmp_char);
+            //free(tmp_result);
+        }
+		//printf("result = %s\n\n", result);
+    }
+    return (result);
 }
+
+// char    *expand_home(char *str, int i, t_list *envlist)
+// {
+//     char    *result;
+//     char    *home;
+//     char    *before;
+//     int     in_sq;
+//     int     in_dq;
+
+//     in_sq = 0;
+//     in_dq = 0;
+//     home = get_content_by_name(envlist, "HOME");
+//     // while (str && str[++i])
+//     {
+//         // in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
+// 		// in_dq = (in_dq + (!in_sq && str[i] == '\"')) % 2;
+// 		if (str[0] == '~' && (str[i + 1] == '/' || str[i + 1] == '\0'))
+// 		{
+// 			str = strdup(home);
+//             // if (is_user_home(&str[i], envlist))
+//             //     home = 
+// 			// before = ft_substr(str, 0, i);
+// 			// result = ft_strjoin(before, home);
+// 			// free(before);
+// 			// before = ft_substr(str, i + 1, ft_strlen(str));
+// 			// free(str);
+// 			// str = ft_strjoin(result, before);
+// 			// free(before);
+// 			// free(result);
+// 			// return (expand_home(str, i + ft_strlen(home) - 1, envlist));
+// 		}
+// 	}
+// 	return (str);
+// }
 
 // int main(void)
 // {
