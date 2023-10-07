@@ -151,7 +151,7 @@ int 	ft_is_builtin(char *str);
 void 	ft_find_right_paths(t_cmdlist *cmd_list);
 char	**get_key_value_pair(char *arg);
 void 	ft_print_env(t_list *env);
-void	ft_export();
+void	ft_export(t_cmd_node *cmd, t_list *env);
 void	ft_exit();
 void 	ft_unset(char *str, t_list *env);
 

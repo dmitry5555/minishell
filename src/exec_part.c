@@ -138,7 +138,7 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "env") == 0)
 			ft_print_env(env);
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "export") == 0)
-			ft_export();
+			ft_export((t_cmd_node *)cmd_list->content, env);
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "unset") == 0)
 			ft_unset(((t_cmd_node *)cmd_list->content)->cmd[1], env);	
 		else

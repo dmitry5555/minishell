@@ -1,6 +1,7 @@
 # include "minishell.h"
 
-// get cwd - curr.wrk.dir and print it
+// export starts with letter
+
 int ft_pwd(void)
 {
 	char	cwd[1000000];
@@ -138,8 +139,19 @@ void ft_print_env(t_list *env)
 	}
 }
 
-void ft_export()
+void ft_export(t_cmd_node *cmd, t_list *env)
 {
+	int i;
+	char	**tmp;
+
+	i = 1;
+
+	while(cmd->cmd[i])
+	{
+		if (get_key_value_pair(cmd->cmd[i])[1])
+			set_var(&env, get_key_value_pair(cmd->cmd[i])[0], get_key_value_pair(cmd->cmd[i])[1]);
+		i++;
+	}
 	return ;
 }
 
