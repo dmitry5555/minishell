@@ -144,12 +144,17 @@ t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 t_list *ft_env(char **environ);
 void	ft_echo(char **args);
 int		ft_pwd(void);
+void 	unset_var(t_list **env, char *name);
 int 	set_var(t_list **env, char *name, char *content);
-void	unset_var(t_list **env, char *name);
 void	ft_cd(t_cmd_node *node, t_list *env);
 int 	ft_is_builtin(char *str);
 void 	ft_find_right_paths(t_cmdlist *cmd_list);
 char	**get_key_value_pair(char *arg);
+void 	ft_print_env(t_list *env);
+void	ft_export();
+void	ft_exit();
+void 	ft_unset(char *str, t_list *env);
+
 
 
 #endif

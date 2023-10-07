@@ -122,43 +122,26 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 	return (cmd_list);
 }
 
-void ft_print_env(t_list *env)
-{
-	if (env != NULL)
-	{
-		while (env)
-		{
-			printf("%s=%s\n", env->name, env->content);
-			env = env->next;
-		}
-	}
-}
-
-
 int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 {
 	int fd[2];
 	while (cmd_list)
 	{
-		// if(0)
-		// {}
-		// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
-		// {
-		// 	ft_cd(((t_cmd_node *)cmd_list->content), env);
-		// }
-		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
-		// {
-		// 	ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
-		// }
-		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
-		// {
-		// 	ft_pwd();
-		// }
-		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "env") == 0)
-		// {
-		// 	ft_print_env(env);
-		// }
-		// else
+		if(0)
+		{}
+		if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
+			ft_cd(((t_cmd_node *)cmd_list->content), env);
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
+			ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
+			ft_pwd();
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "env") == 0)
+			ft_print_env(env);
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "export") == 0)
+			ft_export();
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "unset") == 0)
+			ft_unset(((t_cmd_node *)cmd_list->content)->cmd[1], env);	
+		else
 		{
 			pipe(fd);
 			// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") == 0)
