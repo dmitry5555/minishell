@@ -57,7 +57,6 @@ typedef struct	s_cmd_node
 void	*ft_error(int error_type, char *error_str, int error_code);
 
 // Strings
-void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *str1, const char *str2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strchars_i(const char *s, char *set);

@@ -106,7 +106,8 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 			return (ft_error(ERR_DUP, NULL, 1));
 		close(fd[WRITE_END]);
 		close(fd[READ_END]);
-
+		// printf("child PWD is: %s\n", get_content_by_name(env, "PWD"));
+		// ft_putstr_fd( get_content_by_name(env, "PWD"), 0);
 		execve(node->path, node->cmd, NULL); //change env to array
 		// ft_cmdlstclear(&cmd_list, free_cmd_content);
 		// exit(g_status);
@@ -129,7 +130,7 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 	{
 		if(0)
 		{}
-		if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
+		else if (ft_cmdlstsize(cmd_list) == 1 && ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
 			ft_cd(((t_cmd_node *)cmd_list->content), env);
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
 			ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
@@ -140,7 +141,7 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "export") == 0)
 			ft_export((t_cmd_node *)cmd_list->content, env);
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "unset") == 0)
-			ft_unset(((t_cmd_node *)cmd_list->content)->cmd[1], env);	
+			ft_unset(((t_cmd_node *)cmd_list->content)->cmd[1], env);
 		else
 		{
 			pipe(fd);

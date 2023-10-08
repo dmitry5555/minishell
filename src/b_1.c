@@ -15,14 +15,8 @@ int ft_pwd(void)
 		return(0); // return status
 }
 
-// void ft_env(t_list *env)
-// {
-// 	while (env)
-// 	{
-// 		printf("%s=%s\n", env->name, env->content);
-// 		env = env->next;
-// 	}
-// }
+// if CD is single node > CD
+// else keep same
 
 void	ft_cd(t_cmd_node *node, t_list *env)
 {
@@ -74,58 +68,90 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 		return ;
 	}
 
-	if (new_path) // access(new_path, R_OK)
+	if (new_path && !chdir(new_path)) // if have access && dir changed OK
 	{
-		if (!chdir(new_path))
-		{
-			getcwd(s, sizeof(s));
-			printf("changed to %s\n", new_path);
-			set_var(&env, "OLDPWD", get_content_by_name(env, "PWD"));
-			set_var(&env, "PWD", s);
-		}
-		// set_var(&env, "OLDPWD", get_content_by_name(env, "PWD"));
-		// set_var(&env, "PWD", new_path);
-		// new_path = ft_strdup(get_content_by_name(env, "PWD"));
-		// printf("changed to %s\n", new_path);
-
+		printf("executing cd \n");
+		getcwd(s, sizeof(s));
+		printf("changed to %s\n", new_path);
+		set_var(&env, "OLDPWD", get_content_by_name(env, "PWD"));
+		set_var(&env, "PWD", s);
 	}
+	// set_var(&env, "OLDPWD", get_content_by_name(env, "PWD"));
+	// set_var(&env, "PWD", new_path);
+	// new_path = ft_strdup(get_content_by_name(env, "PWD"));
+	// printf("changed to %s\n", new_path);
 
 }
 
 
 void ft_echo(char **args)
 {
+	int arg_start;
+	int flag;
 	int i;
-	int flag_n;
 
-	flag_n = 0;
-	i = 1;
-	if (nb_args(args) > 1)
+	i = 2;
+	flag = 0;
+	arg_start = 1;
+	if (!args[arg_start])
+		return ;
+	if (args[arg_start][0] == '-' && args[arg_start][1] == 'n')
 	{
-		while(args[i] && args[i][0] == '-')
+		flag = 1;
+		while (args[arg_start][i] && args[arg_start][i] != ' ')
 		{
-			int j = 1;
-			while (args[i][j] == 'n')
-				j++;
-			if (args[i][j] == '\0')
-			{
-				flag_n = 1;
-			}
-			i++;
-		}
-		if (!flag_n)
-			i--;
-		while (args[i])
-		{
-			ft_putstr_fd(args[i], 1);
-			if (args[i + 1] && args[i][0])
-				write(1, " ", 1);
+			if (args[arg_start][i] != 'n')
+				flag = 0;
 			i++;
 		}
 	}
-	if (!flag_n)
+	arg_start += flag;
+	while(args[arg_start])
+	{
+		ft_putstr_fd(args[arg_start], 1);
+		if (args[arg_start + 1] && args[arg_start][0])
+			write(1," ",1);
+		arg_start++;
+	}
+	if (!flag)
 		write(1,"\n",1);
 }
+
+
+
+// void ft_echo(char **args)
+// {
+// 	int i;
+// 	int flag_n;
+
+// 	flag_n = 0;
+// 	i = 1;
+// 	if (nb_args(args) > 1)
+// 	{
+// 		while(args[i] && args[i][0] == '-')
+// 		{
+// 			int j = 1;
+// 			while (args[i][j] == 'n')
+// 				j++;
+// 			if (args[i][j] == '\0')
+// 			{
+// 				flag_n = 1;
+// 			}
+// 			i++;
+// 		}
+// 		if (!flag_n)
+// 			i--;
+// 		while (args[i])
+// 		{
+// 			ft_putstr_fd(args[i], 1);
+// 			if (args[i + 1] && args[i][0])
+// 				write(1, " ", 1);
+// 			i++;
+// 		}
+// 	}
+// 	if (!flag_n)
+// 		write(1,"\n",1);
+// }
 
 void ft_print_env(t_list *env)
 {
