@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:07:05 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 19:10:43 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/09 19:25:16 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 void	*ft_error(int error_type, char *error_str, int error_code)
 {
-    //global_status = error_code;
+	g_status = error_code;
 	if (error_type == ERR_QUOTE)
 		ft_putstr_fd("minishell: cannot find closing quote", 2);
 	if (error_type == ERR_DIR)

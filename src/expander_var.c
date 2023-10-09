@@ -6,11 +6,11 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:57 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/09 19:24:11 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "../includes/minishell.h"
 
 /* cases to handle
     1. $VARIABLE
@@ -32,20 +32,15 @@ int	ft_isalnum(int c)
 		return (1);
 }
 
-char    *get_value(char *varname, t_list *envlist)
+char	*get_value(char *varname, t_list *envlist)
 {
-    char *varvalue;
+	char	*varvalue;
 
-    if (ft_strcmp("$$", varname) == 0)
-        varvalue = "PID"; //replace with PID;
-    else if (ft_strcmp("$?", varname) == 0)
-        varvalue = "GLOBAL_VAR"; //replace with global variable
-    else
-        varvalue = get_content_by_name(envlist, varname);
-    free(varname);
+	varvalue = get_content_by_name(envlist, varname);
+	free(varname);
 	if (!varvalue)
-        return (NULL);
-    return (ft_strdup(varvalue));
+		return (NULL);
+	return (ft_strdup(varvalue));
 }
 
 static char	*get_substr_var(char *str, int i, t_list *envlist)
@@ -61,20 +56,13 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 		pos = ft_strlen(str) - 1;
 	aux = ft_substr(str, 0, i - 1);
 	varname = ft_strndup(&str[i], pos);
-	//printf("varname = %s\n", varname);
 	val = get_value(varname, envlist);
-	//printf("val = '%s'\n", val);
-	// if (!val && str[i] == '$')
-	// 	val = ft_strdup("PID");
 	if (!val && str[i] == '?')
 		val = ft_strdup(ft_itoa(g_status));
 	path = ft_strjoin(aux, val);
 	free(val);
-	//printf("path = '%s'\n", path);
-	//printf("rest = '%s'\n", &str[i + pos]);
 	free(aux);
 	aux = ft_strjoin(path, &str[i + pos]);
-	//printf("new = %s\n", aux);
 	free(path);
 	free(str);
 	return (aux);
@@ -94,7 +82,8 @@ char	*expand_vars(char *str, int i, t_list *envlist)
 		if (!in_sq && str[i] == '$' && str[i + 1] && \
 			((ft_strchars_i(&str[i + 1], "/~%^{}:; ") && !in_dq) || \
 			(ft_strchars_i(&str[i + 1], "/~%^{}:;\"") && in_dq)))
-			return (expand_vars(get_substr_var(str, ++i, envlist), -1, envlist));
+			return (expand_vars(get_substr_var(str, ++i, envlist),
+					-1, envlist));
 	}
 	return (str);
 }
