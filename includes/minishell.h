@@ -108,7 +108,7 @@ char	*get_content_by_name(t_list *head, const char *name);
 char		**ft_split_cmds(const char *s, char *set);
 char		**ft_subsplit(char const *s, char *set);
 
-// Command List
+// Command List Helpers
 t_cmd_node	*init_cmd_node(void);
 int 		ft_cmdlstsize(t_cmdlist *lst);
 t_cmdlist	*ft_cmdlstnew(void *content);
@@ -117,6 +117,7 @@ t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);
 void		free_cmd_content(void *content);
 void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
 void		print_cmd_list(t_cmdlist *cmd_list);
+t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp);
 
 // expansion
 char	*expand_vars(char *str, int i, t_list *envlist);
