@@ -37,20 +37,18 @@ char	**get_key_value_pair(char *arg)
 // 	return(env);
 // }
 
-t_list *ft_env(char **environ)
+// env parser
+t_list *ft_env_parser(char **environ)
 {
 	t_list	*env;
 	char	**env_lines;
 	char	**temp;
 
-	env = NULL; // fixed the leak
+	env = NULL;
 	env_lines = environ;
 	while (*env_lines)
 	{
 		temp = get_key_value_pair(*env_lines);
-		// printf("var: %s\n", temp[0]);
-		// printf("val: %s\n", temp[1]);
-		// ft_add_new_node_end(&env, temp[0], temp[1]);
 		ft_add_new_node_end(&env, temp[0], temp[1]);
 		ft_array_free(&temp);
 		env_lines++;

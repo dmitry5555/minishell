@@ -118,7 +118,6 @@ void ft_echo(char **args)
 }
 
 
-
 // void ft_echo(char **args)
 // {
 // 	int i;
@@ -165,24 +164,53 @@ void ft_print_env(t_list *env)
 	}
 }
 
+
 void ft_export(t_cmd_node *cmd, t_list *env)
 {
 	int i;
-	char	**tmp;
+	int j;
+	int flag;
+	char	*c;
 
 	i = 1;
-
 	while(cmd->cmd[i])
 	{
-		if (get_key_value_pair(cmd->cmd[i])[1])
-			set_var(&env, get_key_value_pair(cmd->cmd[i])[0], get_key_value_pair(cmd->cmd[i])[1]);
+		j = 0;
+		flag = 0;
+		if (get_key_value_pair(cmd->cmd[i])[1]) // if have arg "var=1"
+		{
+			// c = get_key_value_pair(cmd->cmd[i])[0][0];
+			// if ( ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') )
+			// {
+			// 	while (get_key_value_pair(cmd->cmd[i])[0][j])
+			// 	{
+			// 		c = get_key_value_pair(cmd->cmd[i])[0][j];
+			// 		if (!('0' <= c && c <= '9') || !('a' <= c && c <= 'z') || !('A' <= c && c <= 'Z'))
+			// 			flag = 1;
+			// 		j++;
+			// 	}
+				set_var(&env, get_key_value_pair(cmd->cmd[i])[0], get_key_value_pair(cmd->cmd[i])[1]);
+
+		}
 		i++;
 	}
-	return ;
 }
 
-void ft_exit()
+// change shlvl on new minishell / exit
+void change_shlvl(t_list *env, int inc)
 {
+	while(env)
+	{
+		if (!ft_strcmp(env->name, "SHLVL"))
+			env->content = ft_itoa(ft_atoi(env->content) + inc);
+		env = env->next;
+	}
+}
+
+void ft_exit(t_cmd_node *cmd, t_list *env)
+{
+	ft_putstr_fd("exit. bye bye\n",1);
+	exit(1);
 	return ;
 }
 

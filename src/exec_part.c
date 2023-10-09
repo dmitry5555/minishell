@@ -2,23 +2,6 @@
 
 int g_status;
 
-
-// change shlvl on new minishell / exit
-void change_shlvl(t_list *env, int inc)
-{
-	char *shlvl;
-
-	while(env)
-	{
-		if (!ft_strcmp(env->name, "SHLVL"))
-		{
-			env->content = ft_itoa(ft_atoi(env->content) + 1);
-			// set_var(&env, "SHLVL", "2");
-		}
-		env = env->next;
-	}
-}
-
 // print cmd list for testing
 void	print_cmd_list(t_cmdlist *cmd_list)
 {
@@ -47,30 +30,6 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 		}
 }
 
-void single_node(t_cmd_node *node)
-{
-	int fd[2];
-	pid_t pid;
-
-
-	pid = fork();
-
-	if (pid!=0) // parent - accepting process
-	{
-		dup2(fd[1], 1);
-		close(fd[0]);
-		execvp(node->cmd[0], node->cmd);
-		perror("execvp");
-	}
-	else
-	{
-		dup2(fd[0],0);
-		close(fd[1]);
-	}
-
-
-}
-
 void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 {
 	t_cmd_node *node;
@@ -90,6 +49,8 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 	}
 	else if (pid == 0) //child
 	{
+		if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") == 0)
+				change_shlvl(env, 1);
 		if (node->in != STDIN_FILENO)
 		{
 			if (dup2(node->in, STDIN_FILENO) == -1)
@@ -142,13 +103,12 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 			ft_export((t_cmd_node *)cmd_list->content, env);
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "unset") == 0)
 			ft_unset(((t_cmd_node *)cmd_list->content)->cmd[1], env);
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "exit") == 0)
+			ft_exit((t_cmd_node *)cmd_list->content, env);
 		else
 		{
 			pipe(fd);
-			// if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") == 0)
-			// 	change_shlvl(env, )
 			run_single(cmd_list, fd, env);
-
 			close(fd[WRITE_END]);
 			if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
 				((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
@@ -197,7 +157,7 @@ int	main(int argc, char *argv[], char **env)
 {
 	t_list		*env_list;
 	char		*out;
-	env_list = ft_env(env);
+	env_list = ft_env_parser(env);
 
 	while (1)
 	{

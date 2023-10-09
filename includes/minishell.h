@@ -140,20 +140,21 @@ t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
 t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // builtin
-t_list *ft_env(char **environ);
+t_list *ft_env_parser(char **environ);
 void	ft_echo(char **args);
 int		ft_pwd(void);
-void 	unset_var(t_list **env, char *name);
-int 	set_var(t_list **env, char *name, char *content);
 void	ft_cd(t_cmd_node *node, t_list *env);
-int 	ft_is_builtin(char *str);
-void 	ft_find_right_paths(t_cmdlist *cmd_list);
-char	**get_key_value_pair(char *arg);
 void 	ft_print_env(t_list *env);
 void	ft_export(t_cmd_node *cmd, t_list *env);
-void	ft_exit();
 void 	ft_unset(char *str, t_list *env);
+void	change_shlvl(t_list *env, int inc);
+void	ft_exit(t_cmd_node *cmd, t_list *env);
 
-
+// builtin helpers
+void 	unset_var(t_list **env, char *name);
+int 	set_var(t_list **env, char *name, char *content);
+char	**get_key_value_pair(char *arg);
+int 	ft_is_builtin(char *str);
+void 	ft_find_right_paths(t_cmdlist *cmd_list);
 
 #endif
