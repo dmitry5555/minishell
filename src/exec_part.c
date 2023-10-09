@@ -49,7 +49,8 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 	}
 	else if (pid == 0) //child
 	{
-		if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") == 0)
+		if (!ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell"))
+			if (!access("./minishell", X_OK))
 				change_shlvl(env, 1);
 		if (node->in != STDIN_FILENO)
 		{
@@ -69,7 +70,18 @@ void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
 		close(fd[READ_END]);
 		// printf("child PWD is: %s\n", get_content_by_name(env, "PWD"));
 		// ft_putstr_fd( get_content_by_name(env, "PWD"), 0);
-		execve(node->path, node->cmd, NULL); //change env to array
+		if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
+		{
+			ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
+			exit(0);
+		}
+		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
+		{
+			ft_pwd();
+			exit(0);
+		}
+		else
+			execve(node->path, node->cmd, NULL); //change env to array
 		// ft_cmdlstclear(&cmd_list, free_cmd_content);
 		// exit(g_status);
 		// execlp("ls", "ls", "-1", NULL);
@@ -93,10 +105,10 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 		{}
 		else if (ft_cmdlstsize(cmd_list) == 1 && ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
 			ft_cd(((t_cmd_node *)cmd_list->content), env);
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
-			ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
-			ft_pwd();
+		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "bin/echo") == 0)
+		// 	ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
+		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
+		// 	ft_pwd();
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "env") == 0)
 			ft_print_env(env);
 		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "export") == 0)

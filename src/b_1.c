@@ -37,8 +37,6 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 		// printf( "%s\n", node->cmd[1] );
 		new_path = get_content_by_name(env, "HOME");
 	}
-	// epand home ~/smth
-	// else if () {}
 
 	//remove ./
 	else if (node->cmd[0][0] == '.' && node->cmd[0][1] == '/')
@@ -115,6 +113,7 @@ void ft_echo(char **args)
 	}
 	if (!flag)
 		write(1,"\n",1);
+	exit(0);
 }
 
 
@@ -164,49 +163,42 @@ void ft_print_env(t_list *env)
 	}
 }
 
-// int	check_exp_var(char *str)
-// {
-// 	int i;
-// 	int	bad_var;
-// 	char c;
+int	check_exp_var(char *str)
+{
+	int i;
 
-
-// 		while (get_key_value_pair(cmd->cmd[i])[0])
-// 		{
-// 			c = get_key_value_pair(cmd->cmd[i])[0][j];
-// 			if (!('0' <= c && c <= '9') || !('a' <= c && c <= 'z')
-// 				|| !('A' <= c && c <= 'Z'))
-// 				bad_var = 1;
-// 		}
-// 	}
-// }
+	i = 0;
+	if (('a' <= str[0] && str[0] <= 'z') || ('A' <= str[0] && str[0] <= 'Z'))
+	{
+		while(str[++i])
+			if (!('a' <= str[i] && str[i] <= 'z') && !('A' <= str[i] && str[i] <= 'Z') && !('1' <= str[i] && str[i] <= '9') )
+				return (1);
+		return (0);
+	}
+	return (1);
+}
 
 void ft_export(t_cmd_node *cmd, t_list *env)
 {
-	// int i;
-	// int j;
-	// int flag2;
-	// char	*c;
+	int i;
+	int flag;
 
-	// i = 1;
-	// flag2 = 0;
-	// while(cmd->cmd[i++])
-	// {
-	// 	j = 0;
-	// 	if (get_key_value_pair(cmd->cmd[i])[1]) // if have arg i "var=1"
-	// 	{
-	// 		flag = 0;
-	// 		c = get_key_value_pair(cmd->cmd[i])[0][0];
-	// 		if ( ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') )
-	// 		{
-	// 			if (check_exp_var(get_key_value_pair(cmd->cmd[i])[0]))
-	// 		}
-	// 		if (!flag)
-	// 			set_var(&env, get_key_value_pair(cmd->cmd[i])[0], get_key_value_pair(cmd->cmd[i])[1]);
-	// 		else
-	// 			flag2 = 1;
-	// 	}
-	// }
+	i = 0;
+	flag = 0;
+	while(cmd->cmd[++i])
+	{
+		if(!check_exp_var(get_key_value_pair(cmd->cmd[i])[0]))
+			set_var(&env, get_key_value_pair(cmd->cmd[i])[0], get_key_value_pair(cmd->cmd[i])[1]);
+		else if (!flag)
+			flag = i;
+	}
+	if (flag)
+	{
+		ft_putstr_fd("export: not an identifier: ", 1);
+		ft_putstr_fd(get_key_value_pair(cmd->cmd[flag])[0], 1);
+		ft_putstr_fd("\n", 1);
+		// printf("get_key_value_pair(cmd->cmd[i])[0] - %s\n",get_key_value_pair(cmd->cmd[i])[0]);
+	}
 }
 
 // change shlvl on new minishell / exit
