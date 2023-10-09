@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/09 18:55:45 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/09 19:28:58 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	**ft_sub_fill_array(char **array, const char *s, char *set,
 	in_q[1] = 0;
 	while (s && s[i[0]] != '\0')
 	{
-		word_start = i;
+		word_start = i[0];
 		if (!ft_strchr(set, s[i[0]]))
 		{
 			while ((!ft_strchr(set, s[i[0]]) || in_q[0] || in_q[1]) && s[i[0]])
@@ -65,7 +65,7 @@ static char	**ft_sub_fill_array(char **array, const char *s, char *set,
 		}
 		else
 			i[0]++;
-		array[i[1]++] = ft_substr(s, word_start, i - word_start);
+		array[i[1]++] = ft_substr(s, word_start, i[0] - word_start);
 	}
 	array[i[1]] = NULL;
 	return (array);
