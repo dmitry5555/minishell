@@ -82,13 +82,12 @@ char	*ft_itoa(int n);
 
 
 // Arrays
-void	ft_free_arr(char **arr);
 int		ft_a_len(char **array);
 void	ft_print_array(char **array);
 void	ft_array_free(char ***array);
 char	**ft_dup_array(char **array);
-char	**ft_array_replace_in(char ***array, char **subarray, int n);
 char	**ft_array_extend(char **in, char *newstr);
+char	**ft_array_replace_in(char ***a, char **sub, int n);
 
 // Lists
 //t_list	*ft_lstnew(void const *content);
@@ -109,7 +108,7 @@ char	*get_content_by_name(t_list *head, const char *name);
 char		**ft_split_cmds(const char *s, char *set);
 char		**ft_subsplit(char const *s, char *set);
 
-// Command List
+// command list helpers
 t_cmd_node	*init_cmd_node(void);
 int 		ft_cmdlstsize(t_cmdlist *lst);
 t_cmdlist	*ft_cmdlstnew(void *content);
@@ -117,7 +116,17 @@ void		ft_cmdlstadd_back(t_cmdlist **lst, t_cmdlist *newnode);
 t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);
 void		free_cmd_content(void *content);
 void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
+t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp);
 void		print_cmd_list(t_cmdlist *cmd_list);
+
+// Create command list
+t_cmdlist	*create_cmd_list(char **args, int i);
+
+// get fd
+t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
+t_cmd_node	*get_outfile_append(t_cmd_node *node, char **args, int *i);
+t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
+t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // expansion
 char	*expand_vars(char *str, int i, t_list *envlist);
@@ -125,21 +134,11 @@ int 	is_user_home(char *str, t_list *envlist);
 char    *expand_home(char *str, t_list *envlist);
 char 	**final_split(char **args, t_list *envlist);
 
-// Create command list
-t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp);
-t_cmdlist	*create_cmd_list(char **args, int i);
-
 // exec
 void	handle_esc(char *str);
 int		ft_test_pipes(t_cmdlist *cmd_list);
 void	exec_cmd(t_cmdlist *cmd_list, t_list *env);
 void	sig_hand(int sig);
-
-// get fd
-t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
-t_cmd_node	*get_outfile_append(t_cmd_node *node, char **args, int *i);
-t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
-t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // builtin
 t_list *ft_env_parser(char **environ);
