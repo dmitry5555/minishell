@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 00:23:42 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 00:24:43 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 00:38:18 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,12 @@ void	ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*))
 		free(temp);
 	}
 	*lst = NULL;
+}
+
+t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp)
+{
+	ft_cmdlstclear(&cmds, free_cmd_content);
+	ft_array_free(&tmp);
+	ft_array_free(&args);
+	return (NULL);
 }

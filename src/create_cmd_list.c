@@ -6,34 +6,34 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 19:26:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/10/06 19:55:21 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 00:50:30 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_cmd_node	*fill_content(t_cmd_node *node, char **args, char **trim_args, int *i)
+t_cmd_node	*fill_content(t_cmd_node *node, char **args, char **t_args, int *i)
 {
 	if (args[*i])
 	{
-		if (args[*i][0] == '>' && args[*i + 1] && args[*i + 1][0] == '>') //append
-			node = get_outfile_append(node, trim_args, i);
+		if (args[*i][0] == '>' && args[*i + 1] && args[*i + 1][0] == '>')
+			node = get_outfile_append(node, t_args, i);
 		else if (args[*i][0] == '>')
-			node = get_outfile(node, trim_args, i);
-		else if (args[*i][0] == '<' && args[*i + 1] && args[*i + 1][0] == '<') //heredoc
-			node = get_infile_heredoc(node, trim_args, i);
+			node = get_outfile(node, t_args, i);
+		else if (args[*i][0] == '<' && args[*i + 1] && args[*i + 1][0] == '<')
+			node = get_infile_heredoc(node, t_args, i);
 		else if (args[*i][0] == '<')
-			node = get_infile(node, trim_args, i);
+			node = get_infile(node, t_args, i);
 		else if (args[*i][0] != '|')
-			node->cmd = ft_array_extend(node->cmd, trim_args[*i]);
+			node->cmd = ft_array_extend(node->cmd, t_args[*i]);
 		else
 		{
-			//error
+			ft_error(ERR_PIPESYN, NULL, 2);
 			*i = -2;
 		}
 		return (node);
 	}
-	//error
+	ft_error(ERR_PIPESYN, NULL, 2);
 	*i = -2;
 	return (node);
 }
@@ -111,43 +111,37 @@ char	**get_trimmed_array(char **args)
 	return (tmp_array);
 }
 
-static t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp)
-{
-	ft_cmdlstclear(&cmds, free_cmd_content);
-	ft_array_free(&tmp);
-	ft_array_free(&args);
-	return (NULL);
-}
-
+/*	cmd[0] = command list;
+	cmd[0] = current command;
+	t_args[0] = temp;
+	t_args[1] = trimmed args */
 t_cmdlist	*create_cmd_list(char **args, int i)
 {
-	t_cmdlist	*cmds;
-	t_cmdlist	*current_cmd;
-	char		**temp_args;
-	char		**trimmed_args;
+	t_cmdlist	*cmds[2];
+	char		**tmp[2];
 
-	cmds = NULL;
-	trimmed_args = get_trimmed_array(args);
+	cmds[0] = NULL;
+	tmp[1] = get_trimmed_array(args);
 	while (args && args[++i])
 	{
-		current_cmd = ft_cmdlstlast(cmds);
+		cmds[1] = ft_cmdlstlast(cmds[0]);
 		if (i == 0 || (args[i][0] == '|' && args[i + 1] && args[i + 1][0]))
 		{
 			if (args[i][0] == '|')
 				i++;
-			ft_cmdlstadd_back(&cmds, ft_cmdlstnew(init_cmd_node()));
-			current_cmd = ft_cmdlstlast(cmds);
+			ft_cmdlstadd_back(&cmds[0], ft_cmdlstnew(init_cmd_node()));
+			cmds[1] = ft_cmdlstlast(cmds[0]);
 		}
-		temp_args = args;
-		current_cmd->content = fill_content(current_cmd->content, temp_args, trimmed_args, &i);
+		tmp[0] = args;
+		cmds[1]->content = fill_content(cmds[1]->content, tmp[0], tmp[1], &i);
 		if (i < 0)
-			return (fill_cmdlst_error(cmds, args, trimmed_args));
+			return (fill_cmdlst_error(cmds[0], args, tmp[1]));
 		if (!args[i])
 			break ;
 	}
-	ft_array_free(&trimmed_args);
+	ft_array_free(&tmp[1]);
 	ft_array_free(&args);
-	return (cmds);
+	return (cmds[0]);
 }
 
 // int main()
