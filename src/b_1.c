@@ -82,7 +82,7 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 }
 
 
-void ft_echo(char **args)
+int ft_echo(char **args)
 {
 	int arg_start;
 	int flag;
@@ -92,7 +92,7 @@ void ft_echo(char **args)
 	flag = 0;
 	arg_start = 1;
 	if (!args[arg_start])
-		return ;
+		return (0);
 	if (args[arg_start][0] == '-' && args[arg_start][1] == 'n')
 	{
 		flag = 1;
@@ -113,7 +113,7 @@ void ft_echo(char **args)
 	}
 	if (!flag)
 		write(1,"\n",1);
-	exit(0);
+	return (0);
 }
 
 
@@ -151,7 +151,7 @@ void ft_echo(char **args)
 // 		write(1,"\n",1);
 // }
 
-void ft_print_env(t_list *env)
+int ft_env_print(t_list *env)
 {
 	if (env != NULL)
 	{
@@ -161,6 +161,7 @@ void ft_print_env(t_list *env)
 			env = env->next;
 		}
 	}
+	return(0);
 }
 
 int	check_exp_var(char *str)
@@ -215,7 +216,7 @@ void change_shlvl(t_list *env, int inc)
 void ft_exit(t_cmd_node *cmd, t_list *env)
 {
 	ft_putstr_fd("exit. bye bye\n",1);
-	exit(1);
+	exit(0);
 	return ;
 }
 

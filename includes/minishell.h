@@ -141,10 +141,10 @@ t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // builtin
 t_list *ft_env_parser(char **environ);
-void	ft_echo(char **args);
+int		ft_echo(char **args);
 int		ft_pwd(void);
 void	ft_cd(t_cmd_node *node, t_list *env);
-void 	ft_print_env(t_list *env);
+int		ft_env_print(t_list *env);
 void	ft_export(t_cmd_node *cmd, t_list *env);
 void 	ft_unset(char *str, t_list *env);
 void	change_shlvl(t_list *env, int inc);

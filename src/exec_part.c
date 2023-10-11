@@ -24,145 +24,144 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 
 				cmd_list = cmd_list->next;
 			}
-
-			// Free the memory allocated for the command list
-			// ft_cmdlstclear(&cmd_list, free_cmd_content);
 		}
 }
 
-void	*run_single(t_cmdlist *cmd_list, int fd[2], t_list *env)
+int run_builtin(t_cmdlist *cmd_list, t_list *env)
 {
 	t_cmd_node *node;
-	pid_t pid;
 
 	node = (t_cmd_node *)cmd_list->content;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	if (node->in == -1 || node->out == -1)
-		return (NULL);
+
+	if (!cmd_list->next)
+	{
+		if (!ft_strcmp(node->cmd[0], "cd"))
+			ft_cd(node, env);
+		else if (!ft_strcmp(node->cmd[0], "export"))
+			ft_export(node, env);
+		else if (!ft_strcmp(node->cmd[0], "unset"))
+			ft_unset(node->cmd[1], env);
+		else if (!ft_strcmp(node->cmd[0], "exit"))
+			ft_exit(node, env);
+
+		if ( !ft_strcmp(node->cmd[0], "cd")	|| !ft_strcmp(node->cmd[0], "export")
+			|| !ft_strcmp(node->cmd[0], "unset") || !ft_strcmp(node->cmd[0], "exit"))
+			return(1);
+	}
+	return(0);
+}
+
+void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
+{
+	pid_t pid;
+	t_cmd_node *node;
+
+	node = (t_cmd_node *)cmd_list->content;
 	pid = fork();
-	if (pid == -1) //error
+	if(pid < 0)
 	{
 		close(fd[READ_END]);
 		close(fd[WRITE_END]);
-		ft_error(ERR_FORK, NULL, 1);
 	}
-	else if (pid == 0) //child
+	else if (!pid)
 	{
-		if (!ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell"))
-			if (!access("./minishell", X_OK))
-				change_shlvl(env, 1);
+		// child redirection
 		if (node->in != STDIN_FILENO)
 		{
-			if (dup2(node->in, STDIN_FILENO) == -1)
-				return (ft_error(ERR_DUP, NULL, 1));
+			dup2(node->in, STDIN_FILENO);
 			close(node->in);
 		}
 		if (node->out != STDOUT_FILENO)
 		{
-			if (dup2(node->out, STDOUT_FILENO) == -1)
-				return (ft_error(ERR_DUP, NULL, 1));
+			dup2(node->out, STDOUT_FILENO);
 			close(node->out);
 		}
-		else if (cmd_list->next && dup2(fd[WRITE_END], STDOUT_FILENO) == -1)
-			return (ft_error(ERR_DUP, NULL, 1));
+		else if (cmd_list->next)
+			dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
+		// END child redirection
 		close(fd[READ_END]);
-		// printf("child PWD is: %s\n", get_content_by_name(env, "PWD"));
-		// ft_putstr_fd( get_content_by_name(env, "PWD"), 0);
-		if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "echo") == 0)
-		{
-			ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
-			exit(0);
-		}
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
-		{
-			ft_pwd();
-			exit(0);
-		}
-		else
-			execve(node->path, node->cmd, NULL); //change env to array
-		// ft_cmdlstclear(&cmd_list, free_cmd_content);
-		// exit(g_status);
-		// execlp("ls", "ls", "-1", NULL);
-	}
-	else //parent
-	{
-		// dup2(fd[0], 0);
+		// child process child_builtin
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 
-		// execvp(node2->cmd[0], node2->cmd);
-		// perror("execve");
+		if (!ft_strcmp(node->cmd[0], "echo"))
+			g_status = ft_echo(node->cmd);
+		else if (!ft_strcmp(node->cmd[0], "pwd"))
+			g_status = ft_pwd();
+		else if (!ft_strcmp(node->cmd[0], "env"))
+			g_status = ft_env_print(env);
+		// if (!ft_strcmp(node->cmd[0], "echo") || !ft_strcmp(node->cmd[0], "pwd") || !ft_strcmp(node->cmd[0], "env"))
+		// 	exit(g_status);
+		else if (!ft_is_builtin(node->cmd[0]))
+			execve(node->path, node->cmd, NULL);
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
+		exit(g_status);
 	}
-	return (cmd_list);
+}
+
+void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
+{
+	int	fd[2];
+	pipe(fd);
+	// check to fork
+	// exec fork - run_single
+
+	run_single(cmd_list, env, fd);
+
+	// after
+	// close(fd[READ_END]);
+	close(fd[WRITE_END]);
+	if ( cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in ) // !!!
+		((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
+	else
+		close(fd[READ_END]);
+	if (((t_cmd_node *)cmd_list->content)->in > 2)
+		close(((t_cmd_node *)cmd_list->content)->in);
+	if (((t_cmd_node *)cmd_list->content)->out > 2)
+		close(((t_cmd_node *)cmd_list->content)->out);
 }
 
 int	run_multiple(t_cmdlist *cmd_list, t_list *env)
 {
-	int fd[2];
 	while (cmd_list)
 	{
-		if(0)
-		{}
-		else if (ft_cmdlstsize(cmd_list) == 1 && ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "cd") == 0)
-			ft_cd(((t_cmd_node *)cmd_list->content), env);
-		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "bin/echo") == 0)
-		// 	ft_echo( ((t_cmd_node *)cmd_list->content)->cmd );
-		// else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "pwd") == 0)
-		// 	ft_pwd();
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "env") == 0)
-			ft_print_env(env);
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "export") == 0)
-			ft_export((t_cmd_node *)cmd_list->content, env);
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "unset") == 0)
-			ft_unset(((t_cmd_node *)cmd_list->content)->cmd[1], env);
-		else if (ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "exit") == 0)
-			ft_exit((t_cmd_node *)cmd_list->content, env);
-		else
-		{
-			pipe(fd);
-			run_single(cmd_list, fd, env);
-			close(fd[WRITE_END]);
-			if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
-				((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
-			else
-				close(fd[READ_END]);
-		}
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		// All built­in functions except env executed by parent
+		if (!run_builtin(cmd_list, env))
+			pre_run_single(cmd_list, env);
 		cmd_list = cmd_list->next;
 	}
+
 	return (g_status);
+
 }
 
-int	exec_all(char *out, t_list *env)
+void	exec_all(char *out, t_list *env)
 {
-	int	i;
-	char **args;
-	// int		shlvl;
 	t_cmdlist *cmd_list;
-	t_cmd_node *node;
-
 	cmd_list = NULL;
+	char **args;
+	int	cmds_num;
 
-	if (out[0] != '\0')
-		add_history(out);
-	args = ft_split_cmds(out, " "); // we get an array with cmds
-	free(out);
-	if (!args)
-		ft_error(ERR_QUOTE, NULL, 2);
+	// if (out[0] != '\0')
+	// 	add_history(out);
+	args = ft_split_cmds(out, " ");
+
 	if (args)
 	{
-		cmd_list = create_cmd_list(final_split(args, env), -1); // expand arr -> LL
-		if (!cmd_list)
-			return (1);
+		cmd_list = create_cmd_list(final_split(args, env), -1);
 		ft_find_right_paths(cmd_list);
-		i = ft_cmdlstsize(cmd_list);
+		cmds_num = ft_cmdlstsize(cmd_list);
 		g_status = run_multiple(cmd_list, env);
-		while (i-- > 0)
+		while (0 < cmds_num--)
 			waitpid(-1, &g_status, 0);
-		// print_cmd_list(cmd_list);
 		ft_cmdlstclear(&cmd_list, free_cmd_content);
-		return (1);
+		// end parse args
+		// return (1);
 	}
-	return (1);
+	// return (1);
 }
 
 int	main(int argc, char *argv[], char **env)
