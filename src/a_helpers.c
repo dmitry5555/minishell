@@ -6,41 +6,14 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:21:51 by justindaly        #+#    #+#             */
-/*   Updated: 2023/10/05 19:51:52 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/11 22:59:55 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /* move to lib? */
-void	ft_bzero(void *s, size_t n)
-{
-	char	*c;
-	size_t	i;
-
-	c = s;
-	i = 0;
-	while (i < n)
-	{
-		c[i] = 0;
-		i++;
-	}
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-
-	if (size == SIZE_MAX || count == SIZE_MAX)
-		return (0);
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (0);
-	ft_bzero(ptr, (count * size));
-	return (ptr);
-}
-
-int	ft_array_len(char **array)
+int	ft_a_len(char **array)
 {
 	int	i;
 
@@ -53,6 +26,7 @@ int	ft_array_len(char **array)
 void	ft_print_array(char **array)
 {
 	int	i;
+
 	i = 0;
 	while (array[i])
 	{
@@ -61,10 +35,9 @@ void	ft_print_array(char **array)
 	}
 }
 
-
-void ft_array_free(char ***array)
+void	ft_array_free(char ***array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array && array[0] && array[0][i])
@@ -79,37 +52,6 @@ void ft_array_free(char ***array)
 	}
 }
 
-char	**ft_array_replace_in(char ***array, char **subarray, int n)
-{
-	char	**tmp_array;
-	int     i;
-	int     j;
-	int     k;
-
-	i = -1;
-	j = -1;
-	k = -1;
-	if (!array || !*array || n < 0 || n >= ft_array_len(*array))
-		return (NULL);
-	tmp_array = ft_calloc(ft_array_len(*array) + ft_array_len(subarray) + 1, sizeof(char *));
-	if (!tmp_array)
-		return (NULL);
-	while ((*array)[++i])
-	{
-		if (i != n)
-			tmp_array[++k] = ft_strdup((*array)[i]);
-		else
-		{
-			while (subarray && subarray[++j])
-				tmp_array[++k] = ft_strdup(subarray[j]);
-		}
-	}
-	tmp_array[++k] = NULL;
-	ft_array_free(array);
-	*array = tmp_array;
-	return (*array);
-}
-
 char	**ft_dup_array(char **array)
 {
 	char	**out;
@@ -117,7 +59,7 @@ char	**ft_dup_array(char **array)
 	int		i;
 
 	i = 0;
-	n_rows = ft_array_len(array);
+	n_rows = ft_a_len(array);
 	out = malloc(sizeof(char *) * (n_rows + 1));
 	if (!out)
 		return (NULL);
@@ -141,12 +83,11 @@ char	**ft_array_extend(char **in, char *newstr)
 	int		len;
 	int		i;
 
-	//ft_print_array(in);
 	i = -1;
 	out = NULL;
 	if (!newstr)
 		return (in);
-	len = ft_array_len(in);
+	len = ft_a_len(in);
 	out = malloc(sizeof(char *) * (len + 2));
 	if (!out)
 		return (in);
@@ -157,12 +98,10 @@ char	**ft_array_extend(char **in, char *newstr)
 		{
 			ft_array_free(&in);
 			ft_array_free(&out);
-			return (NULL);
 		}
 	}
 	out[i] = ft_strdup(newstr);
 	out[len + 1] = NULL;
 	ft_array_free(&in);
-	//ft_print_array(out);
 	return (out);
 }
