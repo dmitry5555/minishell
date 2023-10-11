@@ -36,3 +36,4 @@ src/b_exit.o
 src/exec_part.o
 src/expander_var-b003029b.o.tmp
 src/b_1.o
+src/*.o
