@@ -11,7 +11,7 @@ int set_var(t_list **env, char *name, char *content)
 	int		flag_upd;
 	t_list	*curr;
 
-	// curr = NULL;
+	curr = NULL;
 	flag_upd = 0;
 	curr = (*env);
 	while(curr)
@@ -33,39 +33,56 @@ int set_var(t_list **env, char *name, char *content)
 
 void unset_var(t_list **env, char *name)
 {
-	t_list *temp;
-	t_list *current = *env;  // Initialize current to the head of the list
+	t_list	*curr;
 
-	// Handle the case where the linked list is empty
-	if (current == NULL) {
-		return;
+	curr = (*env);
+	while(curr)
+	{
+		if (!ft_strcmp(curr->name, name))
+		{
+			curr->name = NULL;
+			curr->content = NULL;
+		}
+		curr = curr->next;
 	}
-
-	// Handle the case where the first node needs to be removed
-	if (!ft_strcmp(current->name, name)) {
-		*env = (*env)->next;
-		free(current->name);
-		free(current->content);
-		free(current);
-		return;
-	}
-
-	// Traverse the linked list to find the node before the one to be removed
-	while (current->next != NULL && ft_strcmp(current->next->name, name)) {
-		current = current->next;
-	}
-
-	// If the value was not found in the linked list
-	if (current->next == NULL) {
-		return;
-	}
-
-	temp = current->next;
-	current->next = temp->next;
-	free(temp->name);
-	free(temp->content);
-	free(temp);
 }
+
+// void unset_var(t_list **env, char *name)
+// {
+// 	t_list *temp;
+// 	t_list *current = *env;  // Initialize current to the head of the list
+
+// 	if (current == NULL) {
+// 		return;
+// 	}
+
+// 	// Handle the case where the first node needs to be removed
+// 	if (!ft_strcmp(current->name, name))
+// 	{
+// 		*env = (*env)->next;
+// 		free(current->name);
+// 		free(current->content);
+// 		free(current);
+// 		return;
+// 	}
+
+// 	// Traverse the linked list to find the node before the one to be removed
+// 	while (current->next != NULL && ft_strcmp(current->next->name, name))
+// 	{
+// 		current = current->next;
+// 	}
+
+// 	// If the value was not found in the linked list
+// 	if (current->next == NULL) {
+// 		return;
+// 	}
+
+// 	temp = current->next;
+// 	current->next = temp->next;
+// 	free(temp->name);
+// 	free(temp->content);
+// 	free(temp);
+// }
 
 
 // int	unset_var(t_list **env, char *name)
@@ -93,8 +110,6 @@ void unset_var(t_list **env, char *name)
 // 	}
 // 	return (0);
 // }
-
-
 
 // int main()
 // {

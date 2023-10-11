@@ -81,7 +81,6 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 
 }
 
-
 int ft_echo(char **args)
 {
 	int arg_start;
@@ -157,7 +156,8 @@ int ft_env_print(t_list *env)
 	{
 		while (env)
 		{
-			printf("%s=%s\n", env->name, env->content);
+			if(env->name)
+				printf("%s=%s\n", env->name, env->content);
 			env = env->next;
 		}
 	}
@@ -220,7 +220,13 @@ void ft_exit(t_cmd_node *cmd, t_list *env)
 	return ;
 }
 
-void ft_unset(char *str, t_list *env)
+void ft_unset(t_cmd_node *cmd, t_list *env)
 {
-	unset_var(&env, str);
+	int i = 1;
+
+	while (cmd->cmd[i])
+	{
+		unset_var(&env, cmd->cmd[i]);
+		i++;
+	}
 }

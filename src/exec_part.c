@@ -40,7 +40,7 @@ int run_builtin(t_cmdlist *cmd_list, t_list *env)
 		else if (!ft_strcmp(node->cmd[0], "export"))
 			ft_export(node, env);
 		else if (!ft_strcmp(node->cmd[0], "unset"))
-			ft_unset(node->cmd[1], env);
+			ft_unset(node, env);
 		else if (!ft_strcmp(node->cmd[0], "exit"))
 			ft_exit(node, env);
 
@@ -106,6 +106,11 @@ void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
 	pipe(fd);
 	// check to fork
 	// exec fork - run_single
+
+
+	if (!ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") )
+		if (!access("./minishell", X_OK))
+			change_shlvl(env, 1);
 
 	run_single(cmd_list, env, fd);
 
