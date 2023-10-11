@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: justindaly <justindaly@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 01:38:17 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 04:08:28 by justindaly       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ char	*get_value(char *varname, t_list *envlist)
 {
 	char	*varvalue;
 
-	if (ft_strcmp("$$", varname) == 0)
-		varvalue = "$$";
-	else if (ft_strcmp("$?", varname) == 0)
+	// if (ft_strcmp("$", varname) == 0)
+	// 	varvalue = "$$";
+	if (ft_strcmp("?", varname) == 0)
 		varvalue = ft_itoa(g_status);
 	else
 		varvalue = get_content_by_name(envlist, varname);
@@ -57,12 +57,14 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 	char	*val;
 	char	*varname;
 
-	pos = ft_strchars_i(&str[i], "|\"\'$?>< ") + (ft_strchr("$?", str[i]) != 0);
+	pos = ft_strchars_i(&str[i], "|\"\'$?>< .") + (ft_strchr("$?", str[i]) != 0);
 	if (pos == -1)
 		pos = ft_strlen(str) - 1;
 	aux = ft_substr(str, 0, i - 1);
 	varname = ft_strndup(&str[i], pos);
+	//printf("varname = %s\n", varname);
 	val = get_value(varname, envlist);
+	//printf("varvalue = %s\n", val);
 	path = ft_strjoin(aux, val);
 	free(val);
 	free(aux);
