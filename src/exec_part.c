@@ -27,23 +27,21 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 		}
 }
 
-int run_builtin(t_cmdlist *cmd_list, t_list *env)
+int run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit)
 {
 	t_cmd_node *node;
 
 	node = (t_cmd_node *)cmd_list->content;
-
 	if (!cmd_list->next)
 	{
 		if (!ft_strcmp(node->cmd[0], "cd"))
 			ft_cd(node, env);
-		else if (!ft_strcmp(node->cmd[0], "export"))
+		else if (!ft_strcmp(node->cmd[0], "export")) // if no parameters
 			ft_export(node, env);
 		else if (!ft_strcmp(node->cmd[0], "unset"))
 			ft_unset(node, env);
 		else if (!ft_strcmp(node->cmd[0], "exit"))
-			ft_exit(node, env);
-
+			g_status = ft_exit(cmd_list, env, is_exit);
 		if ( !ft_strcmp(node->cmd[0], "cd")	|| !ft_strcmp(node->cmd[0], "export")
 			|| !ft_strcmp(node->cmd[0], "unset") || !ft_strcmp(node->cmd[0], "exit"))
 			return(1);
@@ -94,7 +92,10 @@ void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 		// if (!ft_strcmp(node->cmd[0], "echo") || !ft_strcmp(node->cmd[0], "pwd") || !ft_strcmp(node->cmd[0], "env"))
 		// 	exit(g_status);
 		else if (!ft_is_builtin(node->cmd[0]))
+		{
 			execve(node->path, node->cmd, NULL);
+			ft_cmdlstclear(&cmd_list, free_cmd_content); //clear list if error to prevent leak
+		}
 		ft_cmdlstclear(&cmd_list, free_cmd_content);
 		exit(g_status);
 	}
@@ -128,14 +129,14 @@ void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
 		close(((t_cmd_node *)cmd_list->content)->out);
 }
 
-int	run_multiple(t_cmdlist *cmd_list, t_list *env)
+int	run_multiple(t_cmdlist *cmd_list, t_list *env, int *is_exit)
 {
 	while (cmd_list)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		// All built­in functions except env executed by parent
-		if (!run_builtin(cmd_list, env))
+		if (!run_builtin(cmd_list, env, is_exit))
 			pre_run_single(cmd_list, env);
 		cmd_list = cmd_list->next;
 	}
@@ -150,24 +151,38 @@ void	exec_all(char *out, t_list *env)
 	cmd_list = NULL;
 	char **args;
 	int	cmds_num;
+	int	is_exit;
 
 	// if (out[0] != '\0')
 	// 	add_history(out);
+	is_exit = 0;
 	args = ft_split_cmds(out, " ");
-
+	free(out);
+	if (!args)
+		ft_error(ERR_QUOTE, NULL, 1);
 	if (args)
 	{
 		cmd_list = create_cmd_list(final_split(args, env), -1);
+		if (!cmd_list)
+			return ;
 		ft_find_right_paths(cmd_list);
 		cmds_num = ft_cmdlstsize(cmd_list);
-		g_status = run_multiple(cmd_list, env);
+		g_status = run_multiple(cmd_list, env, &is_exit);
 		while (0 < cmds_num--)
 			waitpid(-1, &g_status, 0);
-		ft_cmdlstclear(&cmd_list, free_cmd_content);
+		if (!is_exit && g_status == 13)
+			g_status = 0;
+		if (args && is_exit)
+		{
+			ft_cmdlstclear(&cmd_list, free_cmd_content);
+			exit(g_status);
+		}
+		
 		// end parse args
 		// return (1);
 	}
-	// return (1);
+	ft_cmdlstclear(&cmd_list, free_cmd_content);
+	//return (cmd_list);
 }
 
 int	main(int argc, char *argv[], char **env)
@@ -183,4 +198,5 @@ int	main(int argc, char *argv[], char **env)
 		out = readline("guest@minishell $ ");
 		exec_all(out, env_list);
 	}
+	exit(g_status);
 }
