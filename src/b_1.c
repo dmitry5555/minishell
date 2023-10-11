@@ -182,13 +182,6 @@ void change_shlvl(t_list *env, int inc)
 	}
 }
 
-int ft_exit(t_cmd_node *cmd, t_list *env)
-{
-	ft_putstr_fd("exit. bye bye\n",1);
-	exit(1);
-	return (0);
-}
-
 void ft_unset(t_cmd_node *cmd, t_list *env)
 {
 	int i = 1;
