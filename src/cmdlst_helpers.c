@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 15:14:39 by justindaly        #+#    #+#             */
-/*   Updated: 2023/10/04 21:15:04 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 00:24:34 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ t_cmd_node	*init_cmd_node(void)
 	return (node);
 }
 
-int ft_cmdlstsize(t_cmdlist *lst)
+int	ft_cmdlstsize(t_cmdlist *lst)
 {
-	int i;
-	t_cmdlist *node;
+	int			i;
+	t_cmdlist	*node;
 
 	i = 0;
 	node = lst;
@@ -73,42 +73,9 @@ t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst)
 	t_cmdlist	*node;
 
 	node = lst;
-	if(!node)
+	if (!node)
 		return (0);
-	while(node->next)
+	while (node->next)
 		node = node->next;
 	return (node);
-}
-
-void	free_cmd_content(void *content)
-{
-	t_cmd_node	*node;
-
-	node = content;
-	ft_array_free(&node->cmd);
-	free(node->path);
-	if (node->in != STDIN_FILENO)
-		close(node->in);
-	if (node->out != STDOUT_FILENO)
-		close(node->out);
-	free(node);
-}
-
-void	ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*))
-{
-	t_cmdlist	*start;
-	t_cmdlist	*temp;
-
-	if (!lst)
-		return ;
-	start = *lst;
-	temp = NULL;
-	while (start)
-	{
-		temp = start;
-		start = start->next;
-		del(temp->content);
-		free(temp);
-	}
-	*lst = NULL;
 }
