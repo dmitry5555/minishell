@@ -148,7 +148,7 @@ int		ft_env_print(t_list *env);
 void	ft_export(t_cmd_node *cmd, t_list *env);
 void 	ft_unset(t_cmd_node *cmd, t_list *env);
 void	change_shlvl(t_list *env, int inc);
-void	ft_exit(t_cmd_node *cmd, t_list *env);
+int		ft_exit(t_cmd_node *cmd, t_list *env);
 
 // builtin helpers
 void 	unset_var(t_list **env, char *name);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:10:00 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/06 20:50:53 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/11 19:06:48 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char **final_split(char **args, t_list *envlist)
 
 	i = -1;
 	subsplit = NULL;
+
 	while (args && args[++i])
 	{
 		args[i] = expand_vars(args[i], -1, envlist);

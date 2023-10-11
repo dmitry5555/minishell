@@ -116,40 +116,6 @@ int ft_echo(char **args)
 }
 
 
-// void ft_echo(char **args)
-// {
-// 	int i;
-// 	int flag_n;
-
-// 	flag_n = 0;
-// 	i = 1;
-// 	if (nb_args(args) > 1)
-// 	{
-// 		while(args[i] && args[i][0] == '-')
-// 		{
-// 			int j = 1;
-// 			while (args[i][j] == 'n')
-// 				j++;
-// 			if (args[i][j] == '\0')
-// 			{
-// 				flag_n = 1;
-// 			}
-// 			i++;
-// 		}
-// 		if (!flag_n)
-// 			i--;
-// 		while (args[i])
-// 		{
-// 			ft_putstr_fd(args[i], 1);
-// 			if (args[i + 1] && args[i][0])
-// 				write(1, " ", 1);
-// 			i++;
-// 		}
-// 	}
-// 	if (!flag_n)
-// 		write(1,"\n",1);
-// }
-
 int ft_env_print(t_list *env)
 {
 	if (env != NULL)
@@ -186,6 +152,10 @@ void ft_export(t_cmd_node *cmd, t_list *env)
 
 	i = 0;
 	flag = 0;
+	if (!cmd->cmd[1])
+	{
+		ft_env_print(env);
+	}
 	while(cmd->cmd[++i])
 	{
 		if(!check_exp_var(get_key_value_pair(cmd->cmd[i])[0]))
@@ -198,7 +168,6 @@ void ft_export(t_cmd_node *cmd, t_list *env)
 		ft_putstr_fd("export: not an identifier: ", 1);
 		ft_putstr_fd(get_key_value_pair(cmd->cmd[flag])[0], 1);
 		ft_putstr_fd("\n", 1);
-		// printf("get_key_value_pair(cmd->cmd[i])[0] - %s\n",get_key_value_pair(cmd->cmd[i])[0]);
 	}
 }
 
@@ -213,11 +182,11 @@ void change_shlvl(t_list *env, int inc)
 	}
 }
 
-void ft_exit(t_cmd_node *cmd, t_list *env)
+int ft_exit(t_cmd_node *cmd, t_list *env)
 {
 	ft_putstr_fd("exit. bye bye\n",1);
-	exit(0);
-	return ;
+	exit(1);
+	return (0);
 }
 
 void ft_unset(t_cmd_node *cmd, t_list *env)

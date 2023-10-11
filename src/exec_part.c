@@ -111,7 +111,8 @@ void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
 	if (!ft_strcmp( ((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell") )
 		if (!access("./minishell", X_OK))
 			change_shlvl(env, 1);
-
+	ft_putstr_fd(((t_cmd_node *)cmd_list->content)->path ,1);
+	ft_putstr_fd( "\n" ,1);
 	run_single(cmd_list, env, fd);
 
 	// after
