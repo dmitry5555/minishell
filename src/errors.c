@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:07:05 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/02 19:10:43 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 00:33:47 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 // # define ERR_DUP 7
 // # define ERR_FORK 8
 // # define ERR_PIPE 9
+// # define ERR_PIPESYN 10
 
 void	*ft_error(int error_type, char *error_str, int error_code)
 {
@@ -35,6 +36,8 @@ void	*ft_error(int error_type, char *error_str, int error_code)
 		ft_putstr_fd("minishell: fork error", 2);
 	if (error_type == ERR_PIPE)
 		ft_putstr_fd("minishell: pipe error", 2);
+	if (error_type == ERR_PIPESYN)
+		ft_putstr_fd("minishell: syntax error near `|'", 2);
 	ft_putendl_fd(error_str, 2);
 	return (NULL);
 }
