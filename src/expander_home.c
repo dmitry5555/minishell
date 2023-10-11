@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/11 19:44:05 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/11 20:34:06 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@ char    *expand_home(char *str, t_list *envlist)
 	result = ft_strdup("");
     while (str[++i])
     {
-        //printf("str[i] = %c\n", str[i]);
         if ((i == 0 && str[i] == '~' && str[i + 1] == '/') || (is_user_home(&str[i], envlist)) || (i == 0 && str[i] == '~' && str[i + 1] == '\0'))
         {
-            varvalue = get_content_by_name(envlist, "HOME");
-            //printf("varvalue = [%s]\n", varvalue);
+            varvalue = get_content_by_name(envlist, "HOME");;
             tmp_result = ft_strjoin(result, varvalue);
             if (tmp_result)
             {
@@ -55,15 +53,13 @@ char    *expand_home(char *str, t_list *envlist)
         else
         {
             tmp_char = strndup(&str[i], 1);
-            //printf("tmp_char = %s\n", tmp_char);
             tmp_result = ft_strjoin(result, tmp_char);
             free(result);
-            free(tmp_char);
             result = tmp_result;
-            //free(tmp_result);
+            free(tmp_char);
         }
-		free(str);
     }
+    free(str);
     return (result);
 }
 

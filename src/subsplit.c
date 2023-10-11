@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/09 19:55:39 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/11 20:26:08 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	ft_sub_count_words(const char *s, char *set, int i)
 	return (nwords);
 }
 
-static char	**ft_sub_fill_array(char **array, const char *str, char *set, int i)
+static char	**ft_sub_fill_array(char **array, char *str, char *set, int i)
 {
 	int	str_len;
 	int	word_start;
@@ -86,7 +86,7 @@ char	**ft_subsplit(const char *s, char *set)
 	array = malloc((nwords + 1) * sizeof(char *));
 	if (array == NULL)
 		return (NULL);
-	array = ft_sub_fill_array(array, s, set, 0);
+	array = ft_sub_fill_array(array, (char *)s, set, 0);
 	return (array);
 }
 
