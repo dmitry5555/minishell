@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/09 15:33:10 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/11 19:44:05 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ char    *expand_home(char *str, t_list *envlist)
             //printf("tmp_char = %s\n", tmp_char);
             tmp_result = ft_strjoin(result, tmp_char);
             free(result);
-            result = tmp_result;
             free(tmp_char);
+            result = tmp_result;
             //free(tmp_result);
         }
-		//printf("result = %s\n\n", result);
+		free(str);
     }
     return (result);
 }
