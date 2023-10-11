@@ -21,6 +21,7 @@
 # define ERR_DUP 7
 # define ERR_FORK 8
 # define ERR_PIPE 9
+# define ERR_PIPESYN 10
 
 extern int g_status;
 
@@ -82,7 +83,7 @@ char	*ft_itoa(int n);
 
 // Arrays
 void	ft_free_arr(char **arr);
-int		ft_array_len(char **array);
+int		ft_a_len(char **array);
 void	ft_print_array(char **array);
 void	ft_array_free(char ***array);
 char	**ft_dup_array(char **array);
@@ -125,6 +126,7 @@ char    *expand_home(char *str, t_list *envlist);
 char 	**final_split(char **args, t_list *envlist);
 
 // Create command list
+t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp);
 t_cmdlist	*create_cmd_list(char **args, int i);
 
 // exec
@@ -148,7 +150,7 @@ int		ft_env_print(t_list *env);
 void	ft_export(t_cmd_node *cmd, t_list *env);
 void 	ft_unset(t_cmd_node *cmd, t_list *env);
 void	change_shlvl(t_list *env, int inc);
-int		ft_exit(t_cmd_node *cmd, t_list *env);
+int 	ft_exit(t_cmdlist *cmd_list, t_list *env, int *is_exit);
 
 // builtin helpers
 void 	unset_var(t_list **env, char *name);
