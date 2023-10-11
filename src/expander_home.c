@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/11 20:34:06 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 01:15:53 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,51 +16,53 @@
     //////6. ~jdaly --> /Users/jdaly
 */
 
-int is_user_home(char *str, t_list *envlist)
+int	is_user_home(char *str, t_list *envlist)
 {
 	char	*user_id;
 
 	user_id = get_content_by_name(envlist, "USER");
-	if ((strncmp(str, "~", 1) == 0) && strncmp(&str[1], user_id, (size_t)ft_strlen(user_id)) == 0)
+	if ((strncmp(str, "~", 1) == 0) && strncmp(&str[1], user_id,
+			(size_t)ft_strlen(user_id)) == 0)
 		return (1);
 	else
 		return (0);
 }
 
-char    *expand_home(char *str, t_list *envlist)
+char	*expand_home(char *str, t_list *envlist)
 {
-    int     i;
+	int		i;
 	char	*varvalue;
 	char	*result;
 	char	*tmp_result;
 	char	*tmp_char;
-    i = -1;
+
+	i = -1;
 	result = ft_strdup("");
-    while (str[++i])
-    {
-        if ((i == 0 && str[i] == '~' && str[i + 1] == '/') || (is_user_home(&str[i], envlist)) || (i == 0 && str[i] == '~' && str[i + 1] == '\0'))
-        {
-            varvalue = get_content_by_name(envlist, "HOME");;
-            tmp_result = ft_strjoin(result, varvalue);
-            if (tmp_result)
-            {
-                free(result);
-                result = tmp_result;
-            }
-            if (is_user_home(&str[i], envlist))
-                i += ft_strlen(get_content_by_name(envlist, "USER"));
-        }
-        else
-        {
-            tmp_char = strndup(&str[i], 1);
-            tmp_result = ft_strjoin(result, tmp_char);
-            free(result);
-            result = tmp_result;
-            free(tmp_char);
-        }
-    }
-    free(str);
-    return (result);
+	while (str[++i])
+	{
+		if ((i == 0 && str[i] == '~' && str[i + 1] == '/') || (is_user_home(&str[i], envlist)) || (i == 0 && str[i] == '~' && str[i + 1] == '\0'))
+		{
+			varvalue = get_content_by_name(envlist, "HOME");
+			tmp_result = ft_strjoin(result, varvalue);
+			if (tmp_result)
+			{
+				free(result);
+				result = tmp_result;
+			}
+			if (is_user_home(&str[i], envlist))
+				i += ft_strlen(get_content_by_name(envlist, "USER"));
+		}
+		else
+		{
+			tmp_char = strndup(&str[i], 1);
+			tmp_result = ft_strjoin(result, tmp_char);
+			free(result);
+			result = tmp_result;
+			free(tmp_char);
+		}
+	}
+	free(str);
+	return (result);
 }
 
 // char    *expand_home(char *str, int i, t_list *envlist)
