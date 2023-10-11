@@ -94,6 +94,7 @@ void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 		else if (!ft_is_builtin(node->cmd[0]))
 		{
 			execve(node->path, node->cmd, NULL);
+			ft_error(ERR_CMD, node->cmd[0], 127); //add error message if cmd doesn't execute
 			ft_cmdlstclear(&cmd_list, free_cmd_content); //clear list if error to prevent leak
 		}
 		ft_cmdlstclear(&cmd_list, free_cmd_content);
@@ -169,9 +170,15 @@ void	exec_all(char *out, t_list *env)
 		cmds_num = ft_cmdlstsize(cmd_list);
 		g_status = run_multiple(cmd_list, env, &is_exit);
 		while (0 < cmds_num--)
-			waitpid(-1, &g_status, 0);
+			{
+				waitpid(-1, &g_status, 0);
+				//printf("gstatus = %d\n", g_status);
+			}
+			
 		if (!is_exit && g_status == 13)
 			g_status = 0;
+		if (g_status > 255)
+			g_status = g_status / 255;
 		if (args && is_exit)
 		{
 			ft_cmdlstclear(&cmd_list, free_cmd_content);
