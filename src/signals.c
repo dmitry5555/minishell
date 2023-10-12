@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:59 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:10:37 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 21:22:16 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@ void	sig_hand(int sig)
 	{
 		//printf("ign sign = ctrl_c\n");
 		g_status = 130;
-		ioctl(STDIN_FILENO, , "\n");
-		rl_replace_line()
-	}
-	if (sig == SIGQUIT)
-	{
-		printf("quit sign = ctrl+|\n");
+		ioctl(STDIN_FILENO, TIOCSTI , "\n"); //mimics pressing the Enter key
+		rl_replace_line("", 0); //clears out;
+		rl_on_new_line(); //moves cursor to new line
 	}
 }
 

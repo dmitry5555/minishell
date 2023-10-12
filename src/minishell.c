@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:54:24 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 21:21:25 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	exec_all(char *out, t_list *env)
 	int			is_exit;
 
 	cmd_list = NULL;
+	if (!out) // for ctrl+d
+	{
+		printf("exit\n");
+		exit(g_status);
+	}
 	if (out[0] != '\0')
 		add_history(out);
 	is_exit = 0;
@@ -40,6 +45,8 @@ void	exec_all(char *out, t_list *env)
 	free(out);
 	if (!args)
 		ft_error(ERR_QUOTE, NULL, 1);
+	if (!args)
+		return ;
 	if (args)
 	{
 		cmd_list = create_cmd_list(final_split(args, env), -1);
@@ -80,10 +87,9 @@ int	main(int argc, char *argv[], char **env)
 	env_list = ft_env_parser(env);
 	while (argc && argv)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, sig_hand); // ctrl-x = our handler
+		signal(SIGQUIT, SIG_IGN); // ctrl-\ = ignore
 		out = readline("guest@minishell $ ");
 		exec_all(out, env_list);
 	}
-	exit(g_status);
 }
