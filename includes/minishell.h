@@ -25,12 +25,11 @@
 
 extern int g_status;
 
-typedef struct	s_list
+typedef struct s_list
 {
 	struct s_list	*next;
 	char			*name;
 	char			*content;
-	// int				is_env;
 }	t_list;
 
 typedef struct s_cmdlist
@@ -39,7 +38,7 @@ typedef struct s_cmdlist
 	void				*content;
 }	t_cmdlist;
 
-typedef struct	s_cmd_node
+typedef struct s_cmd_node
 {
 	char	**cmd;
 	char	*path;
@@ -74,7 +73,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strndup(const char *s, size_t n);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
-char 	**split_string(char *str, char *delimiter);
+char	**split_string(char *str, char *delimiter);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 int		ft_atoi(const char *a);
 static int	num_len(int n);
@@ -102,37 +101,38 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstlast(t_list *lst);
 void	ft_free_list(t_list *list);
 void	ft_cleanup(t_list **env);
-char	*get_content_by_name(t_list *head, const char *name);
+char	*env_cont(t_list *head, const char *name);
 
 // lexer
-char		**ft_split_cmds(const char *s, char *set);
-char		**ft_subsplit(char const *s, char *set);
+char	**ft_split_cmds(const char *s, char *set);
+char	**ft_subsplit(char const *s, char *set);
 
 // command list helpers
-t_cmd_node	*init_cmd_node(void);
-int 		ft_cmdlstsize(t_cmdlist *lst);
-t_cmdlist	*ft_cmdlstnew(void *content);
-void		ft_cmdlstadd_back(t_cmdlist **lst, t_cmdlist *newnode);
-t_cmdlist	*ft_cmdlstlast(t_cmdlist *lst);
-void		free_cmd_content(void *content);
-void		ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
-t_cmdlist	*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp);
-void		print_cmd_list(t_cmdlist *cmd_list);
+t_cmd_node		*init_cmd_node(void);
+t_cmdlist		*fill_cmdlst_error(t_cmdlist *cmds, char **args, char **tmp);
+t_cmdlist		*ft_cmdlstnew(void *content);
+t_cmdlist		*ft_cmdlstlast(t_cmdlist *lst);
+
+void			ft_cmdlstadd_back(t_cmdlist **lst, t_cmdlist *newnode);
+void			free_cmd_content(void *content);
+void			ft_cmdlstclear(t_cmdlist **lst, void (*del)(void*));
+void			print_cmd_list(t_cmdlist *cmd_list);
+int				ft_cmdlstsize(t_cmdlist *lst);
 
 // Create command list
-t_cmdlist	*create_cmd_list(char **args, int i);
+t_cmdlist		*create_cmd_list(char **args, int i);
 
 // get fd
-t_cmd_node	*get_outfile(t_cmd_node *node, char **args, int *i);
-t_cmd_node	*get_outfile_append(t_cmd_node *node, char **args, int *i);
-t_cmd_node	*get_infile(t_cmd_node *node, char **args, int *i);
-t_cmd_node	*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
+t_cmd_node		*get_outfile(t_cmd_node *node, char **args, int *i);
+t_cmd_node		*get_outfile_append(t_cmd_node *node, char **args, int *i);
+t_cmd_node		*get_infile(t_cmd_node *node, char **args, int *i);
+t_cmd_node		*get_infile_heredoc(t_cmd_node *node, char **args, int *i);
 
 // expansion
 char	*expand_vars(char *str, int i, t_list *envlist);
-int 	is_user_home(char *str, t_list *envlist);
-char    *expand_home(char *str, t_list *envlist);
-char 	**final_split(char **args, t_list *envlist);
+int		is_user_home(char *str, t_list *envlist);
+char	*expand_home(char *str, t_list *envlist);
+char	**final_split(char **args, t_list *envlist);
 
 // exec
 void	handle_esc(char *str);
@@ -141,21 +141,21 @@ void	exec_cmd(t_cmdlist *cmd_list, t_list *env);
 void	sig_hand(int sig);
 
 // builtin
-t_list *ft_env_parser(char **environ);
+t_list	*ft_env_parser(char **environ);
 int		ft_echo(char **args);
 int		ft_pwd(void);
 void	ft_cd(t_cmd_node *node, t_list *env);
 int		ft_env_print(t_list *env);
-void	ft_export(t_cmd_node *cmd, t_list *env);
-void 	ft_unset(t_cmd_node *cmd, t_list *env);
+int		ft_export(t_cmd_node *cmd, t_list *env);
+void	ft_unset(t_cmd_node *cmd, t_list *env);
 void	change_shlvl(t_list *env, int inc);
-int 	ft_exit(t_cmdlist *cmd_list, t_list *env, int *is_exit);
+int		ft_exit(t_cmdlist *cmd_list, t_list *env, int *is_exit);
 
 // builtin helpers
-void 	unset_var(t_list **env, char *name);
-int 	set_var(t_list **env, char *name, char *content);
+void	unset_var(t_list **env, char *name);
+int		set_var(t_list **env, char *name, char *content);
 char	**get_key_value_pair(char *arg);
-int 	ft_is_builtin(char *str);
-void 	ft_find_right_paths(t_cmdlist *cmd_list);
+int		ft_is_builtin(char *str);
+void	ft_find_right_paths(t_cmdlist *cmd_list);
 
 #endif

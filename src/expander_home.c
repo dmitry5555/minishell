@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_home.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 01:15:53 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 15:42:23 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	is_user_home(char *str, t_list *envlist)
 {
 	char	*user_id;
 
-	user_id = get_content_by_name(envlist, "USER");
+	user_id = env_cont(envlist, "USER");
 	if ((strncmp(str, "~", 1) == 0) && strncmp(&str[1], user_id,
 			(size_t)ft_strlen(user_id)) == 0)
 		return (1);
@@ -42,7 +42,7 @@ char	*expand_home(char *str, t_list *envlist)
 	{
 		if ((i == 0 && str[i] == '~' && str[i + 1] == '/') || (is_user_home(&str[i], envlist)) || (i == 0 && str[i] == '~' && str[i + 1] == '\0'))
 		{
-			varvalue = get_content_by_name(envlist, "HOME");
+			varvalue = env_cont(envlist, "HOME");
 			tmp_result = ft_strjoin(result, varvalue);
 			if (tmp_result)
 			{
@@ -50,7 +50,7 @@ char	*expand_home(char *str, t_list *envlist)
 				result = tmp_result;
 			}
 			if (is_user_home(&str[i], envlist))
-				i += ft_strlen(get_content_by_name(envlist, "USER"));
+				i += ft_strlen(env_cont(envlist, "USER"));
 		}
 		else
 		{
@@ -75,7 +75,7 @@ char	*expand_home(char *str, t_list *envlist)
 
 //     in_sq = 0;
 //     in_dq = 0;
-//     home = get_content_by_name(envlist, "HOME");
+//     home = env_cont(envlist, "HOME");
 //     // while (str && str[++i])
 //     {
 //         // in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
@@ -84,7 +84,7 @@ char	*expand_home(char *str, t_list *envlist)
 // 		{
 // 			str = strdup(home);
 //             // if (is_user_home(&str[i], envlist))
-//             //     home = 
+//             //     home =
 // 			// before = ft_substr(str, 0, i);
 // 			// result = ft_strjoin(before, home);
 // 			// free(before);

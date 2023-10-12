@@ -1,34 +1,27 @@
 # include "minishell.h"
 
-
 void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
 {
-	t_list *new;
-	t_list *temp;
+	t_list	*new;
+	t_list	*temp;
 
 	new = malloc(sizeof(t_list));
 	if (!new)
-		return;
-	// new->name = NULL;
-	// new->content = NULL;
-	new->name = ft_strndup(str1, ft_strlen(str1) + 1);
-	new->content = ft_strndup(str2, ft_strlen(str2) + 1);
-	// new->is_env = is_env;
+		return ;
+	if (str1)
+		new->name = ft_strndup(str1, ft_strlen(str1) + 1);
+	if (str2)
+		new->content = ft_strndup(str2, ft_strlen(str2) + 1);
 	new->next = NULL;
-
 	if (*env == NULL)
-	{
-		*env = new; // If the list is empty, new node is the first node
-	}
+		*env = new;
 	else
 	{
 		temp = *env;
-		while (temp->next != NULL) {
+		while (temp->next != NULL)
 			temp = temp->next;
-		}
-		temp->next = new; // Add new node to the end of the list
+		temp->next = new;
 	}
-	// cleanup(new);
 }
 
 void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
@@ -39,20 +32,16 @@ void	ft_add_new_node_start(t_list **env, const char *str1, const char *str2)
 	new = malloc(sizeof(t_list));
 	if (!new)
 		return ;
-	// current = malloc(sizeof(t_list));
-
 	new->name = ft_strndup(str1, ft_strlen(str1) + 1);
 	new->content = ft_strndup(str2, ft_strlen(str2) + 1);
-	// new->is_env = is_env;
 	new->next = NULL;
-
-	if (*env == NULL) {
+	if (*env == NULL)
 		*env = new;
-	} else {
+	else
+	{
 		current = *env;
-		while (current->next != NULL) {
+		while (current->next != NULL)
 			current = current->next;
-		}
 		current->next = new;
 	}
 }
@@ -65,35 +54,24 @@ void	ft_cleanup(t_list **env)
 
 void	ft_free_list(t_list *list)
 {
-	while (list) {
-		t_list *temp = list;
+	t_list	*temp;
+
+	while (list)
+	{
+		temp = list;
 		list = list->next;
 		free(temp->name);
 		free(temp->content);
-		// free(temp->is_env);
 		free(temp);
 	}
 }
-
-// t_list	*ft_lstnew(void const *content)
-// {
-// 	t_list	*new;
-
-// 	new = (t_list *)malloc(sizeof(t_list));
-// 	if (!new)
-// 		return (0);
-// 	if (new != 0)
-// 		new->content = (void *)content;
-// 		new->next = 0;
-// 	return (new);
-// }
 
 // Counts the number of nodes in a list.
 
 int ft_lstsize(t_list *lst)
 {
-	int i;
-	t_list *node;
+	int 	i;
+	t_list	*node;
 
 	i = 0;
 	node = lst;
@@ -110,7 +88,8 @@ int ft_lstsize(t_list *lst)
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*temp;
-	if (!lst||!new)
+
+	if (!lst || !new)
 		return ;
 	if (!*lst)
 	{
@@ -125,7 +104,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	if(*lst && new)
+	if (*lst && new)
 	{
 		new->next = *lst;
 		*lst = new;
@@ -138,6 +117,7 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 //  and free(3).
 //  Finally, the pointer to the list must be set to
 //  NULL.
+
 void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
 	t_list	*temp;
@@ -173,7 +153,7 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*))
 // Iterates the list ’lst’ and applies the function
 // ’f’ on the content of each node.
 
-void ft_lstiter(t_list *lst, void (*f)(void *))
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
 	t_list	*node;
 	t_list	*temp;
@@ -193,53 +173,23 @@ t_list	*ft_lstlast(t_list *lst)
 	t_list	*node;
 
 	node = lst;
-	if(!node)
+	if (!node)
 		return (0);
-	while(node->next)
+	while (node->next)
 		node = node->next;
 	return (node);
 }
-// Iterates the list ’lst’ and applies the function
-// ’f’ on the content of each node.  Creates a new
-// list resulting of the successive applications of
-// the function ’f’.  The ’del’ function is used to
-// delete the content of a node if needed.
 
-// t_list	*ft_lstmap(t_list *lst, void *(*f)(void *),void (*del)(void *))
-// {
-// 	t_list	*temp;
-// 	t_list	*new_list;
-
-// 	if (!lst||!f||!del)
-// 		return (0);
-// 	new_list = 0;
-// 	while (lst)
-// 	{
-// 		temp = ft_lstnew((*f)(lst->content));
-// 		if (!temp)
-// 		{
-// 			ft_lstclear(&temp, del);
-// 			return (0);
-// 		}
-// 		ft_lstadd_back(&new_list, temp);
-// 		lst = lst->next;
-// 	}
-// 	return (new_list);
-// }
-
-
-char *get_content_by_name(t_list *head, const char *name)
+char	*env_cont(t_list *head, const char *name)
 {
-	t_list *current = head;
+	t_list	*current;
+
+	current = head;
 	while (current != NULL)
 	{
 		if (!ft_strcmp(current->name, name))
-		{
-			return current->content;
-		}
+			return (current->content);
 		current = current->next;
 	}
-
-	// Node with the specified name not found
-	return NULL;
+	return (NULL);
 }

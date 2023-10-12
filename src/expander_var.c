@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 15:22:52 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 15:42:26 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	g_status;
 
     5. ~ --> /Users/jdaly
     6. ~jdaly --> /Users/jdaly
-    
+
 */
 
 int	ft_isalnum(int c)
@@ -39,7 +39,7 @@ char	*get_value(char *varname, t_list *envlist)
 	if (ft_strcmp("?", varname) == 0)
 		varvalue = ft_itoa(g_status);
 	else
-		varvalue = get_content_by_name(envlist, varname);
+		varvalue = env_cont(envlist, varname);
 	free(varname);
 	if (!varvalue)
 		return (NULL);

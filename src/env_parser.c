@@ -1,6 +1,5 @@
-# include "minishell.h"
 
-// parse env to have a local copy
+#include "minishell.h"
 
 // split single ENV string
 char	**get_key_value_pair(char *arg)
@@ -13,32 +12,11 @@ char	**get_key_value_pair(char *arg)
 	tmp[0] = ft_substr(arg, 0, equal_sign_pos - arg);
 	tmp[1] = ft_substr(equal_sign_pos, 1, ft_strlen(arg));
 	tmp[2] = NULL;
-	return(tmp);
+	return (tmp);
 }
 
-// parse ENV to linked list
-// t_list *ft_env_parser(char **env)
-// {
-// 	t_list 	env;
-// 	char	**env_lines;
-// 	char	**temp;
-// 	char	*shlvl;
-
-// 	env_lines ;
-// 	while (*env_lines)
-// 	{
-// 		temp = get_key_value_pair(*env_lines);
-// 		ft_add_new_node_end(&env, temp[0], temp[1], 1);
-// 		if (!ft_strcmp(temp[0],"OLDPWD"))
-// 			set_var(&env,"OLDPWD","");
-// 		ft_array_free(&temp);
-// 		env_lines++;
-// 	}
-// 	return(env);
-// }
-
 // env parser
-t_list *ft_env_parser(char **environ)
+t_list	*ft_env_parser(char **environ)
 {
 	t_list	*env;
 	char	**env_lines;
@@ -53,5 +31,5 @@ t_list *ft_env_parser(char **environ)
 		ft_array_free(&temp);
 		env_lines++;
 	}
-	return(env);
+	return (env);
 }
