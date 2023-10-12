@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:33:58 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:53:18 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 	char	*oldpwd;
 	char	s[1000];
 
+	new_path = NULL;
 	oldpwd = env_cont(env, "OLDPWD");
 	if (!node->cmd[1] || !ft_strcmp(node->cmd[1], env_cont(env, "HOME"))
 		|| !ft_strcmp(node->cmd[1], ft_strjoin("~", env_cont(env, "HOME"))))
