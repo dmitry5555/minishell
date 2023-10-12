@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   b_2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 01:42:26 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 01:43:25 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 17:59:33 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int	g_status;
 
 int	ft_isspace(char c)
 {
