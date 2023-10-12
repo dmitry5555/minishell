@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 21:21:25 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 21:36:33 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@ void	exec_all(char *out, t_list *env)
 			waitpid(-1, &g_status, 0);
 			//printf("gstatus = %d\n", g_status);
 		}
-
-		if (!is_exit && g_status == 13)
-			g_status = 0;
 		if (g_status > 255)
 			g_status = g_status / 255;
 		if (args && is_exit)
