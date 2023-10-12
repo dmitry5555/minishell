@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_part.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:26:14 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:46:57 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 		else if (!ft_strcmp(node->cmd[0], "unset"))
 			ft_unset(node, env);
 		else if (!ft_strcmp(node->cmd[0], "exit") && ncmds == 1)
-			g_status = ft_exit(cmd_list, env, is_exit);
+			g_status = ft_exit(cmd_list, is_exit);
 		if (!ft_strcmp(node->cmd[0], "cd")
 			|| !ft_strcmp(node->cmd[0], "export")
 			|| !ft_strcmp(node->cmd[0], "unset")

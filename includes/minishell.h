@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 18:19:42 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 18:44:46 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 # include <string.h>
 # include <fcntl.h>
 # include <readline/readline.h>
@@ -88,7 +89,7 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			**split_string(char *str, char *delimiter);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 int				ft_atoi(const char *a);
-static int		num_len(int n);
+int				num_len(int n);
 char			*ft_itoa(int n);
 
 // Arrays
@@ -166,7 +167,7 @@ int				ft_env_print(t_list *env, int is_export);
 int				ft_export(t_cmd_node *cmd, t_list *env);
 void			ft_unset(t_cmd_node *cmd, t_list *env);
 void			change_shlvl(t_list *env, int inc);
-int				ft_exit(t_cmdlist *cmd_list, t_list *env, int *is_exit);
+int				ft_exit(t_cmdlist *cmd_list, int *is_exit);
 
 // builtin helpers
 void			unset_var(t_list **env, char *name);
