@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/11 20:26:08 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 15:33:25 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,35 +41,32 @@ static int	ft_sub_count_words(const char *s, char *set, int i)
 	return (nwords);
 }
 
-static char	**ft_sub_fill_array(char **array, char *str, char *set, int i)
+static char	**ft_sub_fill_array(char **array, char *s, char *set, int i[2])
 {
 	int	str_len;
 	int	word_start;
-	int	in_sq;
-	int	in_dq;
-	int	j;
+	int	in_q[2];
 
-	str_len = ft_strlen(str);
-	in_sq = 0;
-	in_dq = 0;
-	j = 0;
-	while (str && str[i] != '\0')
+	str_len = ft_strlen(s);
+	in_q[0] = 0;
+	in_q[1] = 0;
+	while (s && s[i[0]] != '\0')
 	{
-		word_start = i;
-		if (!ft_strchr(set, str[i]))
+		word_start = i[0];
+		if (!ft_strchr(set, s[i[0]]))
 		{
-			while ((!ft_strchr(set, str[i]) || in_dq || in_sq) && str[i])
+			while ((!ft_strchr(set, s[i[0]]) || in_q[0] || in_q[1]) && s[i[0]])
 			{
-				in_sq = (in_sq + (!in_dq && str[i] == '\'')) % 2;
-				in_dq = (in_dq + (!in_sq && str[i] == '\"')) % 2;
-				i++;
+				in_q[0] = (in_q[0] + (!in_q[1] && s[i[0]] == '\'')) % 2;
+				in_q[1] = (in_q[1] + (!in_q[0] && s[i[0]] == '\"')) % 2;
+				i[0]++;
 			}
 		}
 		else
-			i++;
-		array[j++] = ft_substr(str, word_start, i - word_start);
+			i[0]++;
+		array[i[1]++] = ft_substr(s, word_start, i[0] - word_start);
 	}
-	array[j] = NULL;
+	array[i[1]] = NULL;
 	return (array);
 }
 
@@ -77,7 +74,10 @@ char	**ft_subsplit(const char *s, char *set)
 {
 	char	**array;
 	int		nwords;
+	int		i[2];
 
+	i[0] = 0;
+	i[1] = 0;
 	if (!s)
 		return (NULL);
 	nwords = ft_sub_count_words(s, set, 0);
@@ -86,7 +86,7 @@ char	**ft_subsplit(const char *s, char *set)
 	array = malloc((nwords + 1) * sizeof(char *));
 	if (array == NULL)
 		return (NULL);
-	array = ft_sub_fill_array(array, (char *)s, set, 0);
+	array = ft_sub_fill_array(array, (char *)s, set, i);
 	return (array);
 }
 
