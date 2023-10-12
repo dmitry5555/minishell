@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 01:05:45 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 01:09:43 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 18:43:03 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_atoi(const char *a)
 	return (nb * is_neg);
 }
 
-static int	num_len(int n)
+int	num_len(int n)
 {
 	int	len;
 
