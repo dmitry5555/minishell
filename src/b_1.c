@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:19:24 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:33:58 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ int	ft_echo(char **args)
 	flag = 0;
 	arg_start = 1;
 	if (!args[arg_start])
+	{
+		ft_putstr_fd("\n", 1);
 		return (0);
+	}
 	if (args[arg_start][0] == '-' && args[arg_start][1] == 'n')
 	{
 		flag = 1;
