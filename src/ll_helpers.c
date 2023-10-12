@@ -6,11 +6,11 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:19 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 16:12:20 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:31:40 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
 {
@@ -18,15 +18,17 @@ void	ft_add_new_node_end(t_list **env, const char *str1, const char *str2)
 	t_list	*temp;
 
 	new = malloc(sizeof(t_list));
-	if (!new)
-		return ;
+	new->name = NULL;
+	new->content = NULL;
 	if (str1)
 		new->name = ft_strndup(str1, ft_strlen(str1) + 1);
 	if (str2)
 		new->content = ft_strndup(str2, ft_strlen(str2) + 1);
 	new->next = NULL;
 	if (*env == NULL)
+	{
 		*env = new;
+	}
 	else
 	{
 		temp = *env;

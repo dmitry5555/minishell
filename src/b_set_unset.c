@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:56 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 16:11:57 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:35:49 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	set_var(t_list **env, char *name, char *content)
 			if (curr->content)
 				free(curr->content);
 			curr->content = ft_strdup(content);
-			// curr->is_env = is_env;
 			flag_upd = 1;
 		}
 		curr = curr->next;

@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 16:12:09 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:14:01 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit)
 			ft_unset(node, env);
 		else if (!ft_strcmp(node->cmd[0], "exit"))
 			g_status = ft_exit(cmd_list, env, is_exit);
-		if ( !ft_strcmp(node->cmd[0], "cd")
+		if (!ft_strcmp(node->cmd[0], "cd")
 			|| !ft_strcmp(node->cmd[0], "export")
 			|| !ft_strcmp(node->cmd[0], "unset")
 			|| !ft_strcmp(node->cmd[0], "exit"))
@@ -98,7 +98,7 @@ void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 		else if (!ft_strcmp(node->cmd[0], "pwd"))
 			g_status = ft_pwd();
 		else if (!ft_strcmp(node->cmd[0], "env"))
-			g_status = ft_env_print(env);
+			g_status = ft_env_print(env, 0);
 		// if (!ft_strcmp(node->cmd[0], "echo") || !ft_strcmp(node->cmd[0], "pwd") || !ft_strcmp(node->cmd[0], "env"))
 		// 	exit(g_status);
 		else if (!ft_is_builtin(node->cmd[0]))

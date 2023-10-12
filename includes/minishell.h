@@ -145,7 +145,7 @@ t_list	*ft_env_parser(char **environ);
 int		ft_echo(char **args);
 int		ft_pwd(void);
 void	ft_cd(t_cmd_node *node, t_list *env);
-int		ft_env_print(t_list *env);
+int		ft_env_print(t_list *env, int is_export);
 int		ft_export(t_cmd_node *cmd, t_list *env);
 void	ft_unset(t_cmd_node *cmd, t_list *env);
 void	change_shlvl(t_list *env, int inc);

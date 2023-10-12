@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 16:11:45 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:27:21 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,27 @@ int	ft_echo(char **args)
 }
 
 
-int	ft_env_print(t_list *env)
+int	ft_env_print(t_list *env, int is_export)
 {
 	if (env != NULL)
 	{
 		while (env)
 		{
-			if (env->name)
-				printf("%s=%s\n", env->name, env->content);
+			if (is_export && env->name)
+			{
+				ft_putstr_fd("declare -x ", 1);
+				ft_putstr_fd(env->name, 1);
+				ft_putstr_fd("=", 1);
+				ft_putstr_fd(env->content, 1);
+				ft_putstr_fd("\n", 1);
+			}
+			else if (env->content)
+			{
+				ft_putstr_fd(env->name, 1);
+				ft_putstr_fd("=", 1);
+				ft_putstr_fd(env->content, 1);
+				ft_putstr_fd("\n", 1);
+			}
 			env = env->next;
 		}
 	}
@@ -159,24 +172,28 @@ int	ft_export(t_cmd_node *cmd, t_list *env)
 
 	i = 0;
 	flag = 0;
+	// ft_putstr_fd(cmd->cmd[0], 1);
+	// ft_putstr_fd(cmd->cmd[1], 1);
+	// ft_putstr_fd(cmd->cmd[2], 1);
 
-	// if (!cmd->cmd[1])
-	// 	ft_env_print(env);
-	if (!cmd->cmd[1][1])
-		return (0);
-	while (cmd->cmd[++i])
+	if (!cmd->cmd[1])
+		ft_env_print(env, 1);
+	else
 	{
-		if (!check_exp_var(get_key_value_pair(cmd->cmd[i])[0]))
-			set_var(&env, get_key_value_pair(cmd->cmd[i])[0],
-				get_key_value_pair(cmd->cmd[i])[1]);
-		else if (!flag)
-			flag = i;
-	}
-	if (flag)
-	{
-		ft_putstr_fd("export: not an identifier: ", 1);
-		ft_putstr_fd(get_key_value_pair(cmd->cmd[flag])[0], 1);
-		ft_putstr_fd("\n", 1);
+		while (cmd->cmd[++i])
+		{
+			if (!check_exp_var(get_key_value_pair(cmd->cmd[i])[0]))
+				set_var(&env, get_key_value_pair(cmd->cmd[i])[0],
+					get_key_value_pair(cmd->cmd[i])[1]);
+			else if (!flag)
+				flag = i;
+		}
+		if (flag)
+		{
+			ft_putstr_fd("export: not an identifier: ", 1);
+			ft_putstr_fd(get_key_value_pair(cmd->cmd[flag])[0], 1);
+			ft_putstr_fd("\n", 1);
+		}
 	}
 	return (0);
 }
