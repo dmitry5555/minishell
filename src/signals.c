@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:59 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 17:56:17 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:10:37 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	sig_hand(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("ign sign = ctrl_c\n");
-		g_status = SIGINT;
+		//printf("ign sign = ctrl_c\n");
+		g_status = 130;
+		ioctl(STDIN_FILENO, , "\n");
+		rl_replace_line()
 	}
 	if (sig == SIGQUIT)
 	{
