@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_part.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 18:18:53 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:26:14 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
 	if (!ft_strcmp(((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell"))
 		if (!access("./minishell", X_OK))
 			change_shlvl(env, 1);
+	ft_putstr_fd("this is a path: ",1);
 	ft_putstr_fd(((t_cmd_node *)cmd_list->content)->path ,1);
 	ft_putstr_fd("\n" ,1);
 	run_single(cmd_list, env, fd);
