@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 18:05:10 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:19:42 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ int				ft_test_pipes(t_cmdlist *cmd_list);
 void			exec_cmd(t_cmdlist *cmd_list, t_list *env);
 void			sig_hand(int sig);
 int				check_exp_var(char *str);
-int				run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit);
+int				run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit,
+					int ncmds);
 void			pre_run_single(t_cmdlist *cmd_list, t_list *env);
 
 // builtin

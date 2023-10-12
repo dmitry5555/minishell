@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 18:04:20 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:18:20 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_multiple(t_cmdlist *cmd_list, t_list *env, int *is_exit)
+int	run_multiple(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 {
 	while (cmd_list)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		if (!run_builtin(cmd_list, env, is_exit))
+		if (!run_builtin(cmd_list, env, is_exit, ncmds))
 			pre_run_single(cmd_list, env);
 		cmd_list = cmd_list->next;
 	}
@@ -47,7 +47,7 @@ void	exec_all(char *out, t_list *env)
 			return ;
 		ft_find_right_paths(cmd_list);
 		cmds_num = ft_cmdlstsize(cmd_list);
-		g_status = run_multiple(cmd_list, env, &is_exit);
+		g_status = run_multiple(cmd_list, env, &is_exit, cmds_num);
 		while (0 < cmds_num--)
 		{
 			waitpid(-1, &g_status, 0);
@@ -76,6 +76,7 @@ int	main(int argc, char *argv[], char **env)
 	t_list		*env_list;
 	char		*out;
 
+	g_status = 0;
 	env_list = ft_env_parser(env);
 	while (1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_part.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 18:02:14 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:18:53 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_cmd_list(t_cmdlist *cmd_list)
 	}
 }
 
-int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit)
+int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 {
 	t_cmd_node	*node;
 
@@ -46,7 +46,7 @@ int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit)
 			ft_export(node, env);
 		else if (!ft_strcmp(node->cmd[0], "unset"))
 			ft_unset(node, env);
-		else if (!ft_strcmp(node->cmd[0], "exit"))
+		else if (!ft_strcmp(node->cmd[0], "exit") && ncmds == 1)
 			g_status = ft_exit(cmd_list, env, is_exit);
 		if (!ft_strcmp(node->cmd[0], "cd")
 			|| !ft_strcmp(node->cmd[0], "export")
