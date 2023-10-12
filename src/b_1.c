@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 17:58:21 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:05:58 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,12 @@ int	ft_env_print(t_list *env, int is_export)
 			{
 				ft_putstr_fd("declare -x ", 1);
 				ft_putstr_fd(env->name, 1);
-				ft_putstr_fd("=", 1);
-				ft_putstr_fd(env->content, 1);
+				if (env->content)
+				{
+					ft_putstr_fd("=\"", 1);
+					ft_putstr_fd(env->content, 1);
+					ft_putstr_fd("\"", 1);
+				}
 				ft_putstr_fd("\n", 1);
 			}
 			else if (env->content)
