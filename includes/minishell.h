@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
+/*   Updated: 2023/10/12 17:56:41 by dlariono         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -22,8 +34,6 @@
 # define ERR_FORK 8
 # define ERR_PIPE 9
 # define ERR_PIPESYN 10
-
-extern int g_status;
 
 typedef struct s_list
 {
@@ -53,6 +63,8 @@ typedef struct s_cmd_node
 // 	pid_t	pid;
 // }	t_prompt;
 
+extern int		g_status;
+
 // Error
 void			*ft_error(int error_type, char *error_str, int error_code);
 
@@ -78,7 +90,6 @@ size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 int				ft_atoi(const char *a);
 static int		num_len(int n);
 char			*ft_itoa(int n);
-
 
 // Arrays
 int				ft_a_len(char **array);
