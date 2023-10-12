@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 01:42:26 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 17:59:33 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:38:12 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_atoi_exit(const char *str, long *num)
 	return (0);
 }
 
-int	ft_exit(t_cmdlist *cmd_list, t_list *env, int *is_exit)
+int	ft_exit(t_cmdlist *cmd_list, int *is_exit)
 {
 	t_cmd_node	*node;
 	long		status;
