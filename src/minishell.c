@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 21:36:33 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/13 19:02:42 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,34 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 	return (g_status);
 }
 
+void exec_all_part2(t_list *env, int is_exit, char **args)
+{
+	t_cmdlist	*cmd_list;
+	int			cmds_num;
+
+	cmd_list = NULL;
+	cmd_list = create_cmd_list(final_split(args, env), -1);
+	if (!cmd_list)
+		return ;
+	ft_find_right_paths(cmd_list);
+	cmds_num = ft_cmdlstsize(cmd_list);
+	g_status = run_multiple(cmd_list, env, &is_exit, cmds_num);
+	while (0 < cmds_num--)
+		waitpid(-1, &g_status, 0);
+	if (g_status > 255)
+		g_status = g_status / 255;
+	if (args && is_exit)
+	{
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
+		exit(g_status);
+	}
+	ft_cmdlstclear(&cmd_list, free_cmd_content);
+}
+
 void	exec_all(char *out, t_list *env)
 {
 	t_cmdlist	*cmd_list;
 	char		**args;
-	int			cmds_num;
 	int			is_exit;
 
 	cmd_list = NULL;
@@ -48,31 +71,7 @@ void	exec_all(char *out, t_list *env)
 	if (!args)
 		return ;
 	if (args)
-	{
-		cmd_list = create_cmd_list(final_split(args, env), -1);
-		if (!cmd_list)
-			return ;
-		ft_find_right_paths(cmd_list);
-		cmds_num = ft_cmdlstsize(cmd_list);
-		g_status = run_multiple(cmd_list, env, &is_exit, cmds_num);
-		while (0 < cmds_num--)
-		{
-			waitpid(-1, &g_status, 0);
-			//printf("gstatus = %d\n", g_status);
-		}
-		if (g_status > 255)
-			g_status = g_status / 255;
-		if (args && is_exit)
-		{
-			ft_cmdlstclear(&cmd_list, free_cmd_content);
-			exit(g_status);
-		}
-
-		// end parse args
-		// return (1);
-	}
-	ft_cmdlstclear(&cmd_list, free_cmd_content);
-	//return (cmd_list);
+		exec_all_part2(env, is_exit, args);
 }
 
 int	main(int argc, char *argv[], char **env)
