@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 15:42:26 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/13 21:41:11 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,18 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 	if (pos == -1)
 		pos = ft_strlen(str) - 1;
 	aux = ft_substr(str, 0, i - 1);
-	varname = ft_strndup(&str[i], pos);
+	varname = ft_substr(str, i, pos);
 	val = get_value(varname, envlist);
 	path = ft_strjoin(aux, val);
 	free(val);
 	free(aux);
-	aux = ft_strjoin(path, &str[i + pos]);
+	if (pos == (int)ft_strlen(str) - 1)
+	{
+		aux = ft_strdup(path);
+		printf("end of string\n");
+	}
+	else
+		aux = ft_strjoin(path, &str[i + pos]);
 	free(path);
 	free(str);
 	return (aux);
