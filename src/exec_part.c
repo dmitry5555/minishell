@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/13 13:41:14 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:24:20 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,33 @@ int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 	return (0);
 }
 
+void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
+{
+	t_cmd_node	*node;
+
+	node = (t_cmd_node *)cmd_list->content;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+
+	if (!ft_strcmp(node->cmd[0], "echo"))
+		g_status = ft_echo(node->cmd);
+	else if (!ft_strcmp(node->cmd[0], "pwd"))
+		g_status = ft_pwd();
+	else if (!ft_strcmp(node->cmd[0], "env"))
+		g_status = ft_env_print(env, 0);
+	// if (!ft_strcmp(node->cmd[0], "echo") || !ft_strcmp(node->cmd[0], "pwd") || !ft_strcmp(node->cmd[0], "env"))
+	// 	exit(g_status);
+	else if (!ft_is_builtin(node->cmd[0]))
+	{
+		if (node->path)
+			execve(node->path, node->cmd, NULL);
+		ft_error(ERR_CMD, node->cmd[0], 127); //add error message if cmd doesn't execute
+		ft_cmdlstclear(&cmd_list, free_cmd_content); //clear list if error to prevent leak
+	}
+	ft_cmdlstclear(&cmd_list, free_cmd_content);
+	exit(g_status);
+}
+
 void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 {
 	t_cmd_node	*node;
@@ -71,7 +98,6 @@ void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 	}
 	else if (!pid)
 	{
-		// child redirection
 		if (node->in != STDIN_FILENO)
 		{
 			dup2(node->in, STDIN_FILENO);
@@ -85,28 +111,8 @@ void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 		else if (cmd_list->next)
 			dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
-		// END child redirection
 		close(fd[READ_END]);
-		// child process child_builtin
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-
-		if (!ft_strcmp(node->cmd[0], "echo"))
-			g_status = ft_echo(node->cmd);
-		else if (!ft_strcmp(node->cmd[0], "pwd"))
-			g_status = ft_pwd();
-		else if (!ft_strcmp(node->cmd[0], "env"))
-			g_status = ft_env_print(env, 0);
-		// if (!ft_strcmp(node->cmd[0], "echo") || !ft_strcmp(node->cmd[0], "pwd") || !ft_strcmp(node->cmd[0], "env"))
-		// 	exit(g_status);
-		else if (!ft_is_builtin(node->cmd[0]))
-		{
-			execve(node->path, node->cmd, NULL);
-			ft_error(ERR_CMD, node->cmd[0], 127); //add error message if cmd doesn't execute
-			ft_cmdlstclear(&cmd_list, free_cmd_content); //clear list if error to prevent leak
-		}
-		ft_cmdlstclear(&cmd_list, free_cmd_content);
-		exit(g_status);
+		run_single_exec(cmd_list, env);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:49 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 16:11:50 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:17:37 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ void	ft_find_right_paths(t_cmdlist *cmd_list)
 				// Allocate memory for the new path and copy it
 				node->path = strdup(tmp2);
 
-				// printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
-				// printf("Testing path - [%s]\n", tmp2);
-				// printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
+				printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
+				printf("Testing path - [%s]\n", tmp2);
+				printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
 				flag = 1;
 			}
 
@@ -92,7 +92,6 @@ void	ft_find_right_paths(t_cmdlist *cmd_list)
 			if (flag)
 				break ;
 		}
-
 		current = current->next;
 	}
 }
