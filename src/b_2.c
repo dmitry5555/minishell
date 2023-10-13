@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 01:42:26 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 21:54:15 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/13 16:54:14 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ int	ft_atoi_exit(const char *str, long *num)
 	return (0);
 }
 
+int	exit_error(t_cmd_node *node)
+{
+	ft_putstr_fd("minishell: exit ", 2);
+	ft_putstr_fd(node->cmd[1], 2);
+	ft_putstr_fd(": number required\n", 2);
+	return (255);
+}
+
 int	ft_exit(t_cmdlist *cmd_list, int *is_exit)
 {
 	t_cmd_node	*node;
@@ -54,19 +62,14 @@ int	ft_exit(t_cmdlist *cmd_list, int *is_exit)
 	int			error;
 
 	node = cmd_list->content;
-	*is_exit = !cmd_list->next; //	if last command, is_exit flag = 1;
+	*is_exit = !cmd_list->next;
 	if (*is_exit)
 		ft_putstr_fd("exit\n", 2);
 	if (!node->cmd || !node->cmd[1])
 		return (0);
 	error = ft_atoi_exit(node->cmd[1], &status);
 	if (error == -1)
-	{
-		ft_putstr_fd("minishell: exit ", 2);
-		ft_putstr_fd(node->cmd[1], 2);
-		ft_putstr_fd(": number required\n", 2);
-		return (255);
-	}
+		return (exit_error(node));
 	else if (node->cmd[2])
 	{
 		*is_exit = 0;
