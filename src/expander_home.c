@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_home.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 15:42:23 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:45:47 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,26 @@ int	is_user_home(char *str, t_list *envlist)
 		return (0);
 }
 
+char	*home_expander(char *str, int *i, char *result, t_list *envlist)
+{
+	char	*varvalue;
+	char	*tmp_result;
+
+	varvalue = env_cont(envlist, "HOME");
+	tmp_result = ft_strjoin(result, varvalue);
+	if (tmp_result)
+	{
+		free(result);
+		result = tmp_result;
+	}
+	if (is_user_home(&str[*i], envlist))
+		*i += ft_strlen(env_cont(envlist, "USER"));
+	return (result);
+}
+
 char	*expand_home(char *str, t_list *envlist)
 {
 	int		i;
-	char	*varvalue;
 	char	*result;
 	char	*tmp_result;
 	char	*tmp_char;
@@ -40,18 +56,10 @@ char	*expand_home(char *str, t_list *envlist)
 	result = ft_strdup("");
 	while (str[++i])
 	{
-		if ((i == 0 && str[i] == '~' && str[i + 1] == '/') || (is_user_home(&str[i], envlist)) || (i == 0 && str[i] == '~' && str[i + 1] == '\0'))
-		{
-			varvalue = env_cont(envlist, "HOME");
-			tmp_result = ft_strjoin(result, varvalue);
-			if (tmp_result)
-			{
-				free(result);
-				result = tmp_result;
-			}
-			if (is_user_home(&str[i], envlist))
-				i += ft_strlen(env_cont(envlist, "USER"));
-		}
+		if ((i == 0 && str[i] == '~' && str[i + 1] == '/')
+			|| (is_user_home(&str[i], envlist))
+			|| (i == 0 && str[i] == '~' && str[i + 1] == '\0'))
+			result = home_expander(str, &i, result, envlist);
 		else
 		{
 			tmp_char = strndup(&str[i], 1);
