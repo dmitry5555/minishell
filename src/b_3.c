@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:58:29 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:04:24 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:40:44 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_export(t_cmd_node *cmd, t_list *env)
 				if (ft_strchr(cmd->cmd[i], '='))
 				{
 					printf("str is: %s \n", cmd->cmd[i]);
-					printf("we hawe = \n");
+					printf("name is:  %s \n", get_key_value_pair(cmd->cmd[i])[0]);
 					printf("value is: %s \n", get_key_value_pair(cmd->cmd[i])[1]);
 					printf("size is: %lu \n", sizeof(get_key_value_pair(cmd->cmd[i])[1]));
 					if ( ft_strcmp(get_key_value_pair(cmd->cmd[i])[1], "") )
@@ -77,14 +77,63 @@ void	change_shlvl(t_list *env, int inc)
 	}
 }
 
-void	ft_unset(t_cmd_node *cmd, t_list *env)
+void	ft_unset(t_cmd_node *cmd, t_list **env)
 {
 	int	i;
 
+	// (void)env;
 	i = 1;
 	while (cmd->cmd[i])
 	{
-		unset_var(&env, cmd->cmd[i]);
+		// printf("name is:  %s \n", get_key_value_pair(cmd->cmd[i])[0]);
+		// printf("value is: %s \n", get_key_value_pair(cmd->cmd[i])[1]);
+		unset_var(env, &cmd->cmd[i][0]);
 		i++;
 	}
+}
+
+
+int	ft_env_print(t_list *env, int is_export)
+{
+	while (env)
+	{
+		if (is_export && env->name)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(env->name, 1);
+			if (env->content)
+			{
+				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd(env->content, 1);
+				ft_putstr_fd("\"", 1);
+			}
+			ft_putstr_fd("\n", 1);
+		}
+		else if (env->content)
+		{
+			ft_putstr_fd(env->name, 1);
+			ft_putstr_fd("=", 1);
+			ft_putstr_fd(env->content, 1);
+			ft_putstr_fd("\n", 1);
+		}
+		env = env->next;
+	}
+	return (0);
+}
+
+int	check_exp_var(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (('a' <= str[0] && str[0] <= 'z') || ('A' <= str[0] && str[0] <= 'Z'))
+	{
+		while (str[++i])
+			if (!('a' <= str[i] && str[i] <= 'z')
+				&& !('A' <= str[i] && str[i] <= 'Z')
+				&& !('1' <= str[i] && str[i] <= '9'))
+				return (1);
+		return (0);
+	}
+	return (1);
 }

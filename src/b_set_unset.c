@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:56 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 17:35:49 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:47:47 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	set_var(t_list **env, char *name, char *content)
 		{
 			if (curr->content)
 				free(curr->content);
-			curr->content = ft_strdup(content);
+			if (content)
+				curr->content = ft_strdup(content);
+			else
+				curr->content = NULL;
 			flag_upd = 1;
 		}
 		curr = curr->next;
@@ -39,15 +42,35 @@ int	set_var(t_list **env, char *name, char *content)
 void	unset_var(t_list **env, char *name)
 {
 	t_list	*curr;
+	t_list	*prev;
 
+	prev = NULL;
 	curr = (*env);
 	while (curr)
 	{
 		if (!ft_strcmp(curr->name, name))
 		{
-			curr->name = NULL;
-			curr->content = NULL;
+			if (prev)
+			{
+				prev->next = curr->next;
+				free(curr->name);
+				free(curr->content);
+				free(curr);
+				curr = prev->next;
+			}
+			else
+			{
+				*env = curr->next;
+				free(curr->name);
+				free(curr->content);
+				free(curr);
+				curr = *env;
+			}
 		}
-		curr = curr->next;
+		else
+		{
+			prev = curr;
+			curr = curr->next;
+		}
 	}
 }

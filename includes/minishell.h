@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 18:44:46 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/13 13:41:03 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int				ft_pwd(void);
 void			ft_cd(t_cmd_node *node, t_list *env);
 int				ft_env_print(t_list *env, int is_export);
 int				ft_export(t_cmd_node *cmd, t_list *env);
-void			ft_unset(t_cmd_node *cmd, t_list *env);
+void			ft_unset(t_cmd_node *cmd, t_list **env);
 void			change_shlvl(t_list *env, int inc);
 int				ft_exit(t_cmdlist *cmd_list, int *is_exit);
 

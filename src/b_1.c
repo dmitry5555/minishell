@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/12 19:53:18 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/13 13:15:14 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 		|| !ft_strcmp(node->cmd[1], ft_strjoin("~", env_cont(env, "HOME"))))
 	{
 		printf("this is [cd] or [cd ~] / [cd ~name] \n");
-		// new_path = ft_strdup(env_cont(env, "HOME"));
-		// printf( "%s\n", node->cmd[1] );
 		new_path = env_cont(env, "HOME");
 	}
 
@@ -87,13 +85,31 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 
 }
 
+int	ft_echo_flag(char *arg)
+{
+	int	i;
+	int	flag;
+
+	i = 2;
+	flag = 0;
+	if (arg[0] == '-' && arg[1] == 'n')
+	{
+		flag = 1;
+		while (arg[i] && arg[i] != ' ')
+		{
+			if (arg[i] != 'n')
+				flag = 0;
+			i++;
+		}
+	}
+	return (flag);
+}
+
 int	ft_echo(char **args)
 {
 	int	arg_start;
 	int	flag;
-	int	i;
 
-	i = 2;
 	flag = 0;
 	arg_start = 1;
 	if (!args[arg_start])
@@ -101,75 +117,16 @@ int	ft_echo(char **args)
 		ft_putstr_fd("\n", 1);
 		return (0);
 	}
-	if (args[arg_start][0] == '-' && args[arg_start][1] == 'n')
-	{
-		flag = 1;
-		while (args[arg_start][i] && args[arg_start][i] != ' ')
-		{
-			if (args[arg_start][i] != 'n')
-				flag = 0;
-			i++;
-		}
-	}
+	flag = ft_echo_flag(args[arg_start]);
 	arg_start += flag;
 	while (args[arg_start])
 	{
 		ft_putstr_fd(args[arg_start], 1);
 		if (args[arg_start + 1] && args[arg_start][0])
-			write(1," ",1);
+			write(1, " ", 1);
 		arg_start++;
 	}
 	if (!flag)
-		write(1,"\n",1);
+		ft_putstr_fd("\n", 1);
 	return (0);
 }
-
-
-int	ft_env_print(t_list *env, int is_export)
-{
-	if (env != NULL)
-	{
-		while (env)
-		{
-			if (is_export && env->name)
-			{
-				ft_putstr_fd("declare -x ", 1);
-				ft_putstr_fd(env->name, 1);
-				if (env->content)
-				{
-					ft_putstr_fd("=\"", 1);
-					ft_putstr_fd(env->content, 1);
-					ft_putstr_fd("\"", 1);
-				}
-				ft_putstr_fd("\n", 1);
-			}
-			else if (env->content)
-			{
-				ft_putstr_fd(env->name, 1);
-				ft_putstr_fd("=", 1);
-				ft_putstr_fd(env->content, 1);
-				ft_putstr_fd("\n", 1);
-			}
-			env = env->next;
-		}
-	}
-	return (0);
-}
-
-int	check_exp_var(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (('a' <= str[0] && str[0] <= 'z') || ('A' <= str[0] && str[0] <= 'Z'))
-	{
-		while (str[++i])
-			if (!('a' <= str[i] && str[i] <= 'z')
-				&& !('A' <= str[i] && str[i] <= 'Z')
-				&& !('1' <= str[i] && str[i] <= '9'))
-				return (1);
-		return (0);
-	}
-	return (1);
-}
-
