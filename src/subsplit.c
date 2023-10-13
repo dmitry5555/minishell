@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:24:48 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 15:33:25 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/13 21:48:35 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ static int	ft_sub_count_words(const char *s, char *set, int i)
 
 static char	**ft_sub_fill_array(char **array, char *s, char *set, int i[2])
 {
-	int	str_len;
 	int	word_start;
 	int	in_q[2];
 
-	str_len = ft_strlen(s);
 	in_q[0] = 0;
 	in_q[1] = 0;
 	while (s && s[i[0]] != '\0')
