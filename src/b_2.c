@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 01:42:26 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/13 16:54:14 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/13 16:59:40 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_exit(t_cmdlist *cmd_list, int *is_exit)
 		return (1);
 	}
 	if (status < 0)
-		status = 256;
+		status = status + 256;
 	else
 		status %= 256;
 	return (status);
