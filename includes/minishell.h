@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/13 13:41:03 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/14 14:57:27 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strndup(const char *s, size_t n);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
-char			**split_string(char *str, char *delimiter);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 int				ft_atoi(const char *a);
 int				num_len(int n);
@@ -174,6 +173,6 @@ void			unset_var(t_list **env, char *name);
 int				set_var(t_list **env, char *name, char *content);
 char			**get_key_value_pair(char *arg);
 int				ft_is_builtin(char *str);
-void			ft_find_right_paths(t_cmdlist *cmd_list);
+void			ft_find_right_paths(t_cmdlist *cmd_list, t_list *env);
 
 #endif

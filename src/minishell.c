@@ -34,7 +34,7 @@ void exec_all_part2(t_list *env, int is_exit, char **args)
 	cmd_list = create_cmd_list(final_split(args, env), -1);
 	if (!cmd_list)
 		return ;
-	ft_find_right_paths(cmd_list);
+	ft_find_right_paths(cmd_list, env);
 	cmds_num = ft_cmdlstsize(cmd_list);
 	g_status = run_multiple(cmd_list, env, &is_exit, cmds_num);
 	while (0 < cmds_num--)

@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:49 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/13 16:17:37 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/14 15:01:38 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,58 +40,56 @@ int	ft_is_builtin(char *str)
 // loop throuh working paths ftom ENV and test if cmd can run
 // if ok writes new path to node->path
 
-void	ft_find_right_paths(t_cmdlist *cmd_list)
+void	ft_find_right_paths(t_cmdlist *cmd_list, t_list *env)
 {
 	t_cmdlist	*current;
 	t_cmd_node	*node;
 	int			flag;
 	char		*cmd;
+	int			i;
+	char		*tmp;
+	char		*tmp2;
+	char		*tmp3;
+	char		**arr;
 
 	current = cmd_list;
 	while (current)
 	{
 		node = (t_cmd_node *)current->content;
-
 		flag = 0;
 		cmd = node->cmd[0];
 
-		const char* arr[] =
+		// int total = sizeof(arr) / sizeof(arr[0]);
+		tmp = env_cont(env, "PATH");
+		arr = ft_subsplit(tmp, ":");
+		// free (tmp);
+		i = 0;
+		printf("testing  🟠 : [%s]  \n", tmp);
+
+		while (arr[i]) // each PATH
 		{
-			"/usr/local/bin",
-			"/usr/bin",
-			"/bin",
-			"/usr/sbin",
-			"/sbin",
-			"/usr/local/munki"
-		};
-
-		int total = sizeof(arr) / sizeof(arr[0]);
-
-		while (total--)
-		{
-			char *tmp1 = ft_strjoin(arr[total], "/");
-			char *tmp2 = ft_strjoin(tmp1, cmd);
-
-			if (access(tmp2, X_OK) == 0)
+			if (ft_strcmp(arr[i], ":"))
 			{
-				// Free the old path string
-				free(node->path);
-
-				// Allocate memory for the new path and copy it
-				node->path = strdup(tmp2);
-
-				printf("⚪️ FT_FIND_RIGHT_PATH @ b_helpers.c\n");
-				printf("Testing path - [%s]\n", tmp2);
-				printf("Path [%s] is accessible. New path for this node is [%s]\n\n", arr[total], tmp2);
-				flag = 1;
+				tmp2 = ft_strjoin(arr[i],"/");
+				tmp3 = ft_strjoin(tmp2, cmd);
+				printf("testing 🟡 PATH : [%s]   CMD : [%s]  \n", arr[i], cmd);
+				if (access(tmp3, X_OK) == 0)
+				{
+					free(node->path);
+					node->path = ft_strdup(tmp3);
+					printf("🟢 Path [%s] is accessible. New path for this node is [%s]\n\n", arr[i], tmp3);
+					flag = 1;
+				}
+				free(tmp2);
+				free(tmp3);
+				if (flag)
+					break ;
 			}
-
-			free(tmp1);
-			free(tmp2);
-
-			if (flag)
-				break ;
+			i++;
 		}
+
+		// free(tmp2);
+		ft_array_free(&arr);
 		current = current->next;
 	}
 }
