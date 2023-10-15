@@ -155,7 +155,7 @@ void			sig_hand(int sig);
 int				check_exp_var(char *str);
 int				run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit,
 					int ncmds);
-void			pre_run_single(t_cmdlist *cmd_list, t_list *env);
+void			pre_run_single(t_cmdlist *cmd_list, t_list *env, char **env_arr);
 
 // builtin
 t_list			*ft_env_parser(char **environ);

@@ -87,7 +87,11 @@ void	ft_find_right_paths(t_cmdlist *cmd_list, t_list *env)
 			}
 			i++;
 		}
-
+		if (!flag)
+		{
+			free(node->path);
+			node->path = ft_strdup(cmd);
+		}
 		// free(tmp2);
 		ft_array_free(&arr);
 		current = current->next;

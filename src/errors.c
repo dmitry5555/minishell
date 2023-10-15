@@ -39,7 +39,7 @@ void	*ft_error(int error_type, char *error_str, int error_code)
 	if (error_type == ERR_PIPE)
 		ft_putstr_fd("minishell: pipe error", 2);
 	if (error_type == ERR_PIPESYN)
-		ft_putstr_fd("minishell: syntax error near `|'", 2);
+		ft_putstr_fd("minishell: syntax error near '|'", 2);
 	ft_putendl_fd(error_str, 2);
 	return (NULL);
 }

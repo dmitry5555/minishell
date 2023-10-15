@@ -19,9 +19,6 @@ int	ft_export(t_cmd_node *cmd, t_list *env)
 
 	i = 0;
 	flag = 0;
-	// ft_putstr_fd(cmd->cmd[0], 1);
-	// ft_putstr_fd(cmd->cmd[1], 1);
-	// ft_putstr_fd(cmd->cmd[2], 1);
 	char **arr;
 
 	if (!cmd->cmd[1])
@@ -59,12 +56,6 @@ int	ft_export(t_cmd_node *cmd, t_list *env)
 			else if (!flag)
 				flag = i;
 		}
-		// if (flag)
-		// {
-		// 	ft_putstr_fd("export: not an identifier: ", 1);
-		// 	ft_putstr_fd(get_key_value_pair(cmd->cmd[flag])[0], 1);
-		// 	ft_putstr_fd("\n", 1);
-		// }
 	}
 	return (0);
 }
@@ -84,12 +75,9 @@ void	ft_unset(t_cmd_node *cmd, t_list **env)
 {
 	int	i;
 
-	// (void)env;
 	i = 1;
 	while (cmd->cmd[i])
 	{
-		// printf("name is:  %s \n", get_key_value_pair(cmd->cmd[i])[0]);
-		// printf("value is: %s \n", get_key_value_pair(cmd->cmd[i])[1]);
 		unset_var(env, &cmd->cmd[i][0]);
 		i++;
 	}

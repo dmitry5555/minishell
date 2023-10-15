@@ -33,6 +33,80 @@
 // 	}
 // }
 
+int	ft_is_dir(char *cmd)
+{
+	int i;
+	int dot;
+	int slash;
+
+	i = 0;
+	dot = 0;
+	slash = 0;
+	while (cmd[i])
+	{
+		if(cmd[i] == 46)
+			dot++;
+		if(cmd[i] == 47)
+		{
+			slash++;
+			if (dot < 3)
+				dot = 0;
+		}
+		if(cmd[i] != 47 && cmd[i] != 46)
+			return (0);
+		i++;
+	}
+	if (dot < 3 && 0 < slash)
+		return(1);
+	return (0);
+}
+
+int	ft_no_access(char *cmd, char *path)
+{
+	(void)path;
+
+	if (ft_is_dir(cmd))
+	{
+		ft_putstr_fd(cmd, 1);
+		ft_putstr_fd(": is a directory\n", 1);
+		return(1);
+	}
+	else if (access(path, F_OK) != 0)
+	{
+		ft_putstr_fd(cmd, 1);
+		ft_putstr_fd(": No such file or directory\n", 1);
+		return(1);
+	}
+	else if (access(path, X_OK) != 0)
+	{
+		ft_putstr_fd(cmd, 1);
+		ft_putstr_fd(": Permission denied\n", 1);
+		return(1);
+	}
+
+	// if (!flag)
+	// {
+	// 	ft_putstr_fd(cmd, 1);
+	// 	ft_putstr_fd(": is a directory\n", 1);
+	// 	return(1);
+	// }
+	// if (access(path, R_OK) == -1)
+	// {
+	// 	ft_putstr_fd(cmd, 1);
+	// 	ft_putstr_fd(": No such file or directory\n", 1);
+	// 	return(1);
+	// }
+	// // ft_putstr_fd("testing permissions", 1);
+	// if (access(path, F_OK) == -1)
+	// {
+	// 	ft_putstr_fd(cmd, 1);
+	// 	ft_putstr_fd(": Permission denied\n", 1);
+	// 	return(1);
+	// }
+	return(0);
+}
+
+
 int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 {
 	t_cmd_node	*node;
@@ -57,7 +131,7 @@ int	run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 	return (0);
 }
 
-void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
+void	run_single_exec(t_cmdlist *cmd_list, t_list *env, char **env_arr)
 {
 	t_cmd_node	*node;
 
@@ -72,16 +146,22 @@ void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
 		g_status = ft_env_print(env, 0);
 	else if (!ft_is_builtin(node->cmd[0]))
 	{
-		if (node->path)
-			execve(node->path, node->cmd, NULL);
-		ft_error(ERR_CMD, node->cmd[0], 127);
+		printf("cmd name [%s] path [%s]\n",node->cmd[0] , node->path);
+		if (!ft_no_access(node->cmd[0], node->path))
+		{
+			// if (node->path)
+			// {
+			printf("runnning\n");
+			execve(node->path, node->cmd, env_arr);
+			ft_error(ERR_CMD, node->cmd[0], 127);
+		}
 		ft_cmdlstclear(&cmd_list, free_cmd_content);
 	}
 	ft_cmdlstclear(&cmd_list, free_cmd_content);
 	exit(g_status);
 }
 
-void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
+void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2], char **env_arr)
 {
 	pid_t		pid;
 
@@ -104,22 +184,22 @@ void	run_single(t_cmdlist *cmd_list, t_list *env, int fd[2])
 			dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
 		close(fd[READ_END]);
-		run_single_exec(cmd_list, env);
+		run_single_exec(cmd_list, env, env_arr);
 	}
 }
 
-void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
+void	pre_run_single(t_cmdlist *cmd_list, t_list *env, char **env_arr)
 {
 	int	fd[2];
 
 	pipe(fd);
-	if (!ft_strcmp(((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell"))
-		if (!access("./minishell", X_OK))
-			change_shlvl(env, 1);
+	// if (!ft_strcmp(((t_cmd_node *)cmd_list->content)->cmd[0], "./minishell"))
+	// 	if (!access("./minishell", X_OK))
+	// 		change_shlvl(env, 1);
 	ft_putstr_fd("this is a path: ", 1);
 	ft_putstr_fd(((t_cmd_node *)cmd_list->content)->path, 1);
 	ft_putstr_fd("\n",1);
-	run_single(cmd_list, env, fd);
+	run_single(cmd_list, env, fd, env_arr);
 	close(fd[WRITE_END]);
 	if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)
 		((t_cmd_node *)cmd_list->next->content)->in = fd[READ_END];
