@@ -39,61 +39,52 @@ int	ft_is_builtin(char *str)
 
 // loop throuh working paths ftom ENV and test if cmd can run
 // if ok writes new path to node->path
+int	ft_find_right_2(char **arr, t_cmdlist *cmd_list)
+{
+	int			i;
+	int			flag;
+	char		*tmp2;
+	char		*tmp3;
+
+	i = 0;
+	flag = 0;
+	while (arr[++i])
+	{
+		if (ft_strcmp(arr[i], ":"))
+		{
+			tmp2 = ft_strjoin(arr[i],"/");
+			tmp3 = ft_strjoin(tmp2, ((t_cmd_node *)cmd_list->content)->cmd[0]);
+			if (access(tmp3, X_OK) == 0)
+			{
+				((t_cmd_node *)cmd_list->content)->path = ft_strdup(tmp3);
+				flag = 1;
+			}
+			free(tmp2);
+			free(tmp3);
+			if (flag)
+				break ;
+		}
+	}
+	return (flag);
+}
 
 void	ft_find_right_paths(t_cmdlist *cmd_list, t_list *env)
 {
-	t_cmdlist	*current;
-	t_cmd_node	*node;
-	int			flag;
-	char		*cmd;
-	int			i;
-	char		*tmp;
-	char		*tmp2;
-	char		*tmp3;
-	char		**arr;
+	int		flag;
+	char	*cmd;
+	char	*tmp;
+	char	**arr;
 
-	current = cmd_list;
-	while (current)
+	while (cmd_list)
 	{
-		node = (t_cmd_node *)current->content;
-		flag = 0;
-		cmd = node->cmd[0];
-
-		// int total = sizeof(arr) / sizeof(arr[0]);
+		cmd = ((t_cmd_node *)cmd_list->content)->cmd[0];
 		tmp = env_cont(env, "PATH");
 		arr = ft_subsplit(tmp, ":");
-		// free (tmp);
-		i = 0;
 		printf("testing  🟠 : [%s]  \n", tmp);
-
-		while (arr[i]) // each PATH
-		{
-			if (ft_strcmp(arr[i], ":"))
-			{
-				tmp2 = ft_strjoin(arr[i],"/");
-				tmp3 = ft_strjoin(tmp2, cmd);
-				printf("testing 🟡 PATH : [%s]   CMD : [%s]  \n", arr[i], cmd);
-				if (access(tmp3, X_OK) == 0)
-				{
-					free(node->path);
-					node->path = ft_strdup(tmp3);
-					printf("🟢 Path [%s] is accessible. New path for this node is [%s]\n\n", arr[i], tmp3);
-					flag = 1;
-				}
-				free(tmp2);
-				free(tmp3);
-				if (flag)
-					break ;
-			}
-			i++;
-		}
+		flag = ft_find_right_2(arr, cmd_list);
 		if (!flag)
-		{
-			free(node->path);
-			node->path = ft_strdup(cmd);
-		}
-		// free(tmp2);
+			((t_cmd_node *)cmd_list->content)->path = ft_strdup(cmd);
 		ft_array_free(&arr);
-		current = current->next;
+		cmd_list = cmd_list->next;
 	}
 }
