@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 18:46:03 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:49:58 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,53 +36,23 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 	oldpwd = env_cont(env, "OLDPWD");
 	if (!node->cmd[1] || !ft_strcmp(node->cmd[1], env_cont(env, "HOME"))
 		|| !ft_strcmp(node->cmd[1], ft_strjoin("~", env_cont(env, "HOME"))))
-	{
-		printf("this is [cd] or [cd ~] / [cd ~name] \n");
 		new_path = env_cont(env, "HOME");
-	}
-
-	//remove ./
 	else if (node->cmd[0][0] == '.' && node->cmd[0][1] == '/')
-	{
-		printf("[./] remove one dot \n");
 		node->cmd[0][0] = ' ';
-	}
 	else if (!ft_strcmp(oldpwd, "") && !ft_strcmp(node->cmd[1], "-"))
-	{
-		printf("cd: OLDPWD not set\n");
 		return ;
-	}
-	// back to oldpwd
 	else if (!ft_strcmp(node->cmd[1], "-"))
-	{
 		new_path = ft_strdup(env_cont(env, "OLDPWD"));
-		printf("this is back to oldpwd, new_path is [OLDPWD] %s \n", new_path);
-	}
-
-	// random path if have access
 	else if (access(node->cmd[1], R_OK) != -1)
 		new_path = ft_strdup(node->cmd[1]);
-	// if no access
 	else if (access(node->cmd[1], R_OK) == -1)
-	{
-		printf("No such file or directory %s\n", node->cmd[1]);
 		return ;
-	}
-
-	// if have access && dir changed OK
 	if (new_path && !chdir(new_path))
 	{
-		printf("executing cd \n");
 		getcwd(s, sizeof(s));
-		printf("changed to %s\n", new_path);
 		set_var(&env, "OLDPWD", env_cont(env, "PWD"));
 		set_var(&env, "PWD", s);
 	}
-	// set_var(&env, "OLDPWD", env_cont(env, "PWD"));
-	// set_var(&env, "PWD", new_path);
-	// new_path = ft_strdup(env_cont(env, "PWD"));
-	// printf("changed to %s\n", new_path);
-
 }
 
 int	ft_echo_flag(char *arg)

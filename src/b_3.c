@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:58:29 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 18:44:18 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:03:18 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,23 @@ void	ft_export(t_cmd_node *cmd, t_list *env)
 	char	**arr;
 
 	i = 0;
-	if (!cmd->cmd[1])
-		ft_env_print(env, 1);
-	else
+	if (!cmd->cmd[1] && ft_env_print(env, 1))
+		return ;
+	while (cmd->cmd[++i])
 	{
-		while (cmd->cmd[++i])
+		arr = get_key_value_pair(cmd->cmd[i]);
+		if (!check_exp_var(arr[0]))
 		{
-			arr = get_key_value_pair(cmd->cmd[i]);
-			if (!check_exp_var(arr[0]))
+			if (ft_strchr(cmd->cmd[i], '='))
 			{
-				if (ft_strchr(cmd->cmd[i], '='))
-				{
-					if (ft_strcmp(arr[1], ""))
-						set_var(&env, arr[0], arr[1]);
-					else
-						set_var(&env, arr[0], "");
-				}
+				if (ft_strcmp(arr[1], ""))
+					set_var(&env, arr[0], arr[1]);
 				else
-					set_var(&env, arr[0], NULL);
-				ft_array_free(&arr);
+					set_var(&env, arr[0], "");
 			}
+			else
+				set_var(&env, arr[0], NULL);
+			ft_array_free(&arr);
 		}
 	}
 }
