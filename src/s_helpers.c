@@ -49,6 +49,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
+//  first occurrence of any character
 int	ft_strchars_i(const char *s, char *set)
 {
 	int				i;

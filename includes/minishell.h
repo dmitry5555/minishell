@@ -86,7 +86,6 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strndup(const char *s, size_t n);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
-size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 int				ft_atoi(const char *a);
 int				num_len(int n);
 char			*ft_itoa(int n);
@@ -155,17 +154,17 @@ void			sig_hand(int sig);
 int				check_exp_var(char *str);
 int				run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit,
 					int ncmds);
-void			pre_run_single(t_cmdlist *cmd_list, t_list *env, char **env_arr);
+void			pre_run_single(t_cmdlist *cmd_list, t_list *env);
 
 // builtin
 t_list			*ft_env_parser(char **environ);
+char			**ft_env_to_arr(t_list *env);
 int				ft_echo(char **args);
 int				ft_pwd(void);
 void			ft_cd(t_cmd_node *node, t_list *env);
 int				ft_env_print(t_list *env, int is_export);
 int				ft_export(t_cmd_node *cmd, t_list *env);
 void			ft_unset(t_cmd_node *cmd, t_list **env);
-void			change_shlvl(t_list *env, int inc);
 int				ft_exit(t_cmdlist *cmd_list, int *is_exit);
 
 // builtin helpers

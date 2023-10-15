@@ -60,17 +60,6 @@ int	ft_export(t_cmd_node *cmd, t_list *env)
 	return (0);
 }
 
-// change shlvl on new minishell / exit
-void	change_shlvl(t_list *env, int inc)
-{
-	while (env)
-	{
-		if (!ft_strcmp(env->name, "SHLVL"))
-			env->content = ft_itoa(ft_atoi(env->content) + inc);
-		env = env->next;
-	}
-}
-
 void	ft_unset(t_cmd_node *cmd, t_list **env)
 {
 	int	i;
