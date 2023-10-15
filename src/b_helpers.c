@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:49 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/14 15:01:38 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:36:49 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 int	ft_is_builtin(char *str)
 {
-	int	size;
+	int			size;
+	const char	*b_in[7];
 
-	const char* b_in[] =
-	{
-		"echo",
-		"cd",
-		"pwd",
-		"export",
-		"unset",
-		"env",
-		"exit"
-	};
+	b_in[0] = "echo";
+	b_in[1] = "cd";
+	b_in[2] = "pwd";
+	b_in[3] = "export";
+	b_in[4] = "unset";
+	b_in[5] = "env";
+	b_in[6] = "exit";
 	size = sizeof(b_in) / sizeof(b_in[0]);
 	while (size--)
 	{
@@ -36,7 +34,6 @@ int	ft_is_builtin(char *str)
 }
 
 // void ft_find_right_path(t_list **t_cmd_node)
-
 // loop throuh working paths ftom ENV and test if cmd can run
 // if ok writes new path to node->path
 int	ft_find_right_2(char **arr, t_cmdlist *cmd_list)
@@ -52,7 +49,7 @@ int	ft_find_right_2(char **arr, t_cmdlist *cmd_list)
 	{
 		if (ft_strcmp(arr[i], ":"))
 		{
-			tmp2 = ft_strjoin(arr[i],"/");
+			tmp2 = ft_strjoin(arr[i], "/");
 			tmp3 = ft_strjoin(tmp2, ((t_cmd_node *)cmd_list->content)->cmd[0]);
 			if (access(tmp3, X_OK) == 0)
 			{

@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:56 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/13 13:47:47 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:33:54 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,36 @@ int	set_var(t_list **env, char *name, char *content)
 	return (0);
 }
 
+void	ft_free_node(t_list *node)
+{
+	if (node)
+	{
+		free(node->name);
+		free(node->content);
+		free(node);
+	}
+}
+
 void	unset_var(t_list **env, char *name)
 {
 	t_list	*curr;
 	t_list	*prev;
 
+	curr = *env;
 	prev = NULL;
-	curr = (*env);
 	while (curr)
 	{
 		if (!ft_strcmp(curr->name, name))
 		{
 			if (prev)
-			{
 				prev->next = curr->next;
-				free(curr->name);
-				free(curr->content);
-				free(curr);
-				curr = prev->next;
-			}
 			else
-			{
 				*env = curr->next;
-				free(curr->name);
-				free(curr->content);
-				free(curr);
+			ft_free_node(curr);
+			if (prev)
+				curr = prev->next;
+			else
 				curr = *env;
-			}
 		}
 		else
 		{
@@ -74,3 +77,39 @@ void	unset_var(t_list **env, char *name)
 		}
 	}
 }
+
+// void	unset_var(t_list **env, char *name)
+// {
+// 	t_list	*curr;
+// 	t_list	*prev;
+
+// 	prev = NULL;
+// 	curr = (*env);
+// 	while (curr)
+// 	{
+// 		if (!ft_strcmp(curr->name, name))
+// 		{
+// 			if (prev)
+// 			{
+// 				prev->next = curr->next;
+// 				free(curr->name);
+// 				free(curr->content);
+// 				free(curr);
+// 				curr = prev->next;
+// 			}
+// 			else
+// 			{
+// 				*env = curr->next;
+// 				free(curr->name);
+// 				free(curr->content);
+// 				free(curr);
+// 				curr = *env;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			prev = curr;
+// 			curr = curr->next;
+// 		}
+// 	}
+// }

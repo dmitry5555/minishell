@@ -6,12 +6,11 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/13 19:02:42 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:21:28 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char	**ft_env_to_arr(t_list *env)
 {
@@ -46,7 +45,7 @@ int	run_multiple(t_cmdlist *cmd_list, t_list *env, int *is_exit, int ncmds)
 	return (g_status);
 }
 
-void exec_all_part2(t_list *env, int is_exit, char **args)
+void	exec_all_part2(t_list *env, int is_exit, char **args)
 {
 	t_cmdlist	*cmd_list;
 	int			cmds_num;
@@ -93,24 +92,6 @@ void	exec_all(char *out, t_list *env)
 		return ;
 	if (args)
 		exec_all_part2(env, is_exit, args);
-}
-
-void	change_shlvl(t_list *env)
-{
-	int		lvl;
-	char	*str;
-
-	while (env)
-	{
-		if (!ft_strcmp(env->name, "SHLVL"))
-		{
-			str = env->content;
-			lvl = ft_atoi(str) + 1;
-			free(env->content);
-			env->content = ft_itoa(lvl);
-		}
-		env = env->next;
-	}
 }
 
 int	main(int argc, char *argv[], char **env)

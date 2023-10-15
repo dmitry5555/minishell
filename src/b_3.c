@@ -6,21 +6,18 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:58:29 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/13 16:25:31 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:44:18 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_export(t_cmd_node *cmd, t_list *env)
+void	ft_export(t_cmd_node *cmd, t_list *env)
 {
-	int	i;
-	int	flag;
+	int		i;
+	char	**arr;
 
 	i = 0;
-	flag = 0;
-	char **arr;
-
 	if (!cmd->cmd[1])
 		ft_env_print(env, 1);
 	else
@@ -28,36 +25,21 @@ int	ft_export(t_cmd_node *cmd, t_list *env)
 		while (cmd->cmd[++i])
 		{
 			arr = get_key_value_pair(cmd->cmd[i]);
-			if (!check_exp_var(arr[0])) // if varname is correct
+			if (!check_exp_var(arr[0]))
 			{
-				// if we have "=" sign then the value is ""
 				if (ft_strchr(cmd->cmd[i], '='))
 				{
-					printf("str is: %s \n", cmd->cmd[i]);
-					printf("name is:  %s \n", arr[0]);
-					printf("value is: %s \n", arr[1]);
-					printf("size is: %lu \n", sizeof(arr[1]));
-					if ( ft_strcmp(arr[1], "") )
-						set_var(&env, arr[0],
-							arr[1]);
+					if (ft_strcmp(arr[1], ""))
+						set_var(&env, arr[0], arr[1]);
 					else
-					{
-						printf("set with empty string value: \n");
 						set_var(&env, arr[0], "");
-					}
 				}
 				else
-				{
-					printf("set with NULL value: \n");
 					set_var(&env, arr[0], NULL);
-				}
 				ft_array_free(&arr);
 			}
-			else if (!flag)
-				flag = i;
 		}
 	}
-	return (0);
 }
 
 void	ft_unset(t_cmd_node *cmd, t_list **env)
@@ -71,7 +53,6 @@ void	ft_unset(t_cmd_node *cmd, t_list **env)
 		i++;
 	}
 }
-
 
 int	ft_env_print(t_list *env, int is_export)
 {

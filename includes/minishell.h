@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/14 14:57:27 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:45:41 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ int				check_exp_var(char *str);
 int				run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit,
 					int ncmds);
 void			pre_run_single(t_cmdlist *cmd_list, t_list *env);
+int				ft_is_dir(char *cmd);
+void			change_shlvl(t_list *env);
 
 // builtin
 t_list			*ft_env_parser(char **environ);
@@ -163,7 +165,7 @@ int				ft_echo(char **args);
 int				ft_pwd(void);
 void			ft_cd(t_cmd_node *node, t_list *env);
 int				ft_env_print(t_list *env, int is_export);
-int				ft_export(t_cmd_node *cmd, t_list *env);
+void			ft_export(t_cmd_node *cmd, t_list *env);
 void			ft_unset(t_cmd_node *cmd, t_list **env);
 int				ft_exit(t_cmdlist *cmd_list, int *is_exit);
 
