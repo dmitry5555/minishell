@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 13:31:03 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 18:28:49 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ void	exec_all_part2(t_list *env, int is_exit, char **args)
 
 	cmd_list = NULL;
 	cmd_list = create_cmd_list(final_split(args, env), -1);
-	if (!cmd_list)
+	if (!cmd_list || !((t_cmd_node *)cmd_list->content)->cmd)
+	{
+		ft_cmdlstclear(&cmd_list, free_cmd_content);
 		return ;
+	}
 	ft_find_right_paths(cmd_list, env);
 	cmds_num = ft_cmdlstsize(cmd_list);
 	g_status = run_multiple(cmd_list, env, &is_exit, cmds_num);
