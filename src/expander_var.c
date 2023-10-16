@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/16 16:27:42 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/16 19:24:10 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*expand_vars(char *str, int i, t_list *envlist)
 		in_dq = (in_dq + (!in_sq && str[i] == '\"')) % 2;
 		if (!in_sq && str[i] == '$' && str[i + 1] && \
 			((ft_strchars_i(&str[i + 1], "/~%^{}:; ") && !in_dq) || \
-			(ft_strchars_i(&str[i + 1], "/~%^{}:;\"") && in_dq)))
+			(ft_strchars_i(&str[i + 1], "/~%^{}:;\" ") && in_dq)))
 			return (expand_vars(get_substr_var(str, ++i, envlist),
 					-1, envlist));
 	}
