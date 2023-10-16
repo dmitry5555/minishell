@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/16 15:00:43 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:27:42 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 	free(str);
 	if (aux)
 		return (aux);
-	else
-		return (NULL);
+	return (NULL);
 }
 
 char	*expand_vars(char *str, int i, t_list *envlist)
