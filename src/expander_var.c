@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 18:40:51 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/13 21:41:11 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/16 13:14:27 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ char	*get_value(char *varname, t_list *envlist)
 	char	*varvalue;
 
 	if (ft_strcmp("?", varname) == 0)
-		varvalue = ft_itoa(g_status);
+	{
+		free(varname);
+		return (ft_itoa(g_status));
+	}
 	else
 		varvalue = env_cont(envlist, varname);
 	free(varname);
@@ -65,10 +68,7 @@ static char	*get_substr_var(char *str, int i, t_list *envlist)
 	free(val);
 	free(aux);
 	if (pos == (int)ft_strlen(str) - 1)
-	{
 		aux = ft_strdup(path);
-		printf("end of string\n");
-	}
 	else
 		aux = ft_strjoin(path, &str[i + pos]);
 	free(path);
