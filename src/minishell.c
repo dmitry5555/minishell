@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 18:28:49 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/16 19:29:40 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	exec_all_part2(t_list *env, int is_exit, char **args)
 		ft_cmdlstclear(&cmd_list, free_cmd_content);
 		exit(g_status);
 	}
+	if (!is_exit && g_status == 13)
+		g_status = 0;
 	ft_cmdlstclear(&cmd_list, free_cmd_content);
 }
 
