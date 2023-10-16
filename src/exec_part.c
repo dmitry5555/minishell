@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 13:26:10 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:59:07 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,13 @@ int	ft_no_access(char *cmd, char *path)
 	}
 	else if (access(path, F_OK) != 0)
 	{
-		ft_putstr_fd(cmd, 1);
-		ft_putstr_fd(": No such file or directory\n", 1);
+		ft_error(ERR_CMD, cmd, 127);
 		return (1);
 	}
 	else if (access(path, X_OK) != 0)
 	{
 		ft_putstr_fd(cmd, 1);
-		ft_putstr_fd(": Permission denied\n", 1);
+		ft_error(ERR_PERM, cmd, 1);
 		return (1);
 	}
 	return (0);

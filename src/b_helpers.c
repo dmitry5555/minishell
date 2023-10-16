@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:49 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 13:20:02 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:05:23 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	ft_find_right_paths(t_cmdlist *cmd_list, t_list *env)
 	{
 		cmd = ((t_cmd_node *)cmd_list->content)->cmd[0];
 		tmp = env_cont(env, "PATH");
+		if (!tmp)
+			return ;
 		arr = ft_subsplit(tmp, ":");
 		flag = ft_find_right_2(arr, cmd_list);
 		if (!flag)

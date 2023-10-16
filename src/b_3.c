@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:58:29 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 19:03:18 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:18:30 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int	check_exp_var(char *str)
 		while (str[++i])
 			if (!('a' <= str[i] && str[i] <= 'z')
 				&& !('A' <= str[i] && str[i] <= 'Z')
-				&& !('1' <= str[i] && str[i] <= '9'))
+				&& !('1' <= str[i] && str[i] <= '9')
+				&& !(str[i] == '_'))
 				return (1);
 		return (0);
 	}

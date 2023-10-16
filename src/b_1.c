@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 18:49:58 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:55:40 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 {
 	char	*new_path;
 	char	*oldpwd;
-	char	s[1000];
+	char	s[10000];
 
 	new_path = NULL;
 	oldpwd = env_cont(env, "OLDPWD");
@@ -46,7 +46,10 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 	else if (access(node->cmd[1], R_OK) != -1)
 		new_path = ft_strdup(node->cmd[1]);
 	else if (access(node->cmd[1], R_OK) == -1)
+	{
+		ft_error(ERR_DIR, node->cmd[1], 1);
 		return ;
+	}
 	if (new_path && !chdir(new_path))
 	{
 		getcwd(s, sizeof(s));
