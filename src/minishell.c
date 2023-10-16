@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 18:21:28 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:31:03 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char	**ft_env_to_arr(t_list *env)
 		i++;
 		env = env->next;
 	}
+	env_arr[i] = NULL;
 	return (env_arr);
 }
 
@@ -76,7 +77,7 @@ void	exec_all(char *out, t_list *env)
 	int			is_exit;
 
 	cmd_list = NULL;
-	if (!out) // for ctrl+d
+	if (!out)
 	{
 		printf("exit\n");
 		exit(g_status);
@@ -104,8 +105,8 @@ int	main(int argc, char *argv[], char **env)
 	change_shlvl(env_list);
 	while (argc && argv)
 	{
-		signal(SIGINT, sig_hand); // ctrl-x = our handler
-		signal(SIGQUIT, SIG_IGN); // ctrl-\ = ignore
+		signal(SIGINT, sig_hand);
+		signal(SIGQUIT, SIG_IGN);
 		out = readline("guest@minishell $ ");
 		exec_all(out, env_list);
 	}

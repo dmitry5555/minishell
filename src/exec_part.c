@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 18:23:42 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:26:10 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,8 @@ void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
 		g_status = ft_env_print(env, 0);
 	else if (!ft_is_builtin(node->cmd[0]))
 	{
-		printf("cmd name [%s] path [%s]\n", node->cmd[0], node->path);
 		if (!ft_no_access(node->cmd[0], node->path))
 		{
-			printf("runnning\n");
 			execve(node->path, node->cmd, ft_env_to_arr(env));
 			ft_error(ERR_CMD, node->cmd[0], 127);
 		}
@@ -119,9 +117,6 @@ void	pre_run_single(t_cmdlist *cmd_list, t_list *env)
 	int	fd[2];
 
 	pipe(fd);
-	ft_putstr_fd("this is a path: ", 1);
-	ft_putstr_fd(((t_cmd_node *)cmd_list->content)->path, 1);
-	ft_putstr_fd("\n", 1);
 	run_single(cmd_list, env, fd);
 	close(fd[WRITE_END]);
 	if (cmd_list->next && !((t_cmd_node *)cmd_list->next->content)->in)

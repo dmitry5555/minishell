@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/15 18:45:41 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:35:09 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,6 @@ typedef struct s_cmd_node
 	int		in;
 	int		out;
 }	t_cmd_node;
-
-// typedef struct s_prompt
-// {
-// 	char	**envp;
-// 	t_list	*cmds;
-// 	pid_t	pid;
-// }	t_prompt;
 
 extern int		g_status;
 
@@ -147,9 +140,6 @@ char			*expand_home(char *str, t_list *envlist);
 char			**final_split(char **args, t_list *envlist);
 
 // exec
-void			handle_esc(char *str);
-int				ft_test_pipes(t_cmdlist *cmd_list);
-void			exec_cmd(t_cmdlist *cmd_list, t_list *env);
 void			sig_hand(int sig);
 int				check_exp_var(char *str);
 int				run_builtin(t_cmdlist *cmd_list, t_list *env, int *is_exit,
