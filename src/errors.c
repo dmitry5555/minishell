@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:07:05 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/12 15:20:07 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/18 17:26:07 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	*ft_error(int error_type, char *error_str, int error_code)
 		ft_putstr_fd("minishell: cannot find closing quote", 2);
 	if (error_type == ERR_DIR)
 		ft_putstr_fd("minishell: no such file or directory: ", 2);
+	if (error_type == ERR_NDIR)
+		ft_putstr_fd("minishell: not a directory: ", 2);
 	if (error_type == ERR_CMD)
 		ft_putstr_fd("minishell: command not found: ", 2);
 	if (error_type == ERR_PERM)
@@ -40,6 +42,9 @@ void	*ft_error(int error_type, char *error_str, int error_code)
 		ft_putstr_fd("minishell: pipe error", 2);
 	if (error_type == ERR_PIPESYN)
 		ft_putstr_fd("minishell: syntax error near '|'", 2);
+	if (error_type == ERR_OLDPWD)
+		ft_putstr_fd("cd: OLDPWD not set", 2);
+
 	ft_putendl_fd(error_str, 2);
 	return (NULL);
 }

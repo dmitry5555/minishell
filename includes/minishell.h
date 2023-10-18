@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 13:40:26 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:25:54 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@
 # define ERR_QUOTE 1
 # define ERR_DIR 2
 # define ERR_CMD 6
-# define ERR_PERM 10
+# define ERR_PERM 11
 # define ERR_DUP 7
 # define ERR_FORK 8
 # define ERR_PIPE 9
 # define ERR_PIPESYN 10
+# define ERR_OLDPWD 12
+# define ERR_NDIR 14
 
 typedef struct s_list
 {

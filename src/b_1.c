@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:44 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 15:55:40 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:19:44 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,42 @@ void	ft_cd(t_cmd_node *node, t_list *env)
 
 	new_path = NULL;
 	oldpwd = env_cont(env, "OLDPWD");
-	if (!node->cmd[1] || !ft_strcmp(node->cmd[1], env_cont(env, "HOME"))
-		|| !ft_strcmp(node->cmd[1], ft_strjoin("~", env_cont(env, "HOME"))))
+	// home = env_cont(env, "HOME");
+	// printf("🍔  node->cmd[1]: %s\n",node->cmd[1]);
+
+	// 1 if cd "" - copy home.  strdup leak  ✅
+ 	if (!ft_strcmp(node->cmd[1], "(null)"))
+	{
 		new_path = env_cont(env, "HOME");
-	else if (node->cmd[0][0] == '.' && node->cmd[0][1] == '/')
-		node->cmd[0][0] = ' ';
-	else if (!ft_strcmp(oldpwd, "") && !ft_strcmp(node->cmd[1], "-"))
+		// printf("THAT CASE🛑  node->cmd[1]: %s\n",node->cmd[1]);
+	}
+	// no OLDPWD ✅
+	if (!ft_strcmp(node->cmd[1], "-") && !ft_strcmp(oldpwd, ""))
+	{
+		ft_error(ERR_OLDPWD, "", 1);
 		return ;
-	else if (!ft_strcmp(node->cmd[1], "-"))
-		new_path = ft_strdup(env_cont(env, "OLDPWD"));
-	else if (access(node->cmd[1], R_OK) != -1)
-		new_path = ft_strdup(node->cmd[1]);
-	else if (access(node->cmd[1], R_OK) == -1)
+	}
+	// OLDPWD ✅
+	if (!ft_strcmp(node->cmd[1], "-"))
+		new_path = env_cont(env, "OLDPWD");
+	// no such file or directory ✅
+	else if (access(node->cmd[1], F_OK) != 0)
 	{
 		ft_error(ERR_DIR, node->cmd[1], 1);
 		return ;
 	}
+	// not a directory ✅
+	char	*not_dir;
+	not_dir = ft_strjoin(node->cmd[1], "/");
+	if (!new_path && (access(not_dir, F_OK) != 0))
+	{
+		ft_error(ERR_NDIR, node->cmd[1], 1);
+		free(not_dir);
+		return ;
+	}
+	free(not_dir);
+	if (!new_path)
+		new_path = node->cmd[1];
 	if (new_path && !chdir(new_path))
 	{
 		getcwd(s, sizeof(s));
