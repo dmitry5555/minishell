@@ -6,31 +6,60 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 14:59:07 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/18 20:53:47 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_no_access(char *cmd, char *path)
+int	ft_no_access(t_cmd_node	*node)
 {
-	if (ft_is_dir(cmd))
+	char *not_dir;
+
+	// . -> filename argument required ✅
+	if (node->cmd[0][0] == '.' && !node->cmd[0][1])
 	{
-		ft_putstr_fd(cmd, 1);
-		ft_putstr_fd(": is a directory\n", 1);
+		ft_error(ERR_FNARG, node->cmd[0], 2);
 		return (1);
 	}
-	else if (access(path, F_OK) != 0)
+	not_dir = ft_strjoin(node->cmd[0], "/");
+	// is a directory ✅
+	if (access(not_dir, F_OK) == 0 && access(node->cmd[0], F_OK) == 0)
 	{
-		ft_error(ERR_CMD, cmd, 127);
+		ft_error(ERR_ISDIR, node->cmd[0], 126);
+		free(not_dir);
 		return (1);
 	}
-	else if (access(path, X_OK) != 0)
+	free(not_dir);
+
+	// no such file or directory
+	if (access(node->path, F_OK) != 0)
 	{
-		ft_putstr_fd(cmd, 1);
-		ft_error(ERR_PERM, cmd, 1);
+		// printf("error checking path [%s] \n", node->path);
+		ft_error(ERR_DIR, node->cmd[0], 127);
 		return (1);
 	}
+	// path starts with filename
+	if (node->path[0] != '.' && node->path[0] != '/')
+	{
+		// printf("node->path [%c]\n", node->path[0]);
+		ft_error(ERR_DIR, node->cmd[0], 127);
+		return (1);
+	}
+
+	printf("path : [%s] \n", node->path);
+	printf("cmd : [%s] \n", node->cmd[0]);
+	printf("permission test \n");
+
+	// check executable
+	if (access(node->path, X_OK) != 0)
+	{
+		// ft_putstr_fd(node->cmd[0], 1);
+		ft_error(ERR_PERM, node->cmd[0], 126);
+		return (1);
+	}
+	printf("have access \n");
+
 	return (0);
 }
 
@@ -73,8 +102,9 @@ void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
 		g_status = ft_env_print(env, 0);
 	else if (!ft_is_builtin(node->cmd[0]))
 	{
-		if (!ft_no_access(node->cmd[0], node->path))
+		if (!ft_no_access(node))
 		{
+			// printf("executing✅\n");
 			execve(node->path, node->cmd, ft_env_to_arr(env));
 			ft_error(ERR_CMD, node->cmd[0], 127);
 		}

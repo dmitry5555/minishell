@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/18 17:25:54 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:48:55 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define ERR_PIPESYN 10
 # define ERR_OLDPWD 12
 # define ERR_NDIR 14
+# define ERR_FNARG 15
+# define ERR_ISDIR 16
 
 typedef struct s_list
 {
