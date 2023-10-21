@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:49 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/18 20:12:25 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 12:09:52 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_find_right_2(char **arr, t_cmdlist *cmd_list)
 	char		*tmp2;
 	char		*tmp3;
 
-	i = 0;
+	i = -1;
 	flag = 0;
 	while (arr[++i])
 	{
