@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 18:35:40 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:58:09 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int	ft_no_access(t_cmd_node	*node)
 {
 	char	*not_dir;
 
+	if (!ft_strcmp(node->path, "(null)")
+		&& !ft_error(ERR_DIR, node->cmd[0], 127))
+		return (1);
 	if (node->cmd[0][0] == '.' && !node->cmd[0][1]
 		&& !ft_error(ERR_FNARG, node->cmd[0], 2))
 		return (1);
@@ -27,11 +30,9 @@ int	ft_no_access(t_cmd_node	*node)
 		return (1);
 	}
 	free(not_dir);
-	if (access(node->path, F_OK) == -1 && ft_strchr(node->path, '/'))
-	{
-		ft_error(ERR_DIR, node->cmd[0], 127);
+	if (access(node->path, F_OK) == -1 && ft_strchr(node->path, '/')
+		&& !ft_error(ERR_DIR, node->cmd[0], 127))
 		return (1);
-	}
 	if (!access(node->path, F_OK) && access(node->path, X_OK != 0)
 		&& ft_error(ERR_PERM, node->cmd[0], 126))
 		ft_error(ERR_PERM, node->cmd[0], 126);
