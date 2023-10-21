@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:11:49 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 12:09:52 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:05:53 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,7 @@ void	ft_find_right_paths(t_cmdlist *cmd_list, t_list *env)
 		arr = ft_subsplit(all_path, ":");
 		flag = ft_find_right_2(arr, cmd_list);
 		if (!flag)
-		{
-			// printf("🟡");
 			((t_cmd_node *)cmd_list->content)->path = ft_strdup(cmd);
-		}
 		ft_array_free(&arr);
 		cmd_list = cmd_list->next;
 	}

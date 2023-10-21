@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:07:05 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/21 17:00:17 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:08:22 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ int	g_status;
 // # define ERR_PIPE 9
 // # define ERR_PIPESYN 10
 
-void	*ft_error(int error_type, char *error_str, int error_code)
+void	*ft_error_2(int error_type)
 {
-	g_status = error_code;
 	if (error_type == ERR_QUOTE)
 		ft_putstr_fd("minishell: cannot find closing quote", 2);
 	if (error_type == ERR_DIR)
@@ -50,6 +49,13 @@ void	*ft_error(int error_type, char *error_str, int error_code)
 		ft_putstr_fd("minishell: filename argument required", 2);
 	if (error_type == ERR_NVIDENT)
 		ft_putstr_fd("export: not a valid identifier ", 2);
+	return (NULL);
+}
+
+void	*ft_error(int error_type, char *error_str, int error_code)
+{
+	g_status = error_code;
+	ft_error_2(error_type);
 	ft_putendl_fd(error_str, 2);
 	return (NULL);
 }

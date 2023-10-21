@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:58:29 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 16:58:57 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:05:33 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_export(t_cmd_node *cmd, t_list *env)
 		return ;
 	while (cmd->cmd[++i])
 	{
-		// printf("CMD: %s\n ", cmd->cmd[i]);
 		arr = get_key_value_pair(cmd->cmd[i]);
 		if (!check_exp_var(arr[0]))
 		{
@@ -85,7 +84,8 @@ int	check_exp_var(char *str)
 	int	i;
 
 	i = 0;
-	if (('a' <= str[0] && str[0] <= 'z') || ('A' <= str[0] && str[0] <= 'Z') || (str[i] == '_') )
+	if (('a' <= str[0] && str[0] <= 'z') || ('A' <= str[0] && str[0] <= 'Z')
+		|| (str[i] == '_'))
 	{
 		while (str[++i])
 		{

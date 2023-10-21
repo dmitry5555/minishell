@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 13:08:28 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:11:59 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,12 @@
 
 int	ft_no_access(t_cmd_node	*node)
 {
-	char *not_dir;
-	printf("TESTING ACCESS \n");
-	// . -> filename argument required ✅
-	if (node->cmd[0][0] == '.' && !node->cmd[0][1])
-	{
-		ft_error(ERR_FNARG, node->cmd[0], 2);
+	char	*not_dir;
+
+	if (node->cmd[0][0] == '.' && !node->cmd[0][1]
+		&& !ft_error(ERR_FNARG, node->cmd[0], 2))
 		return (1);
-	}
 	not_dir = ft_strjoin(node->cmd[0], "/");
-	// is a directory ✅
 	if (access(not_dir, F_OK) == 0 && access(node->cmd[0], F_OK) == 0)
 	{
 		ft_error(ERR_ISDIR, node->cmd[0], 126);
@@ -31,40 +27,16 @@ int	ft_no_access(t_cmd_node	*node)
 		return (1);
 	}
 	free(not_dir);
-	printf("TESTING ACCESS 2\n");
-
-	// no such file or directory - only if single '/'
 	if (access(node->path, F_OK) == -1 && ft_strchr(node->path, '/'))
 	{
-		printf("TESTING ACCESS 3\n");
 		ft_error(ERR_DIR, node->cmd[0], 127);
 		return (1);
 	}
-
-	printf("TESTING ACCESS 4\n");
-	// path starts with filename
-	// if (node->path[0] != '.' && node->path[0] != '/')
-	// {
-	// 	// printf("node->path [%c]\n", node->path[0]);
-	// 	printf("🟢");
-	// 	ft_error(ERR_DIR, node->cmd[0], 127);
-	// 	return (1);
-	// }
-	// printf("❌");
-
-	printf("path : [%s] \n", node->path);
-	printf("cmd : [%s] \n", node->cmd[0]);
-	// printf("permission test \n");
-
-	// check executable
 	if (!access(node->path, F_OK) && access(node->path, X_OK != 0))
 	{
-		// ft_putstr_fd(node->cmd[0], 1);
 		ft_error(ERR_PERM, node->cmd[0], 126);
 		return (1);
 	}
-	printf("have access \n");
-
 	return (0);
 }
 
@@ -99,7 +71,6 @@ void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
 	node = (t_cmd_node *)cmd_list->content;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	printf("🟢🟢\n");
 	if (!ft_strcmp(node->cmd[0], "echo"))
 		g_status = ft_echo(node->cmd);
 	else if (!ft_strcmp(node->cmd[0], "pwd"))
@@ -110,7 +81,6 @@ void	run_single_exec(t_cmdlist *cmd_list, t_list *env)
 	{
 		if (!ft_no_access(node))
 		{
-			// printf("executing✅\n");
 			execve(node->path, node->cmd, ft_env_to_arr(env));
 			ft_error(ERR_CMD, node->cmd[0], 127);
 		}
