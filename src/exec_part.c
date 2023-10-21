@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:12:08 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 17:11:59 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:35:40 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	ft_no_access(t_cmd_node	*node)
 		ft_error(ERR_DIR, node->cmd[0], 127);
 		return (1);
 	}
-	if (!access(node->path, F_OK) && access(node->path, X_OK != 0))
-	{
+	if (!access(node->path, F_OK) && access(node->path, X_OK != 0)
+		&& ft_error(ERR_PERM, node->cmd[0], 126))
 		ft_error(ERR_PERM, node->cmd[0], 126);
+	if (access(node->path, X_OK) != 0 && !ft_error(ERR_CMD, node->cmd[0], 127))
 		return (1);
-	}
 	return (0);
 }
 
