@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 17:00:17 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:13:14 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ char			**ft_array_extend(char **in, char *newstr);
 char			**ft_array_replace_in(char ***a, char **sub, int n);
 
 // Lists
-//t_list	*ft_lstnew(void const *content);
 void			ft_add_new_node_start(t_list **env, const char *str1,
 					const char *str2);
 void			ft_add_new_node_end(t_list **env, const char *str1,

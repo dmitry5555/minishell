@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   a_helpers.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:21:51 by justindaly        #+#    #+#             */
-/*   Updated: 2023/10/11 22:59:55 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/21 18:08:18 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,6 @@ int	ft_a_len(char **array)
 	while (array && array[i])
 		i++;
 	return (i);
-}
-
-void	ft_print_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		printf("array[%d] = %s\n", i, array[i]);
-		i++;
-	}
 }
 
 void	ft_array_free(char ***array)
@@ -105,3 +93,15 @@ char	**ft_array_extend(char **in, char *newstr)
 	ft_array_free(&in);
 	return (out);
 }
+
+// void	ft_print_array(char **array)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (array[i])
+// 	{
+// 		printf("array[%d] = %s\n", i, array[i]);
+// 		i++;
+// 	}
+// }

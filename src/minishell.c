@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/16 19:29:40 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/21 18:07:09 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	exec_all(char *out, t_list *env)
 	cmd_list = NULL;
 	if (!out)
 	{
-		printf("exit\n");
+		ft_putstr_fd("exit", 2);
 		exit(g_status);
 	}
 	if (out[0] != '\0')
