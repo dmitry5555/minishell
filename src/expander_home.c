@@ -6,7 +6,7 @@
 /*   By: jdaly <jdaly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:24:34 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/13 16:45:47 by jdaly            ###   ########.fr       */
+/*   Updated: 2023/10/21 18:21:12 by jdaly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_user_home(char *str, t_list *envlist)
 	char	*user_id;
 
 	user_id = env_cont(envlist, "USER");
-	if ((strncmp(str, "~", 1) == 0) && strncmp(&str[1], user_id,
+	if ((ft_strncmp(str, "~", 1) == 0) && ft_strncmp(&str[1], user_id,
 			(size_t)ft_strlen(user_id)) == 0)
 		return (1);
 	else
@@ -62,7 +62,7 @@ char	*expand_home(char *str, t_list *envlist)
 			result = home_expander(str, &i, result, envlist);
 		else
 		{
-			tmp_char = strndup(&str[i], 1);
+			tmp_char = ft_strndup(&str[i], 1);
 			tmp_result = ft_strjoin(result, tmp_char);
 			free(result);
 			result = tmp_result;
