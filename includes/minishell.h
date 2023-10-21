@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:55:24 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/18 19:48:55 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:00:17 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define ERR_NDIR 14
 # define ERR_FNARG 15
 # define ERR_ISDIR 16
+# define ERR_NVIDENT 17
 
 typedef struct s_list
 {

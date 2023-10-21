@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:07:05 by jdaly             #+#    #+#             */
-/*   Updated: 2023/10/18 19:49:09 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:00:17 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	*ft_error(int error_type, char *error_str, int error_code)
 		ft_putstr_fd("cd: OLDPWD not set", 2);
 	if (error_type == ERR_FNARG)
 		ft_putstr_fd("minishell: filename argument required", 2);
+	if (error_type == ERR_NVIDENT)
+		ft_putstr_fd("export: not a valid identifier ", 2);
 	ft_putendl_fd(error_str, 2);
 	return (NULL);
 }
