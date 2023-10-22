@@ -6,7 +6,7 @@
 /*   By: dlariono <dlariono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:01:33 by dlariono          #+#    #+#             */
-/*   Updated: 2023/10/21 18:07:09 by dlariono         ###   ########.fr       */
+/*   Updated: 2023/10/22 13:31:40 by dlariono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,3 +116,6 @@ int	main(int argc, char *argv[], char **env)
 		exec_all(out, env_list);
 	}
 }
+
+// #!/usr/bin/python
+// print("Hello world")
